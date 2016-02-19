@@ -1,0 +1,5 @@
+en:
+  static_pages:
+    qv_system: "QVSystem"
+    home: "Home"
+    login: "Login"
