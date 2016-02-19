@@ -14,3 +14,13 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+//= require bootstrap-sprockets
+
+var flash = function() {
+  setTimeout(function() {
+    $(".hide-flash").fadeOut("normal");
+  }, 3000);
+}
+
+$(document).on("ready", flash);
+$(document).on("page:update", flash);
