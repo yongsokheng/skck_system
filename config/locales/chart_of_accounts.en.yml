@@ -1,0 +1,13 @@
+en:
+  chart_of_accounts:
+    name: "Name"
+    description: "Description"
+    balance_total: "Balance Total"
+    account_no: "Account No"
+    statement_ending_balance: "Statement Ending Balance"
+    statement_ending_date: "Statement Ending Date"
+    chart_of_account: "Chart of Accounts"
+    type: "Type"
+    messages:
+      existed: "already existed!"
+    sub_item: "Sub item of"

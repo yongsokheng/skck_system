@@ -13,3 +13,15 @@ en:
   labels:
     warning: "Warning"
     form_inform_errors: "Form contains "
+  btn:
+    edit: "Edit"
+    delete: "Delete"
+    add_new: "Add New"
+    save: "Save"
+    cancel: "Cancel"
+  flashs:
+    messages:
+      created: "Created successfully!"
+      updated: "Updated successfully!"
+  messages:
+    confirm_delete: "Are you sure?"
