@@ -13,8 +13,14 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
 //= require bootstrap-sprockets
+//= require jquery_nested_form
+//= require bootstrap-datepicker
+//= require select2
+//= require jquery.validate
+//= require i18n
+//= require i18n/translations
+//= require_tree .
 
 var flash = function() {
   setTimeout(function() {
