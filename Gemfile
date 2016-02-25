@@ -10,7 +10,13 @@ gem "jbuilder", "~> 2.0"
 gem "sdoc", "~> 0.4.0", group: :doc
 gem "bootstrap-sass"
 gem "devise"
-
+gem "nested_form"
+gem "bootstrap-datepicker-rails"
+gem "select2-rails"
+gem "cancancan"
+gem "jquery-validation-rails"
+gem "i18n-js", ">= 3.0.0.rc12"
+gem "config"
 group :development, :test do
   gem "byebug"
   gem "web-console", "~> 2.0"
