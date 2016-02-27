@@ -1,0 +1,10 @@
+<tr>
+  <td><%= log_book.transaction_date %></td>
+  <td><%= log_book.reference_no %></td>
+  <td><%= log_book.voucher_type.abbreviation %></td>
+  <td><%= log_book.cash_type.name %></td>
+  <td><%= link_to t("logbooks.actions.edit"), edit_log_book_path(log_book),
+    remote: true %></td>
+  <td><%= link_to t("logbooks.actions.delete"), log_book_path(log_book), method: :delete,
+    data: {confirm: t("logbooks.confirm.delete")} %></td>
+</tr>

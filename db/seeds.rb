@@ -34,6 +34,12 @@ end
 # company.chart_of_accounts.create! account_no: "9231", name: "Account Payable", chart_account_type_id: 3
 # company.chart_of_accounts.create! account_no: "9283", name: "Cash on hand", chart_account_type_id: 4
 
+VoucherType.create! name: "Cash In Voucher", abbreviation: "CIV"
+VoucherType.create! name: "Cash Out Voucher", abbreviation: "COV"
+
+CashType.create! name: "Safe"
+CashType.create! name: "Bank"
+
 company.customer_venders.create! name: "customer", status: "Customer"
 company.customer_venders.create! name: "vender", status: "Vender"
 

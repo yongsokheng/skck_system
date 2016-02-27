@@ -7,4 +7,8 @@ module ApplicationHelper
     when :success then "alert-success"
     end
   end
+
+  def logbook_form_title logbook
+    logbook.new_record? ? t("logbooks.labels.add_title") : t("logbooks.labels.edit_title")
+  end
 end

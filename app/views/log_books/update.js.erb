@@ -1,0 +1,8 @@
+<% if @log_book.errors.any? %>
+  $(".errors").html("<%= j render 'shared/errors', object: @log_book %>");
+<% else %>
+  $(".errors").html("");
+  $(".logbook-form-modal").modal("hide");
+  $(".logbook-list").html("<%= j render @log_books %>");
+  $(".flash").html("<%= j render 'shared/flash' %>");
+<% end %>
