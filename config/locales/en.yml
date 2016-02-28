@@ -5,6 +5,7 @@ en:
       full: "%Y/%m/%d %H:%M"
       short: "%y/%m/%d"
       year: "%d/%m/%Y"
+      ref_format: "%d%m%y"
   datepicker:
     date:
       format: "yyyy-mm-dd"

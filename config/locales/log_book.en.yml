@@ -1,0 +1,22 @@
+en:
+  logbooks:
+    tables:
+      date: "Date"
+      ref_no: "REF No."
+      voucher_type: "Voucher Type"
+      cash_type: "Cash Type"
+      action: "Action"
+    actions:
+      add: "Add"
+      edit: "Edit"
+      delete: "Delete"
+      save: "Save"
+    confirm:
+      delete: "Are you sure to delete?"
+    flashs:
+      save_success: "Log Book saved"
+      delete_success: "Log Book delete"
+    labels:
+      add_title: "Add Log Book"
+      edit_title: "Edit Log Book"
+

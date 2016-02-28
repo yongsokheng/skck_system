@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-9">
+    <table class="table table-bordered">
+      <thead align="center">
+        <tr>
+          <td><%= t "logbooks.tables.date" %></td>
+          <td><%= t "logbooks.tables.ref_no" %></td>
+          <td><%= t "logbooks.tables.voucher_type" %></td>
+          <td><%= t "logbooks.tables.cash_type" %></td>
+          <td colspan="2"><%= t "logbooks.tables.action" %></td>
+        </tr>
+      </thead>
+      <tbody class="logbook-list">
+        <%= render @log_books %>
+      </tbody>
+    </table>
+    <%= link_to t("logbooks.actions.add"), new_log_book_path, remote: true,
+      class: "btn btn-primary pull-right" %>
+  </div>
+</div>
+
+<div class="logbook-modal"></div>
