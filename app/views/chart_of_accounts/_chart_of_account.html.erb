@@ -1,0 +1,13 @@
+<tr>
+  <td><%= chart_of_account.account_no %></td>
+  <td style="padding-left: <%= chart_of_account.depth * 20 + 10 %>px"><%= chart_of_account.name %></td>
+  <td><%= chart_of_account.description %></td>
+  <td><%= chart_of_account.chart_account_type_name %></td>
+  <td><%= chart_of_account.balance_total %></td>
+  <td><%= chart_of_account.statement_ending_balance %></td>
+  <td><%= chart_of_account.statement_ending_date %></td>
+  <td><%= link_to t("btn.edit"), edit_chart_of_account_path(chart_of_account) %></td>
+  <td><%= link_to t("btn.delete"), chart_of_account, method: :delete,
+                  data: {confirm: t("messages.confirm_delete")} %></td>
+</tr>
+<%= render partial: "chart_of_account", collection: chart_of_account.children, as: "chart_of_account" %>

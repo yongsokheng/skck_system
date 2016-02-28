@@ -17,6 +17,7 @@ gem "cancancan"
 gem "jquery-validation-rails"
 gem "i18n-js", ">= 3.0.0.rc12"
 gem "config"
+gem "closure_tree"
 group :development, :test do
   gem "byebug"
   gem "web-console", "~> 2.0"

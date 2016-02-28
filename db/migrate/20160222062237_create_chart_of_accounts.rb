@@ -10,6 +10,7 @@ class CreateChartOfAccounts < ActiveRecord::Migration
       t.integer :parent_id
       t.references :chart_account_type, index: true, foreign_key: true
       t.references :company, index: true, foreign_key: true
+      t.references :user, index: true, foreign_key: true
 
       t.timestamps null: false
     end
