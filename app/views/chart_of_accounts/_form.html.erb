@@ -1,10 +1,8 @@
-<div class="row chat-of-accounts-form">
+<div id="chart-of-account" class="row chat-of-accounts-form">
   <h2 class="text-center"><%= t "chart_of_accounts.chart_of_account" %></h2>
   <div class="col-md-6 col-md-offset-3">
     <%= form_for @chart_of_account do |f| %>
       <%= render "shared/errors", object: @chart_of_account %>
-
-      <%= f.hidden_field :user_id, value: current_user.id %>
 
       <%= f.label :account_no %>
       <%= f.text_field :account_no, class: "form-control" %>
@@ -15,15 +13,13 @@
       <%= f.label :description %>
       <%= f.text_area :description, class: "form-control" %>
 
-      <div class="chart-of-account" data-chart-of-account-parent="<%= @parents.to_json %>" data-parent-id="<%= @chart_of_account.parent_id %>">
-        <%= f.label t("chart_of_accounts.sub_item") %>
-        <%= f.select :parent_id, {}, {include_blank: true}, class: "form-control chart-of-account-parent" %>
-      </div>
+      <%= f.label t("chart_of_accounts.sub_item") %>
+      <%= f.select :parent_id, options_for_select(@parents, f.object.parent_id), {include_blank: true}, class: "form-control select2-tree" %>
 
       <%= f.label :chart_account_type_id %>
       <%= f.select :chart_account_type_id,
         options_for_select(@chart_account_types.collect{|acc_type| [acc_type.name, acc_type.id, {"data-acc-code" => acc_type.type_code}]}, @chart_of_account.chart_account_type_id),
-        {}, {class: "form-control chart-account-type"} %>
+        {}, {class: "form-control chart-account-type select2-simple"} %>
 
       <div class="statement_ending">
         <%= f.label :statement_ending_balance %>

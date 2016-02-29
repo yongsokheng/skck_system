@@ -1,8 +1,12 @@
 class JournalEntriesController < ApplicationController
   load_and_authorize_resource
+  before_filter :load_data, only: [:new, :show]
 
   def new
-    load_data
+  end
+
+  def show
+    @journal_entry = @current_company.journal_entries.find params[:id]
   end
 
   def create
@@ -23,9 +27,9 @@ class JournalEntriesController < ApplicationController
   end
 
   def load_data
-    @chart_accounts = current_user.company.chart_of_accounts
-      .map{|c| [c.name_with_account_no, c.id, {"data-account-type-code" => c.chart_account_type.type_code}]}
-    @customer_venders = current_user.company.customer_venders.all
+    @current_company = current_user.company
+    @chart_accounts = @current_company.chart_account_tree
+    @customer_venders = @current_company.customer_venders.all
     10.times do
       @journal_entry.journal_entry_transactions.build
     end

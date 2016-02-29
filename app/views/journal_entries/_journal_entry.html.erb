@@ -21,8 +21,10 @@
 
     <tbody>
       <%= f.fields_for :journal_entry_transactions, wrapper: false do |ff| %>
-        <tr class="fields">
-          <td><%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "grid-select grid-cell chart-account" %></td>
+        <tr class="fields" data-chart-account-selected-id="<%= ff.object.chart_of_account_id %>">
+          <td>
+            <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "form-control select2-tree grid-cell chart-account" %>
+          </td>
           <td><%= ff.text_field :description, class: "form-control grid-cell description", autocomplete: "off" %></td>
           <td><%= ff.text_field :debit,
             value: number_with_precision(ff.object.debit, precision: 2, delimiter: ","),
@@ -30,8 +32,7 @@
           <td><%= ff.text_field :credit,
             value: number_with_precision(ff.object.credit, precision: 2, delimiter: ","),
             class: "form-control grid-cell credit", autocomplete: "off" %></td>
-          <td><%= ff.collection_select :customer_vender_id, @customer_venders, :id, :name, {include_blank: true},
-            class: "grid-select grid-cell name" %></td>
+          <td><%= ff.collection_select :customer_vender_id, @customer_venders, :id, :name, {include_blank: true}, class: "form-control select2-simple grid-cell name" %></td>
         </tr>
       <% end %>
     </tbody>

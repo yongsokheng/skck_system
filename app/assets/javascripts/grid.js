@@ -1,13 +1,7 @@
-$(document).ready(function() {
-  set_select2();
+$(function() {
   $(document).on("change", ".fields:last .grid-cell", function() {
     $(".add_nested_fields").click();
-    set_select2();
+    load_select2_tree();
+    load_select2_simple();
   });
 });
-
-function set_select2() {
- $(".grid-select").select2({
-  theme: "bootstrap"
- });
-}

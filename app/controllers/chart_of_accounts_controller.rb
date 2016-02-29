@@ -3,15 +3,14 @@ class ChartOfAccountsController < ApplicationController
   before_action :select_data, only: [:new, :create, :edit, :update]
 
   def index
-    @chart_of_accounts = ChartOfAccount.roots
+    @chart_of_accounts = current_user.company.chart_of_accounts.roots
   end
 
   def new
   end
 
   def create
-    company = current_user.company
-    @chart_of_account = company.chart_of_accounts.new chart_of_account_params
+    @chart_of_account = @company.chart_of_accounts.new chart_of_account_params
     if @chart_of_account.save
       flash[:notice] = t "flashs.messages.created"
       redirect_to chart_of_accounts_path
@@ -41,11 +40,12 @@ class ChartOfAccountsController < ApplicationController
   def chart_of_account_params
     params.require(:chart_of_account).permit :name, :description, :account_no,
       :statement_ending_balance, :statement_ending_date,:chart_account_type_id,
-      :parent_id, :user_id
+      :parent_id
   end
 
   def select_data
+    @company = current_user.company
     @chart_account_types = ChartAccountType.all
-    @parents = ChartOfAccount.chart_account_tree
+    @parents = @company.chart_account_tree
   end
 end

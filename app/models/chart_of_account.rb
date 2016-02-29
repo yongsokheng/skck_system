@@ -15,19 +15,11 @@ class ChartOfAccount < ActiveRecord::Base
   delegate :name, :id, to: :chart_account_type, prefix: true, allow_nil: true
 
   def chart_account chart_arr = []
-    chart_arr << {id: id, text: name, depth: depth}
+    chart_arr << [name, id, {"depth" => depth}, {"type" => chart_account_type.type_code}]
     children.each do |child|
       child.chart_account chart_arr
     end
     chart_arr
-  end
-
-  def self.chart_account_tree
-    tree_chart = []
-    ChartOfAccount.roots.each do |account|
-      tree_chart += account.chart_account
-    end
-    tree_chart
   end
 
   def name_with_account_no
