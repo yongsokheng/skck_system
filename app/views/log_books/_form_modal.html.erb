@@ -13,10 +13,10 @@
           <%= f.text_field :transaction_date, value: Date.today, class: "datepicker form-control" %>
           <%= f.label :cash_type_id %>
           <%= f.collection_select :cash_type_id, @cash_types, :id, :name, {},
-            class: "form-control" %>
+            class: "select2-hide-search form-control" %>
           <%= f.label :voucher_type_id %>
           <%= f.collection_select :voucher_type_id, @voucher_types, :id, :abbreviation,
-            {}, class: "form-control" %>
+            {}, class: "select2-hide-search form-control" %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><%= t "actions.close" %></button>

@@ -20,7 +20,13 @@
 //= require jquery.validate
 //= require i18n
 //= require i18n/translations
-//= require_tree .
+//= require datepicker
+//= require select2-select
+//= require jquery-number-format
+//= require grid
+//= require journal_entry
+//= require chart_of_accounts
+//= require logbook
 
 var flash = function() {
   setTimeout(function() {
