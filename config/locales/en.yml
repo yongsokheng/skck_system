@@ -1,4 +1,6 @@
 en:
+  api:
+    invalid_token: "invalid token"
   date:
     formats:
       default: "%Y/%m/%d"

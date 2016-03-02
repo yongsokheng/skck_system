@@ -1,7 +1,7 @@
 class LogBooksController < ApplicationController
   load_and_authorize_resource
-  before_filter :load_data, only: [:index, :create, :update]
-  before_filter :load_item_select, only: [:new, :edit]
+  before_action :load_data, only: [:index, :create, :update]
+  before_action :load_item_select, only: [:new, :edit]
 
   def index
   end
