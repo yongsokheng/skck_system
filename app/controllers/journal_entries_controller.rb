@@ -1,6 +1,6 @@
 class JournalEntriesController < ApplicationController
   load_and_authorize_resource
-  before_filter :load_data, only: [:new, :show]
+  before_action :load_data, only: [:new, :show]
 
   def new
   end

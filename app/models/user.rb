@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  acts_as_token_authenticatable
+
   belongs_to :company
 
   has_many :chart_of_accounts
