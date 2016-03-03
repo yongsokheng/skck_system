@@ -48,3 +48,35 @@ company.customer_venders.create! name: "customer", status: "Customer"
 company.customer_venders.create! name: "vender", status: "Vender"
 
 WorkingPeriod.create! start_date: "2016-03-01", end_date: "2016-03-30", company_id: 1
+
+# item list type
+item_list_types = ["Service", "Inventory Part", "Non-inventory Part", "Other Charge",
+                    "Discount"]
+item_list_types.each do |type|
+  ItemListType.create! name: type
+end
+# measure and unit of measure
+measures = ["Count", "Length", "Weight", "Volume", "Area", "Time"]
+unit_of_measures = [["each", "box", "case", "dozen"],
+                    ["inch", "foot", "yart", "meter"]  ,
+                    ["ounce", "pound", "kilogram"],
+                    ["guart", "gallon", "cubic yard", "liter"],
+                    ["square foot", "arce", "square", "meter"],
+                    ["minute", "hour", "day"]]
+count = 0
+measures.each do |measure|
+  m = Measure.create! name: measure, company: company
+  unit_of_measures[count].each do |unit|
+    m.unit_of_measures.create! name: unit, abbreviation: unit
+  end
+  count = count + 1
+end
+
+# item list
+ItemListType.all.each do |type|
+  (1..3).each do |n|
+    type.item_lists.create! name: type.name + "#{n}", manufacturer_part_number: type.id,
+    company: company, unit_of_measure: UnitOfMeasure.all.sample,
+    customer_vender: CustomerVender.all.sample, chart_of_account: ChartOfAccount.all.sample
+  end
+end

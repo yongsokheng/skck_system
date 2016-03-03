@@ -26,5 +26,6 @@ en:
     messages:
       created: "Created successfully!"
       updated: "Updated successfully!"
+      deleted: "Deleted successfully"
   messages:
     confirm_delete: "Are you sure?"

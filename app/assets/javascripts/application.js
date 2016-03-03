@@ -27,6 +27,7 @@
 //= require journal_entry
 //= require chart_of_accounts
 //= require logbook
+//= require item_lists
 
 var flash = function() {
   setTimeout(function() {

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :journal_entries
   resources :chart_of_accounts
   resources :log_books
+  resources :item_lists
 
   namespace :api, defaults: {format: "json"} do
     devise_for :users, only: :session
@@ -11,6 +12,8 @@ Rails.application.routes.draw do
       resources :users, only: [:index]
       resources :log_books, only: [:index]
       resources :journal_entries, only: [:index]
+      resources :item_lists, only: :index
+      resources :chart_of_accounts, only: :index
     end
   end
 

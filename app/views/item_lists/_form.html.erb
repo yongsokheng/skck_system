@@ -1,0 +1,60 @@
+<div class="row" id="item-list">
+  <h2 class="text-center"><%= t "item_lists.item_list" %></h2>
+    <%= form_for @item_list do |f| %>
+      <div class="col-md-6">
+
+        <%= render "shared/errors", object: @item_list %>
+
+        <%= f.label :item_list_type_id %>
+        <%= f.select :item_list_type_id,
+          options_for_select(@types.collect{|type| [type.name, type.id]}, @item_list.item_list_type.try(:id)), {}, {class: "form-control item-list-type"} %>
+
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+
+        <%= f.label :description %>
+        <%= f.text_area :description, class: "form-control" %>
+
+        <%= f.label t("item_lists.sub_item") %>
+        <%= f.select :parent_id, {}, {include_blank: true}, {class: "form-control select2-item-list item-list"} %>
+
+        <%= f.label :chart_of_account_id %>
+        <%= f.select :chart_of_account_id,
+          options_for_select(@chart_accounts, f.object.chart_of_account_id),
+          {}, {class: "form-control select2-tree"} %>
+
+        <br>
+        <%= link_to t("btn.cancel"), item_lists_path, class: "btn btn-default" %>
+        <%= f.submit t("btn.save"), class: "btn btn-primary pull-right" %>
+      </div>
+      <div class="col-md-6">
+        <div class="manufacturer">
+          <%= f.label :manufacturer_part_number %>
+          <%= f.text_field :manufacturer_part_number, class: "form-control" %>
+        </div>
+
+        <div class="other-field">
+          <%= f.label :customer_vender_id %>
+          <%= f.select :customer_vender_id,
+            options_for_select(@customer_venders.collect{|cv| [cv.name, cv.id]}, f.object.customer_vender.try(:id)),
+            {}, {class: "form-control"} %>
+
+          <%= f.label :unit_of_measure_id %>
+          <%= f.select :unit_of_measure_id,
+            option_groups_from_collection_for_select(@measures, :unit_of_measures, :name, :id, :name), {}, class: "form-control select2-simple" %>
+
+          <%= f.label :cost %>
+          <%= f.text_field :cost, class: "form-control" %>
+
+          <%= f.label :purchase_description %>
+          <%= f.text_area :purchase_description, class: "form-control" %>
+
+          <%= f.label :price %>
+          <%= f.text_field :price, class: "form-control" %>
+
+          <%= f.label :sale_description %>
+          <%= f.text_area :sale_description, class: "form-control" %>
+        </div>
+      </div>
+    <% end %>
+</div>
