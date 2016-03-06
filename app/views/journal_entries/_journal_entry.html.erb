@@ -1,12 +1,20 @@
 <%= render "shared/errors", object: @journal_entry %>
 <%= render "shared/error_modal" %>
 
-<%= nested_form_for @journal_entry do |f| %>
+<%= nested_form_for @journal_entry, html: {class: "form-journal"} do |f| %>
   <%= f.hidden_field :user_id, value: current_user.id %>
   <%= f.hidden_field :company_id, value: current_user.company.id %>
   <p>
     <%= f.label :transaction_date %>
-    <%= f.text_field :transaction_date, value: Date.today, class: "form-control datepicker", required: true %>
+    <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today, class: "form-control datepicker transaction-date", required: true %>
+  </p>
+  <p>
+    <%= f.label :bank_type_id %>
+    <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id), {}, class: "form-control select2-simple bank_type" %>
+  </p>
+  <p>
+    <%= f.label :log_book_id %>
+    <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id), {}, class: "form-control select2-data select2-simple log_book" %>
   </p>
   <table id="tbl-journal-entry" class="table table-bordered">
     <thead>
@@ -20,21 +28,8 @@
     </thead>
 
     <tbody>
-      <%= f.fields_for :journal_entry_transactions, wrapper: false do |ff| %>
-        <tr class="fields" data-chart-account-selected-id="<%= ff.object.chart_of_account_id %>">
-          <td>
-            <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "form-control select2-tree grid-cell chart-account" %>
-          </td>
-          <td><%= ff.text_field :description, class: "form-control grid-cell description", autocomplete: "off" %></td>
-          <td><%= ff.text_field :debit,
-            value: number_with_precision(ff.object.debit, precision: 2, delimiter: ","),
-            class: "form-control grid-cell debit", autocomplete: "off" %></td>
-          <td><%= ff.text_field :credit,
-            value: number_with_precision(ff.object.credit, precision: 2, delimiter: ","),
-            class: "form-control grid-cell credit", autocomplete: "off" %></td>
-          <td><%= ff.collection_select :customer_vender_id, @customer_venders, :id, :name, {include_blank: true}, class: "form-control select2-simple grid-cell name" %></td>
-        </tr>
-      <% end %>
+      <p><i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i></p>
+      <%= render "journal_entry_transaction_fields", f: f %>
     </tbody>
 
     <tfoot>

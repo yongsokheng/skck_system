@@ -10,6 +10,7 @@ class LogBook < ActiveRecord::Base
   validates :transaction_date, presence: true
   validates :reference_no, uniqueness: {case_sensitive: false}
 
+  scope :find_reference_by, ->transaction_date, cash_type_id{where(transaction_date: transaction_date, cash_type_id: cash_type_id)}
   private
 
   def transaction_date_exist?

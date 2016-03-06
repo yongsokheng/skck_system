@@ -3,12 +3,16 @@ class JournalEntry < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :company
+  belongs_to :log_book
+  belongs_to :bank_type
 
   accepts_nested_attributes_for :journal_entry_transactions,
     reject_if: proc {|attributes| attributes[:debit].blank? && attributes[:credit].blank?},
     allow_destroy: true
 
   validates :transaction_date, presence: true
+  validates :log_book_id, presence: true
+  validates :bank_type_id, presence: true
   validate :must_have_transaction
   validate :account_must_balance
 

@@ -4,6 +4,7 @@ class Company < ActiveRecord::Base
   has_many :journal_entries
   has_many :users, dependent: :destroy
   has_many :log_books
+  has_many :bank_types
 
   def chart_account_tree
     tree_chart = []

@@ -8,7 +8,7 @@ var datetime_options = {
 };
 
 $(function() {
-  $(document).on("click", "input.datepicker", function(){
+  $(document).on("focus", "input.datepicker", function(){
     $(this).datepicker(datetime_options).datepicker("show");
   });
 });

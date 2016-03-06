@@ -19,7 +19,7 @@ gem "i18n-js", ">= 3.0.0.rc12"
 gem "config"
 gem "closure_tree"
 gem "simple_token_authentication", "~> 1.0"
-
+gem "font-awesome-rails"
 group :development, :test do
   gem "byebug"
   gem "web-console", "~> 2.0"
