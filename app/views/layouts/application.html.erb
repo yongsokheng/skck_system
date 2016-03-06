@@ -19,5 +19,8 @@
       </div>
       <%= render "shared/footer" %>
     </div>
+
+    <div class="api" data-email="<%= current_user.try(:email) %>"
+      data-token="<%= current_user.try(:authentication_token) %>"></div>
   </body>
 </html>

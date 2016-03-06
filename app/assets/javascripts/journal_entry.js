@@ -1,5 +1,9 @@
 $(document).on("page:change", function(){
+
   if($("#journal-entry").length > 0) {
+    var old_cash_type_id;
+    var old_date;
+
     total_balance();
     load_name_status();
 
@@ -8,6 +12,7 @@ $(document).on("page:change", function(){
       if($(this).val() != "")
         $(this).val($.number($(this).val(), 2));
       total_balance();
+      delete_row($(this));
     });
 
     $(document).on("change", ".credit", function() {
@@ -15,6 +20,7 @@ $(document).on("page:change", function(){
       if($(this).val() != "")
         $(this).val($.number($(this).val(), 2));
       total_balance();
+      delete_row($(this));
     });
 
     $(document).on("change", ".chart-account", function() {
@@ -39,6 +45,35 @@ $(document).on("page:change", function(){
     $(document).on("click", ".btn-save", function(event) {
       validate_save(event);
     });
+
+    $(document).on("show", ".transaction-date", function(e) {
+      old_date = $(this).val();
+    });
+
+    $(document).on("hide", ".transaction-date", function(e) {
+      var new_date = $(this).val();
+      if(old_date !== new_date) {
+        load_logbook_data();
+      }
+    });
+
+    $(document).on("select2:open", ".bank_type", function(event) {
+      old_cash_type_id = $(this).find("option:selected").attr("data-cash-type-id");
+    });
+
+    $(document).on("change", ".bank_type", function() {
+      var new_cash_type_id = $(this).find("option:selected").attr("data-cash-type-id");
+      if(old_cash_type_id != new_cash_type_id) {
+        load_logbook_data();
+      }else{
+        load_journal_entry();
+      }
+    });
+
+    $(document).on("change", ".log_book", function() {
+      load_journal_entry();
+    });
+
   }
 });
 
@@ -66,7 +101,9 @@ function set_msg_valid(event, msg) {
 }
 
 function validate_save(event) {
-  if(is_transaction_exist() == false) {
+  if($(".log_book").val() == null) {
+    set_msg_valid(event, I18n.t("journal_entries.validate_errors.log_book_not_blank"));
+  }else if(is_transaction_exist() == false) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.trans_validate"));
   }else if(is_account_balance() == false) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.balance_validate"));
@@ -130,4 +167,69 @@ function load_name_status() {
         $(this).find(".name").attr("disabled", true);
     }
   });
+}
+
+function load_logbook_data() {
+  var user_email = $(".api").data("email");
+  var user_token = $(".api").data("token");
+  var transaction_date = $(".transaction-date").val();
+  var cash_type_id = $(".bank_type option:selected").attr("data-cash-type-id");
+  $.ajax({
+    type: "get",
+    data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
+    dataType: "json",
+    url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
+    success: function(data) {
+      load_select2_with_data(data);
+    }
+  });
+}
+
+function reset_journal_transaction_list() {
+  $("#tbl-journal-entry").find("tbody").empty();
+  for(var i = 0; i < 10; i++) {
+    $(".add_nested_fields").click();
+  }
+  load_select2_tree();
+  load_select2_simple();
+  $(".total-debit").html(""+ $.number(0, 2));
+  $(".total-credit").html(""+ $.number(0, 2));
+  $(".icon-loading").hide();
+  $(".form-journal").attr("action", "/journal_entries");
+  $(".form-journal input[name='_method']").val("post");
+}
+
+function load_journal_entry() {
+  var user_email = $(".api").data("email");
+  var user_token = $(".api").data("token");
+  var log_book_id = $(".log_book").val();
+  var bank_type_id = $(".bank_type").val();
+  var transaction_date = $(".transaction-date").val();
+  var cash_type_id = $(".bank_type option:selected").attr("data-cash-type-id");
+
+  $(".icon-loading").show();
+
+  $.ajax({
+    type: "get",
+    data: {log_book_id: log_book_id, bank_type_id: bank_type_id},
+    dataType: "json",
+    url: "/api/journal_entries?user_token=" + user_token + "&user_email=" + user_email,
+    success: function(data) {
+      if(data) {
+        $.get("/select_journal/"+ transaction_date +"/"+ cash_type_id +"/"+ data.id);
+      }else{
+        reset_journal_transaction_list();
+      }
+    }
+  });
+}
+
+function delete_row(e) {
+  var debit = e.parents(".fields").find(".debit").val();
+  var credit = e.parents(".fields").find(".credit").val();
+  if(debit == "" && credit == "") {
+    e.parents(".fields").find("input[type=hidden]").val("1");
+  }else {
+    e.parents(".fields").find("input[type=hidden]").val("false");
+  }
 }

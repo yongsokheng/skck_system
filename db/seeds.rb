@@ -40,6 +40,11 @@ VoucherType.create! name: "Cash Out Voucher", abbreviation: "COV"
 CashType.create! name: "Safe"
 CashType.create! name: "Bank"
 
+BankType.create! name: "ACLEDA Bank", cash_type_id: 2, company_id: 1
+BankType.create! name: "Sacombank Bank", cash_type_id: 2, company_id: 1
+BankType.create! name: "Safe on Hand", cash_type_id: 1, company_id: 1
+BankType.create! name: "Petty cash", cash_type_id: 1, company_id: 1
+
 company.customer_venders.create! name: "customer", status: "Customer"
 company.customer_venders.create! name: "vender", status: "Vender"
 
