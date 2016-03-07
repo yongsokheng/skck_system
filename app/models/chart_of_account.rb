@@ -15,15 +15,15 @@ class ChartOfAccount < ActiveRecord::Base
   delegate :name, :id, to: :chart_account_type, prefix: true, allow_nil: true
 
   def chart_account chart_arr = []
-    chart_arr << [name, id, {"depth" => depth}, {"type" => chart_account_type.type_code}]
+    chart_arr << [chart_account_name, id, {"depth" => depth}, {"type" => chart_account_type.type_code}]
     children.each do |child|
       child.chart_account chart_arr
     end
     chart_arr
   end
 
-  def name_with_account_no
-    "#{account_no} - #{name}"
+  def chart_account_name
+    "#{account_no}|#{name}|#{chart_account_type.name}"
   end
 
   private

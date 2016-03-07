@@ -49,13 +49,18 @@
     margin-bottom: 10px;
     display: none;
   }
-
 }
 
-// .select2-results__option {
-//   // height: 30px;
-// }
+.select2-results__option {
+  min-height: 30px;
+}
 
-// .select2-dropdown {
-//   width: 400px !important;
-// }
+.select2-tree-result-parent {
+  min-width: 600px !important;
+  // padding-left: 6px;
+  // padding-right: 6px
+}
+
+.select2-tree-result-ul {
+  overflow-x: hidden;
+}
