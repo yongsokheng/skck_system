@@ -4,17 +4,31 @@ $(document).on("page:change", function() {
   load_select2_hide_search_box();
 });
 
-function formatResult(result) {
+function templateResult(result) {
   if (!result.id) {return result.text;}
-  var margin = result.element.attributes[0]["value"] * 10;
-  var $result = $("<span style='margin-left: " + margin + "px'>" + result.text + "</span>");
+  var padding = result.element.attributes[0]["value"] * 10 + 12;
+  var $result = $("<div class='row'>" +
+    "<div class='col-md-2' style='padding-left: " + padding + "px'>" + result.text.split("|")[0] + "</div>" +
+    "<div class='col-md-6' style='padding-left: " + padding + "px'>" + result.text.split("|")[1] + "</div>" +
+    "<div class='col-md-4'>" + result.text.split("|")[2] + "</div>" +
+    "</div>");
   return $result;
 };
+
+function templateSelection(result, container) {
+  var text = (result.text == "") ? "" : result.text.split("|")[1];
+  return $("<div title ='" + text + "'>" + text + "</div>");
+}
 
 function load_select2_tree() {
   $(".select2-tree").select2({
     theme: "bootstrap",
-    templateResult: formatResult
+    templateResult: templateResult,
+    templateSelection: templateSelection,
+    dropdownAutoWidth: "true"
+  }).on("select2:open", function () {
+    $("span.select2-results").parent().addClass("select2-tree-result-parent");
+    $("span.select2-results ul").addClass("select2-tree-result-ul");
   });
 }
 
