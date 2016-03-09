@@ -6,6 +6,7 @@ $(document).on("page:change", function(){
 
     total_balance();
     load_name_status();
+    set_current_period();
 
     $(document).on("change", ".debit", function() {
       $(this).parent().parent().find(".credit").val("");
@@ -74,6 +75,20 @@ $(document).on("page:change", function(){
       load_journal_entry();
     });
 
+    $(document).on("click", ".btn-prev", function() {
+      var transaction_date = new Date($(".transaction-date").val());
+      transaction_date.setDate(transaction_date.getDate() - 1);
+      set_datepicker(transaction_date);
+      load_logbook_data();
+    });
+
+    $(document).on("click", ".btn-next", function() {
+      var transaction_date = new Date($(".transaction-date").val());
+      transaction_date.setDate(transaction_date.getDate() + 1);
+      set_datepicker(transaction_date);
+      load_logbook_data();
+    });
+
   }
 });
 
@@ -101,7 +116,9 @@ function set_msg_valid(event, msg) {
 }
 
 function validate_save(event) {
-  if($(".log_book").val() == null) {
+  if(is_current_period() == false){
+    set_msg_valid(event, I18n.t("journal_entries.validate_errors.wrong_period", {period: $(".current-period").text()}));
+  }else if($(".log_book").val() == null) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.log_book_not_blank"));
   }else if(is_transaction_exist() == false) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.trans_validate"));
@@ -155,6 +172,22 @@ function is_transaction_exist() {
     }
   });
   return exist;
+}
+
+function is_current_period() {
+  var transaction_date = new Date($(".transaction-date").val());
+  var current_start_date = new Date($(".working-period").attr("data-start-date"));
+  var current_end_date = new Date($(".working-period").attr("data-end-date"));
+
+  if(transaction_date >= current_start_date && transaction_date <= current_end_date)
+    return true;
+  return false;
+}
+
+function set_current_period() {
+  var current_start_date = $(".working-period").attr("data-start-date");
+  var current_end_date = $(".working-period").attr("data-end-date");
+  $(".current-period").html("Working period: " + current_start_date + " to " + current_end_date + "")
 }
 
 function load_name_status() {

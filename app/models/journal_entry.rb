@@ -15,6 +15,7 @@ class JournalEntry < ActiveRecord::Base
   validates :bank_type_id, presence: true
   validate :must_have_transaction
   validate :account_must_balance
+  validate :must_in_working_period
 
   private
   def account_must_balance
@@ -29,6 +30,13 @@ class JournalEntry < ActiveRecord::Base
   def must_have_transaction
     if journal_entry_transactions.size <= 0
       errors[:base] << I18n.t("journal_entries.validate_errors.trans_validate")
+    end
+  end
+
+  def must_in_working_period
+    unless company.working_periods.last.current_period? transaction_date
+      errors[:base] << I18n.t("journal_entries.validate_errors.wrong_period",
+        period: "Current working period: #{company.working_periods.last.start_date} to #{company.working_periods.last.end_date}")
     end
   end
 end
