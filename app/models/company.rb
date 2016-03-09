@@ -5,6 +5,7 @@ class Company < ActiveRecord::Base
   has_many :users, dependent: :destroy
   has_many :log_books
   has_many :bank_types
+  has_many :working_periods
 
   def chart_account_tree
     tree_chart = []
@@ -12,5 +13,13 @@ class Company < ActiveRecord::Base
       tree_chart += account.chart_account
     end
     tree_chart
+  end
+
+  def current_start_date_peroid
+    working_periods.last.start_date
+  end
+
+  def current_end_date_peroid
+    working_periods.last.end_date
   end
 end

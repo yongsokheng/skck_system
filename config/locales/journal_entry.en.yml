@@ -11,6 +11,7 @@ en:
       add: "Add"
       save: "Save"
     validate_errors:
+      wrong_period: "%{period}. You can only add/edit transaction in your current working period."
       balance_validate: "Account must be in balance."
       trans_validate: "Journal Entry must have at least one transaction."
       name_validate: "Name must exist on this account type."

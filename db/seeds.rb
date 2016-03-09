@@ -48,3 +48,4 @@ BankType.create! name: "Petty cash", cash_type_id: 1, company_id: 1
 company.customer_venders.create! name: "customer", status: "Customer"
 company.customer_venders.create! name: "vender", status: "Vender"
 
+WorkingPeriod.create! start_date: "2016-03-01", end_date: "2016-03-30", company_id: 1

@@ -3,7 +3,7 @@ en:
     invalid_token: "invalid token"
   date:
     formats:
-      default: "%Y/%m/%d"
+      default: "%Y-%m-%d"
       full: "%Y/%m/%d %H:%M"
       short: "%y/%m/%d"
       year: "%d/%m/%Y"

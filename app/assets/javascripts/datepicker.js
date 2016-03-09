@@ -4,11 +4,12 @@ var datetime_options = {
   orientation: "auto",
   autoclose: true,
   todayBtn: "linked",
-  showOnFocus: false
 };
 
-$(function() {
-  $(document).on("focus", "input.datepicker", function(){
-    $(this).datepicker(datetime_options).datepicker("show");
-  });
+$(document).on("page:update", function() {
+  $("input.datepicker").datepicker(datetime_options);
 });
+
+function set_datepicker(date) {
+  $("input.datepicker").datepicker("setDate", I18n.strftime(date, I18n.t("date.formats.default")));
+}

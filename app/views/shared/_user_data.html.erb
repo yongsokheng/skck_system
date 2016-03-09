@@ -1,0 +1,5 @@
+<% if user_signed_in? %>
+  <div class="api" data-email="<%= current_user.try(:email) %>"
+    data-token="<%= current_user.try(:authentication_token) %>"></div>
+  <div class="working-period" data-start-date="<%= current_user.company.current_start_date_peroid %>" data-end-date="<%= current_user.company.current_end_date_peroid %>"></div>
+<% end %>
