@@ -26,6 +26,13 @@ class ChartOfAccount < ActiveRecord::Base
     "#{account_no}|#{name}|#{chart_account_type.name}"
   end
 
+  def balance_total
+    total_debit = journal_entry_transactions.sum :debit
+    total_credit = journal_entry_transactions.sum :credit
+    balance = chart_account_type.debit? ? (total_debit - total_credit) : (total_credit - total_debit)
+    balance += statement_ending_balance
+  end
+
   private
   def ending_balance_exist?
     statement_ending_balance.present?
