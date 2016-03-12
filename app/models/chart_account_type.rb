@@ -3,4 +3,6 @@ class ChartAccountType < ActiveRecord::Base
 
   validates :name, presence: true, length: {maximum: 255},
     uniqueness: {case_sensitive: false}
+
+  enum increament_at: [:debit, :credit]
 end
