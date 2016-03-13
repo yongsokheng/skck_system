@@ -32,7 +32,9 @@ class ChartOfAccountsController < ApplicationController
   end
 
   def destroy
-    @chart_of_account.destroy
+    type = params[:type]
+    @chart_of_account.send("#{type}")
+    flash[:notice] = t "chart_of_accounts.flashs.#{type}"
     redirect_to chart_of_accounts_path
   end
 
@@ -46,6 +48,5 @@ class ChartOfAccountsController < ApplicationController
   def select_data
     @company = current_user.company
     @chart_account_types = ChartAccountType.all
-    @parents = @company.chart_account_tree
   end
 end

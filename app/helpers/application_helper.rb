@@ -15,4 +15,8 @@ module ApplicationHelper
   def customer_vender_state object
     (object.active? ? "<span class='label label-success'>#{object.state}</span>" : "<span class='label label-warning'>#{object.state}</span>").html_safe
   end
+
+  def chart_of_account_status object
+    (object.active? ? "<span class='label label-success'>#{object.status}</span>" : "<span class='label label-warning'>#{object.status}</span>").html_safe
+  end
 end

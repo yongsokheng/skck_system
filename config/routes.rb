@@ -30,4 +30,5 @@ Rails.application.routes.draw do
   get "partner/modal/:status/:id" => "confirm_modals#modal_customer_vender", as: :modal_customer_vender
 
   get "select_journal/:transaction_date/:cash_type_id/:journal_entry_id" => "journal_entries#select_journal"
+  get "chart_of_account/:id" => "confirm_modals#modal_chart_of_account", as: :modal_chart_of_account
 end
