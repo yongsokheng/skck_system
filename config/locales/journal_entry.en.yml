@@ -7,9 +7,14 @@ en:
       credit: "Credit"
       name: "Name"
       totals: "Totals"
+    labels:
+      open_balance: "Open Balance"
     actions:
       add: "Add"
       save: "Save"
+      close_period: "Close Working Period"
+    messages:
+      confirm_close_period: "Are you sure to close this current working period?"
     validate_errors:
       wrong_period: "%{period}. You can only add/edit transaction in your current working period."
       balance_validate: "Account must be in balance."
@@ -17,8 +22,11 @@ en:
       name_validate: "Name must exist on this account type."
       chart_account_validate: "General Journal transactions require an account on each line with an account"
       log_book_not_blank: "Log Book cannot be blank."
+      open_balance_validate: "Open Balance cannot be updated."
     flashs:
       save_success: "Transaction save"
       save_not_success: "Transaction not save"
       update_success: "Transaction update"
       update_not_success: "Transaction not update"
+      close_period_success: "Closing period transaction is success."
+      close_period_fail: "Closing period transaction fail. Try again."

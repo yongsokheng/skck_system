@@ -5,7 +5,7 @@ class Company < ActiveRecord::Base
   has_many :users, dependent: :destroy
   has_many :log_books
   has_many :bank_types
-  has_many :working_periods
+  has_one :working_period
   has_many :item_lists, dependent: :destroy
   has_many :measures
   has_many :unit_of_measures
@@ -18,11 +18,11 @@ class Company < ActiveRecord::Base
     tree_chart
   end
 
-  def current_start_date_peroid
-    working_periods.last.start_date
+  def current_start_date_period
+    working_period.start_date
   end
 
-  def current_end_date_peroid
-    working_periods.last.end_date
+  def current_end_date_period
+    working_period.end_date
   end
 end

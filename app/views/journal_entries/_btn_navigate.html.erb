@@ -3,4 +3,8 @@
   <%= link_to "", "javascript:void(0)", class: "btn btn-default btn-prev glyphicon glyphicon-arrow-left" %>
   <%= link_to "", "javascript:void(0)", class: "btn btn-default btn-next glyphicon glyphicon-arrow-right" %>
 </div>
+<div>
+  <%= link_to t("journal_entries.actions.close_period"), close_working_periods_path,
+    method: :post, class: "btn btn-danger", data: {confirm: t("journal_entries.messages.confirm_close_period")} %>
+</div>
 <div class="clearfix"></div>

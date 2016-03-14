@@ -88,6 +88,45 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
 
   add_index "customer_venders", ["company_id"], name: "index_customer_venders_on_company_id", using: :btree
 
+  create_table "item_list_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   limit: 4, null: false
+    t.integer "descendant_id", limit: 4, null: false
+    t.integer "generations",   limit: 4, null: false
+  end
+
+  add_index "item_list_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "item_list_anc_desc_idx", unique: true, using: :btree
+  add_index "item_list_hierarchies", ["descendant_id"], name: "item_list_desc_idx", using: :btree
+
+  create_table "item_list_types", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "item_lists", force: :cascade do |t|
+    t.string   "name",                     limit: 255
+    t.string   "description",              limit: 255
+    t.string   "manufacturer_part_number", limit: 255
+    t.float    "cost",                     limit: 24
+    t.float    "price",                    limit: 24
+    t.string   "purchase_description",     limit: 255
+    t.string   "sale_description",         limit: 255
+    t.integer  "parent_id",                limit: 4
+    t.integer  "chart_of_account_id",      limit: 4
+    t.integer  "company_id",               limit: 4
+    t.integer  "customer_vender_id",       limit: 4
+    t.integer  "item_list_type_id",        limit: 4
+    t.integer  "unit_of_measure_id",       limit: 4
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  add_index "item_lists", ["chart_of_account_id"], name: "index_item_lists_on_chart_of_account_id", using: :btree
+  add_index "item_lists", ["company_id"], name: "index_item_lists_on_company_id", using: :btree
+  add_index "item_lists", ["customer_vender_id"], name: "index_item_lists_on_customer_vender_id", using: :btree
+  add_index "item_lists", ["item_list_type_id"], name: "index_item_lists_on_item_list_type_id", using: :btree
+  add_index "item_lists", ["unit_of_measure_id"], name: "index_item_lists_on_unit_of_measure_id", using: :btree
+
   create_table "journal_entries", force: :cascade do |t|
     t.date     "transaction_date"
     t.integer  "user_id",          limit: 4
@@ -121,16 +160,39 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
   create_table "log_books", force: :cascade do |t|
     t.date     "transaction_date"
     t.string   "reference_no",     limit: 255
+    t.boolean  "open_balance",                 default: false
     t.integer  "cash_type_id",     limit: 4
     t.integer  "voucher_type_id",  limit: 4
     t.integer  "company_id",       limit: 4
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
   end
 
   add_index "log_books", ["cash_type_id"], name: "index_log_books_on_cash_type_id", using: :btree
   add_index "log_books", ["company_id"], name: "index_log_books_on_company_id", using: :btree
   add_index "log_books", ["voucher_type_id"], name: "index_log_books_on_voucher_type_id", using: :btree
+
+  create_table "measures", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.string   "abbreviation", limit: 255
+    t.integer  "company_id",   limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "measures", ["company_id"], name: "index_measures_on_company_id", using: :btree
+
+  create_table "unit_of_measures", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.string   "abbreviation", limit: 255
+    t.integer  "measure_id",   limit: 4
+    t.integer  "company_id",   limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "unit_of_measures", ["company_id"], name: "index_unit_of_measures_on_company_id", using: :btree
+  add_index "unit_of_measures", ["measure_id"], name: "index_unit_of_measures_on_measure_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
@@ -178,6 +240,11 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
   add_foreign_key "chart_of_accounts", "chart_account_types"
   add_foreign_key "chart_of_accounts", "companies"
   add_foreign_key "customer_venders", "companies"
+  add_foreign_key "item_lists", "chart_of_accounts"
+  add_foreign_key "item_lists", "companies"
+  add_foreign_key "item_lists", "customer_venders"
+  add_foreign_key "item_lists", "item_list_types"
+  add_foreign_key "item_lists", "unit_of_measures"
   add_foreign_key "journal_entries", "bank_types"
   add_foreign_key "journal_entries", "companies"
   add_foreign_key "journal_entries", "log_books"
@@ -188,6 +255,9 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
   add_foreign_key "log_books", "cash_types"
   add_foreign_key "log_books", "companies"
   add_foreign_key "log_books", "voucher_types"
+  add_foreign_key "measures", "companies"
+  add_foreign_key "unit_of_measures", "companies"
+  add_foreign_key "unit_of_measures", "measures"
   add_foreign_key "users", "companies"
   add_foreign_key "working_periods", "companies"
 end
