@@ -37,7 +37,7 @@ class LogBooksController < ApplicationController
   end
 
   def load_data
-    @log_books = current_user.company.log_books.all
+    @log_books = current_user.company.log_books.find_except_open_balance
   end
 
   def load_item_select

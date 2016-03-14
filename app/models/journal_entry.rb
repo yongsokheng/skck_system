@@ -1,5 +1,5 @@
 class JournalEntry < ActiveRecord::Base
-  has_many :journal_entry_transactions
+  has_many :journal_entry_transactions, dependent: :destroy
 
   belongs_to :user
   belongs_to :company

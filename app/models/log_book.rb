@@ -3,12 +3,14 @@ class LogBook < ActiveRecord::Base
   belongs_to :voucher_type
   belongs_to :company
 
-  has_many :journal_entries
+  has_many :journal_entries, dependent: :destroy
 
   before_validation :format_reference_no, if: :transaction_date_exist?
 
   validates :transaction_date, presence: true
   validates :reference_no, uniqueness: {case_sensitive: false}
+  validate :must_not_have_journal_entries, on: :update
+  validate :transaction_date_must_in_current_period
 
   scope :find_reference_by, ->transaction_date, cash_type_id{
     where(transaction_date: transaction_date, cash_type_id: cash_type_id)}
@@ -17,6 +19,8 @@ class LogBook < ActiveRecord::Base
     where("voucher_type_id = ? AND transaction_date >= ? AND transaction_date <= ?
       AND open_balance = false", voucher_type_id, start_date, end_date)
   }
+
+  scope :find_except_open_balance, ->{where(open_balance: false).order transaction_date: :DESC}
 
   class << self
     def create_log_book cash_type_id, company
@@ -39,5 +43,17 @@ class LogBook < ActiveRecord::Base
     end
     cash_type = CashType.types[:safe] == self.cash_type.id ? "S" : "B"
     self.reference_no = "#{Settings.company.branch}.#{cash_type}#{voucher_type}.#{I18n.l(self.transaction_date, format: :ref_format)}"
+  end
+
+  def must_not_have_journal_entries
+    if journal_entries.any?
+      errors[:base] << I18n.t("logbooks.validates.update_validate")
+    end
+  end
+
+  def transaction_date_must_in_current_period
+    unless company.working_period.current_period? transaction_date
+      errors[:base] << I18n.t("logbooks.validates.transaction_date_validate")
+    end
   end
 end

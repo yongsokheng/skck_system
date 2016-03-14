@@ -12,11 +12,14 @@ en:
       delete: "Delete"
       save: "Save"
     confirm:
-      delete: "Are you sure to delete?"
+      delete: "All the associated journal entries and transactions will also be deleted. Are you sure to delete?"
     flashs:
       save_success: "Log Book saved"
       delete_success: "Log Book delete"
     labels:
       add_title: "Add Log Book"
       edit_title: "Edit Log Book"
+    validates:
+      update_validate: "You cannot update Log Book that has been used."
+      transaction_date_validate: "Transaction date must be in current working period."
 

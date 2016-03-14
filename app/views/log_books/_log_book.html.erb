@@ -4,7 +4,7 @@
   <td><%= log_book.voucher_type.abbreviation %></td>
   <td><%= log_book.cash_type.name %></td>
   <td><%= link_to t("logbooks.actions.edit"), edit_log_book_path(log_book),
-    remote: true %></td>
+    remote: true if is_current_period? log_book %></td>
   <td><%= link_to t("logbooks.actions.delete"), log_book_path(log_book), method: :delete,
-    data: {confirm: t("logbooks.confirm.delete")} %></td>
+    data: {confirm: t("logbooks.confirm.delete")} if is_current_period? log_book %></td>
 </tr>
