@@ -10,7 +10,7 @@
           <div class="errors"></div>
           <%= f.hidden_field :company_id, value: current_user.company.id %>
           <%= f.label :transaction_date %>
-          <%= f.text_field :transaction_date, value: Date.today, class: "datepicker form-control" %>
+          <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today, class: "datepicker form-control" %>
           <%= f.label :cash_type_id %>
           <%= f.collection_select :cash_type_id, @cash_types, :id, :name, {},
             class: "select2-hide-search form-control" %>
