@@ -116,7 +116,9 @@ function set_msg_valid(event, msg) {
 }
 
 function validate_save(event) {
-  if(is_current_period() == false){
+  if($(".log_book option:selected").attr("open-balance") == "true") {
+    set_msg_valid(event, I18n.t("journal_entries.validate_errors.open_balance_validate"));
+  }else if(is_current_period() == false){
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.wrong_period", {period: $(".current-period").text()}));
   }else if($(".log_book").val() == null) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.log_book_not_blank"));

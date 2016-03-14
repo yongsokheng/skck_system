@@ -16,6 +16,7 @@ class JournalEntry < ActiveRecord::Base
   validate :must_have_transaction
   validate :account_must_balance
   validate :must_in_working_period
+  validate :open_balance_cannot_update
 
   private
   def account_must_balance
@@ -34,9 +35,15 @@ class JournalEntry < ActiveRecord::Base
   end
 
   def must_in_working_period
-    unless company.working_periods.last.current_period? transaction_date
+    unless company.working_period.current_period? transaction_date
       errors[:base] << I18n.t("journal_entries.validate_errors.wrong_period",
-        period: "Current working period: #{company.working_periods.last.start_date} to #{company.working_periods.last.end_date}")
+        period: "Current working period: #{company.current_start_date_period} to #{company.current_end_date_period}")
+    end
+  end
+
+  def open_balance_cannot_update
+    if log_book.open_balance?
+      errors[:base] << I18n.t("journal_entries.validate_errors.open_balance_validate")
     end
   end
 end

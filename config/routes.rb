@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :chart_of_accounts
   resources :log_books
   resources :item_lists
+  resources :close_working_periods, only: :create
 
   namespace :api, defaults: {format: "json"} do
     devise_for :users, only: :session

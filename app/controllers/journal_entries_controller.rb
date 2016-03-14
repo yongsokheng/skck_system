@@ -5,7 +5,7 @@ class JournalEntriesController < ApplicationController
 
   def new
     log_books = @current_company.log_books.find_reference_by(Date.today, BankType.first.cash_type.id)
-    @log_books = log_books.map{|a| [a.reference_no, a.id]}
+    @log_books = log_books.map{|logbook| [logbook.reference_no, logbook.id, "open-balance" => logbook.open_balance]}
     journal_entry = log_books.present? ? JournalEntry.find_by(log_book_id: log_books.first.id) : nil
     if journal_entry.present?
       @journal_entry = journal_entry
@@ -39,7 +39,7 @@ class JournalEntriesController < ApplicationController
   def select_journal
     @journal_entry = JournalEntry.find params[:journal_entry_id]
     @log_books = @current_company.log_books.find_reference_by(params[:transaction_date], params[:cash_type_id])
-      .map{|a| [a.reference_no, a.id]}
+      .map{|logbook| [logbook.reference_no, logbook.id, "open-balance" => logbook.open_balance]}
     @journal_entry.journal_entry_transactions.build
   end
 
