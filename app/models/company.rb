@@ -6,6 +6,9 @@ class Company < ActiveRecord::Base
   has_many :log_books
   has_many :bank_types
   has_many :working_periods
+  has_many :item_lists, dependent: :destroy
+  has_many :measures
+  has_many :unit_of_measures
 
   def chart_account_tree
     tree_chart = []
