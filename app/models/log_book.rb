@@ -10,7 +10,7 @@ class LogBook < ActiveRecord::Base
   validates :transaction_date, presence: true
   validates :reference_no, uniqueness: {case_sensitive: false}
   validate :must_not_have_journal_entries, on: :update
-  validate :transaction_date_must_in_current_period
+  validate :transaction_date_must_in_current_period, unless: :open_balance?
 
   scope :find_reference_by, ->transaction_date, cash_type_id{
     where(transaction_date: transaction_date, cash_type_id: cash_type_id)}
