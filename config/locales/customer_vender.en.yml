@@ -1,0 +1,20 @@
+en:
+  customer_vender:
+    table:
+      name: "Name"
+      email: "Email"
+      contact: "Contact"
+      address: "Address"
+    actions:
+      add: "Add"
+      edit: "Edit"
+      delete: "Delete"
+    messages:
+      delete_confirm: "Are you sure to delete?"
+    flashs:
+      save_success: "Save success"
+      update_success: "Update success"
+      delete_success: "Delete success"
+    labels:
+      detail: "Detail Information"
+

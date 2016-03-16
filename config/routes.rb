@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :log_books
   resources :item_lists
   resources :close_working_periods, only: :create
+  resources :customer_venders, only: :index
 
   namespace :api, defaults: {format: "json"} do
     devise_for :users, only: :session
@@ -17,6 +18,14 @@ Rails.application.routes.draw do
       resources :chart_of_accounts, only: :index
     end
   end
+
+  get "partners/:status" => "customer_venders#index", as: :partners
+  post "partners/:status" => "customer_venders#create"
+  get "partners/:status/new" => "customer_venders#new", as: :new_partner
+  get "partners/:status/:id/edit" => "customer_venders#edit", as: :edit_partner
+  get "partners/:status/:id" => "customer_venders#show", as: :partner
+  patch "partners/:status/:id" => "customer_venders#update"
+  delete "partners/:status/:id" => "customer_venders#destroy"
 
   get "select_journal/:transaction_date/:cash_type_id/:journal_entry_id" => "journal_entries#select_journal"
 end

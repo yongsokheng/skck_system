@@ -1,0 +1,16 @@
+<div id="customer-vender" class="row">
+  <div class="col-md-8">
+    <h2><%= @status.capitalize %></h2>
+    <table class="table table-bordered">
+      <tr>
+        <th colspan="3"><%= t "customer_vender.table.name" %></th>
+      </tr>
+      <tbody class="customer-vender-list">
+        <%= render @customer_venders %>
+      </tbody>
+    </table>
+    <div><%= link_to t("customer_vender.actions.add"), new_partner_path(@status),
+      class: "btn btn-primary pull-right", remote: true %></div>
+    <div class="customer-vender-modal"></div>
+  </div>
+</div>

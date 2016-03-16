@@ -1,0 +1,29 @@
+<div class="modal fade customer-vender-form-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= form_title object %></h4>
+      </div>
+      <%= form_for object, url: object.new_record? ? partners_path : partner_path(status, object),
+        remote: true do |f| %>
+        <div class="modal-body">
+          <div class="errors"></div>
+          <%= f.hidden_field :status, value: status %>
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "form-control" %>
+          <%= f.label :email %>
+          <%= f.text_field :email, class: "form-control" %>
+          <%= f.label :contact %>
+          <%= f.text_field :contact, class: "form-control" %>
+          <%= f.label :address %>
+          <%= f.text_area :address, class: "form-control" %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><%= t "actions.close" %></button>
+          <%= f.submit t("logbooks.actions.save"), class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

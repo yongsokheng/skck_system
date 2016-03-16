@@ -1,0 +1,8 @@
+<% if @customer_vender.errors.any? %>
+  $(".errors").html("<%= j render 'shared/errors', object: @customer_vender %>");
+<% else %>
+  $(".errors").html("");
+  $(".customer-vender-form-modal").modal("hide");
+  $(".customer-vender-list").html("<%= j render @customer_venders %>");
+  $(".flash").html("<%= j render 'shared/flash' %>");
+<% end %>

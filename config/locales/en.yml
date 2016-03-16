@@ -1,4 +1,16 @@
 en:
+  title: "QV System"
+  menu:
+    home: "Home"
+    company: "Company"
+    journal_entry: "Journal Entry"
+    log_book: "Log Book"
+    chart_of_account: "Chart of Account"
+    item_list: "Item List"
+    customer: "Customer"
+    vender: "Vender"
+    sign_in: "Sign in"
+    sign_out: "Sign out"
   api:
     invalid_token: "invalid token"
   date:
@@ -16,6 +28,8 @@ en:
   labels:
     warning: "Warning"
     form_inform_errors: "Form contains "
+    add_title: "Add New"
+    edit_title: "Edit"
   btn:
     edit: "Edit"
     delete: "Delete"
