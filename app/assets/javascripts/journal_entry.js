@@ -7,6 +7,7 @@ $(document).on("page:change", function(){
     total_balance();
     load_name_status();
     set_current_period();
+    load_btn_status();
 
     $(document).on("change", ".debit", function() {
       $(this).parent().parent().find(".credit").val("");
@@ -45,6 +46,10 @@ $(document).on("page:change", function(){
 
     $(document).on("click", ".btn-save", function(event) {
       validate_save(event);
+    });
+
+    $(document).on("click", ".btn-delete", function(event) {
+      $(".journal-delete-modal").modal("show");
     });
 
     $(document).on("show", ".transaction-date", function(e) {
@@ -204,6 +209,18 @@ function load_name_status() {
   });
 }
 
+function load_btn_status() {
+  if((is_current_period() == false) ||
+    ($(".log_book option:selected").attr("open-balance") == "true")) {
+    $(".btn-delete, .btn-save").attr("disabled", true);
+  }else if(is_transaction_exist() == false){
+    $(".btn-delete").attr("disabled", true);
+    $(".btn-save").attr("disabled", false);
+  }else{
+    $(".btn-delete, .btn-save").attr("disabled", false);
+  }
+}
+
 function load_logbook_data() {
   var user_email = $(".api").data("email");
   var user_token = $(".api").data("token");
@@ -232,6 +249,7 @@ function reset_journal_transaction_list() {
   $(".icon-loading").hide();
   $(".form-journal").attr("action", "/journal_entries");
   $(".form-journal input[name='_method']").val("post");
+  load_btn_status();
 }
 
 function load_journal_entry() {

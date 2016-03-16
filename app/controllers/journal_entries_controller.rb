@@ -2,6 +2,7 @@ class JournalEntriesController < ApplicationController
   load_and_authorize_resource
   before_action :set_current_compay
   before_action :load_data, only: [:new, :select_journal]
+  before_action :check_condition, only: :destroy
 
   def new
     log_books = @current_company.log_books.find_reference_by(Date.today, BankType.first.cash_type.id)
@@ -36,6 +37,12 @@ class JournalEntriesController < ApplicationController
     redirect_to root_path
   end
 
+  def destroy
+    @journal_entry.destroy
+    flash[:success] = t "journal_entries.flashs.delete_success"
+    redirect_to new_journal_entry_path
+  end
+
   def select_journal
     @journal_entry = JournalEntry.find params[:journal_entry_id]
     @log_books = @current_company.log_books.find_reference_by(params[:transaction_date], params[:cash_type_id])
@@ -59,5 +66,16 @@ class JournalEntriesController < ApplicationController
     @customer_venders = @current_company.customer_venders.all
     @bank_types = @current_company.bank_types.map{|type| [type.name, type.id,
       {"data-cash-type-id" => type.cash_type.id}]}
+  end
+
+  def check_condition
+    if @journal_entry.log_book.open_balance?
+      flash[:alert] = t "journal_entries.validate_errors.open_balance_validate"
+      redirect_to new_journal_entry_path
+    elsif !@current_company.working_period.current_period? @journal_entry.transaction_date
+      flash[:alert] = t("journal_entries.validate_errors.wrong_period",
+        period: "Current working period: #{@current_company.current_start_date_period} to #{@current_company.current_end_date_period}")
+      redirect_to new_journal_entry_path
+    end
   end
 end

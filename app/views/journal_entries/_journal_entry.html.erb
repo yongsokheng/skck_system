@@ -46,3 +46,6 @@
     data: {target: "#tbl-journal-entry"} %></p>
   <p><%= f.submit t("journal_entries.actions.save"), class: "btn btn-primary btn-save pull-right" %></p>
 <% end %>
+
+<%= button_to t("journal_entries.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete" %>
+<%= render "journal_entries/modal_confirm_delete" unless @journal_entry.new_record? %>
