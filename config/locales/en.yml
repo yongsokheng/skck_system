@@ -41,5 +41,6 @@ en:
       created: "Created successfully!"
       updated: "Updated successfully!"
       deleted: "Deleted successfully"
+      data_used: "You cannot delete bank type that has data!"
   messages:
     confirm_delete: "Are you sure?"
