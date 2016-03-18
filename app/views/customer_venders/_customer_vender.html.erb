@@ -1,0 +1,7 @@
+<tr>
+  <td><%= link_to customer_vender.name, partner_path(@status, customer_vender) %></td>
+  <td><%= link_to t("customer_vender.actions.edit"), edit_partner_path(@status, customer_vender),
+    remote: true %></td>
+  <td><%= link_to t("customer_vender.actions.delete"), partner_path(@status, customer_vender),
+    method: :delete, data: {confirm: t("customer_vender.messages.delete_confirm")} %></td>
+</tr>

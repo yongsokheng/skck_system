@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
     t.string   "email",         limit: 255
     t.string   "address",       limit: 255
     t.string   "contact",       limit: 255
-    t.string   "status",        limit: 255
+    t.integer  "status",        limit: 4
     t.integer  "company_id",    limit: 4
     t.float    "balance_total", limit: 24
     t.datetime "created_at",                null: false

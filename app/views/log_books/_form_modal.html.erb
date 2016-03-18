@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"><%= logbook_form_title object %></h4>
+        <h4 class="modal-title"><%= form_title object %></h4>
       </div>
       <%= form_for object, remote: true do |f| %>
         <div class="modal-body">

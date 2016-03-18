@@ -8,7 +8,7 @@ module ApplicationHelper
     end
   end
 
-  def logbook_form_title logbook
-    logbook.new_record? ? t("logbooks.labels.add_title") : t("logbooks.labels.edit_title")
+  def form_title object
+    object.new_record? ? t("labels.add_title") : t("labels.edit_title")
   end
 end

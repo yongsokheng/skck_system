@@ -7,26 +7,34 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">QV System</a>
+      <%= link_to t("title"), root_path, class: "navbar-brand" %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-      </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= t "menu.company" %><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to t("menu.journal_entry"), new_journal_entry_path %></li>
+              <li><%= link_to t("menu.chart_of_account"), chart_of_accounts_path %></li>
+              <li><%= link_to t("menu.log_book"), log_books_path %></li>
+              <li><%= link_to t("menu.item_list"), item_lists_path %></li>
+            </ul>
+          </li>
+          <li><%= link_to t("menu.customer"), partners_path(:customer) %></li>
+          <li><%= link_to t("menu.vender"), partners_path(:vender) %></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %><span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li>
-                <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+                <%= link_to t("menu.sign_out"), destroy_user_session_path, method: :delete %>
               </li>
             </ul>
           </li>
         <% else %>
-          <li><%= link_to "Sign in", new_user_session_path %></li>
+          <li><%= link_to t("menu.sign_in"), new_user_session_path %></li>
         <% end %>
       </ul>
     </div>

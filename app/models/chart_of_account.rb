@@ -45,7 +45,7 @@ class ChartOfAccount < ActiveRecord::Base
     if parent_id.present?
       children_name = ChartOfAccount.find(parent_id).children.where.not(id: id).map(&:name)
     else
-      children_name = ChartOfAccount.roots.map(&:name)
+      children_name = ChartOfAccount.roots.where.not(id: id).map(&:name)
     end
     errors.add :name, I18n.t("chart_of_accounts.messages.existed") if
       children_name.map(&:downcase).include? name.downcase
