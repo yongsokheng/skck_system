@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
     t.float    "statement_ending_balance", limit: 24,  default: 0.0
     t.date     "statement_ending_date"
     t.integer  "parent_id",                limit: 4
+    t.integer  "status",                   limit: 4,   default: 1
     t.integer  "chart_account_type_id",    limit: 4
     t.integer  "company_id",               limit: 4
     t.datetime "created_at",                                         null: false

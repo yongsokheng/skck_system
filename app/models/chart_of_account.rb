@@ -15,8 +15,10 @@ class ChartOfAccount < ActiveRecord::Base
 
   delegate :name, :id, to: :chart_account_type, prefix: true, allow_nil: true
 
+  enum status: [:inactive, :active]
+
   def chart_account chart_arr = []
-    chart_arr << [chart_account_name, id, {"depth" => depth}, {"type" => chart_account_type.type_code}]
+    chart_arr << [chart_account_name, id, {"depth" => depth}, {"type" => chart_account_type.type_code}, {"status" => status}]
     children.each do |child|
       child.chart_account chart_arr
     end
