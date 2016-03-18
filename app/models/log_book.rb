@@ -23,9 +23,9 @@ class LogBook < ActiveRecord::Base
   scope :find_except_open_balance, ->{where(open_balance: false).order transaction_date: :DESC}
 
   class << self
-    def create_log_book cash_type_id, company
-      create! transaction_date: company.working_period.new_period,
-        voucher_type_id: VoucherType.types[:civ], cash_type_id: cash_type_id,
+    def create_or_find cash_type, company
+      find_or_create_by! transaction_date: company.working_period.new_period,
+        voucher_type_id: VoucherType.types[:civ], cash_type_id: cash_type.id,
         open_balance: true, company_id: company.id
     end
   end
