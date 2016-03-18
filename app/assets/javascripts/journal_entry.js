@@ -4,6 +4,7 @@ $(document).on("page:change", function(){
     var old_cash_type_id;
     var old_date;
 
+    load_select2_customer_vender();
     total_balance();
     load_name_status();
     set_current_period();
@@ -242,14 +243,17 @@ function reset_journal_transaction_list() {
   for(var i = 0; i < 10; i++) {
     $(".add_nested_fields").click();
   }
+
   load_select2_tree();
   load_select2_simple();
+  load_select2_customer_vender();
+  load_btn_status();
+
   $(".total-debit").html(""+ $.number(0, 2));
   $(".total-credit").html(""+ $.number(0, 2));
   $(".icon-loading").hide();
   $(".form-journal").attr("action", "/journal_entries");
   $(".form-journal input[name='_method']").val("post");
-  load_btn_status();
 }
 
 function load_journal_entry() {

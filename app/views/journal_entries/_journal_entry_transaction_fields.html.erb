@@ -10,7 +10,7 @@
     <td><%= ff.text_field :credit,
       value: number_with_precision(ff.object.credit, precision: 2, delimiter: ","),
       class: "form-control grid-cell credit", autocomplete: "off" %></td>
-    <td><%= ff.collection_select :customer_vender_id, @customer_venders, :id, :name, {include_blank: true}, class: "form-control select2-simple grid-cell name" %></td>
+    <td><%= ff.select :customer_vender_id, options_for_select(@customer_venders, ff.object.customer_vender_id), {include_blank: true}, class: "form-control select2-customer-vender grid-cell name" %></td>
      <td hidden><%= ff.link_to_remove "Remove" %></td>
   </tr>
 <% end %>

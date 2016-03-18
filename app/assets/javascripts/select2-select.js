@@ -54,3 +54,25 @@ function load_select2_with_data(data) {
     data: data
   }).trigger("change");
 }
+
+function templateResultCustomerVender(result) {
+  if (!result.id) {return result.text;}
+  var state = result.element.attributes[0]["value"];
+  var status = result.element.attributes[1]["value"]
+  if(state == "inactive") return;
+  var $result = $("<div class='row'>" +
+    "<div class='col-md-6'>" + result.text + "</div>" +
+    "<div class='col-md-1'>" + status + "</div>" +
+    "</div>");
+  return $result;
+};
+
+function load_select2_customer_vender() {
+  $(".select2-customer-vender").select2({
+    templateResult: templateResultCustomerVender,
+    theme: "bootstrap",
+  }).on("select2:open", function () {
+    $("span.select2-results").parent().addClass("select2-tree-result-parent-small");
+    $("span.select2-results ul").addClass("select2-tree-result-ul");
+  });;
+}

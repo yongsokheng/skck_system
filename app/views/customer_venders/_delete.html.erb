@@ -1,0 +1,10 @@
+<div class="modal-body">
+  <p><%= t "customer_vender.messages.delete_confirm" %></p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">
+    <%= t "actions.close" %></button>
+  <%= link_to t("customer_vender.actions.delete"),
+    partner_path(@status, @customer_vender, type: "destroy"), method: :delete,
+    remote: true, class: "btn btn-danger" %>
+</div>

@@ -81,10 +81,11 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
     t.string   "address",       limit: 255
     t.string   "contact",       limit: 255
     t.integer  "status",        limit: 4
+    t.integer  "state",         limit: 4,   default: 1
     t.integer  "company_id",    limit: 4
     t.float    "balance_total", limit: 24
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   add_index "customer_venders", ["company_id"], name: "index_customer_venders_on_company_id", using: :btree

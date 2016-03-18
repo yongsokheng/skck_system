@@ -1,0 +1,18 @@
+<div class="modal fade customer-vender-confirm-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= t "labels.warning" %></h4>
+      </div>
+      <% if @customer_vender.inactive? %>
+        <%= render "customer_venders/active" %>
+      <% elsif @customer_vender.journal_entry_transactions.any? ||
+        @customer_vender.item_lists.any? %>
+        <%= render "customer_venders/inactive" %>
+      <% else %>
+        <%= render "customer_venders/delete" %>
+      <% end %>
+    </div>
+  </div>
+</div>

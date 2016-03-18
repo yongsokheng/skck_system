@@ -1,6 +1,6 @@
 class CustomerVendersController < ApplicationController
   load_and_authorize_resource
-  before_action :load_data, only: [:index, :new, :create, :edit, :update]
+  before_action :load_data, only: [:index, :new, :create, :edit, :update, :destroy]
 
   def index
   end
@@ -28,9 +28,9 @@ class CustomerVendersController < ApplicationController
   end
 
   def destroy
-    @customer_vender.destroy
-    flash[:success] = t "customer_vender.flashs.delete_success"
-    redirect_to partners_path
+    type = params[:type]
+    @customer_vender.send "#{type}"
+    flash.now[:success] = t "customer_vender.flashs.#{type}"
   end
 
   private
