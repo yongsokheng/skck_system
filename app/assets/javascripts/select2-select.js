@@ -9,7 +9,7 @@ function templateResult(result) {
   var padding = result.element.attributes[0]["value"] * 10 + 12;
   var status = result.element.attributes[2]["value"];
   if(status == "inactive") return;
-  var $result = $("<div class='row"+ result.element.attributes[2]["value"] +"'>" +
+  var $result = $("<div class='row'>" +
     "<div class='col-md-2' style='padding-left: " + padding + "px'>" + result.text.split("|")[0] + "</div>" +
     "<div class='col-md-6' style='padding-left: " + padding + "px'>" + result.text.split("|")[1] + "</div>" +
     "<div class='col-md-4'>" + result.text.split("|")[2] + "</div>" +
