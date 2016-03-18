@@ -4,6 +4,8 @@ class BankType < ActiveRecord::Base
 
   has_many :journal_entries
 
+  enum status: [:inactive, :active]
+
   def open_balance voucher_type_id
     current_period = company.working_period
     log_books = company.log_books.find_by_voucher_type(voucher_type_id,
