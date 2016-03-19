@@ -27,5 +27,7 @@ Rails.application.routes.draw do
   patch "partners/:status/:id" => "customer_venders#update"
   delete "partners/:status/:id" => "customer_venders#destroy"
 
+  get "partner/modal/:status/:id" => "confirm_modals#modal_customer_vender", as: :modal_customer_vender
+
   get "select_journal/:transaction_date/:cash_type_id/:journal_entry_id" => "journal_entries#select_journal"
 end

@@ -44,8 +44,8 @@ BankType.create! name: "Sacombank Bank", cash_type_id: 2, company_id: 1
 BankType.create! name: "Safe on Hand", cash_type_id: 1, company_id: 1
 BankType.create! name: "Petty cash", cash_type_id: 1, company_id: 1
 
-company.customer_venders.create! name: "customer", status: 0
-company.customer_venders.create! name: "vender", status: 1
+company.customer_venders.create! name: "customer", email: "customer@gmail.com", status: 0
+company.customer_venders.create! name: "vender", email: "vender@gmail.com", status: 1
 
 WorkingPeriod.create! start_date: "2016-03-01", end_date: "2016-03-31", company_id: 1
 

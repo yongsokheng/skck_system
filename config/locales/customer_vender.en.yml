@@ -5,16 +5,24 @@ en:
       email: "Email"
       contact: "Contact"
       address: "Address"
+      state: "Status"
+      action: "Action"
     actions:
       add: "Add"
       edit: "Edit"
       delete: "Delete"
+      active: "Active"
+      inactive: "Inactive"
     messages:
       delete_confirm: "Are you sure to delete?"
+      active_confirm: "Are you sure to active this data?"
+      inactive_confirm: "You cannot delete data that is already used. Do you want to inactive this data?"
     flashs:
       save_success: "Save success"
       update_success: "Update success"
-      delete_success: "Delete success"
+      destroy: "Delete success"
+      active: "Data is active"
+      inactive: "Data is inactive"
     labels:
       detail: "Detail Information"
 

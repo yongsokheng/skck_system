@@ -63,7 +63,8 @@ class JournalEntriesController < ApplicationController
 
   def load_data
     @chart_accounts = @current_company.chart_account_tree
-    @customer_venders = @current_company.customer_venders.all
+    @customer_venders = @current_company.customer_venders.map{|data| [data.name, data.id,
+      {"state" => data.state}, {"status" => data.status}]}
     @bank_types = @current_company.bank_types.map{|type| [type.name, type.id,
       {"data-cash-type-id" => type.cash_type.id}]}
   end

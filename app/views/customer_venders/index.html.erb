@@ -3,7 +3,9 @@
     <h2><%= @status.capitalize %></h2>
     <table class="table table-bordered">
       <tr>
-        <th colspan="3"><%= t "customer_vender.table.name" %></th>
+        <th><%= t "customer_vender.table.name" %></th>
+        <th><%= t "customer_vender.table.state" %></th>
+        <th colspan="2"><center><%= t "customer_vender.table.action" %></center></th>
       </tr>
       <tbody class="customer-vender-list">
         <%= render @customer_venders %>
@@ -12,5 +14,6 @@
     <div><%= link_to t("customer_vender.actions.add"), new_partner_path(@status),
       class: "btn btn-primary pull-right", remote: true %></div>
     <div class="customer-vender-modal"></div>
+    <div class="customer-vender-confirm-modal"></div>
   </div>
 </div>

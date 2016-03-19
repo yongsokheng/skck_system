@@ -6,6 +6,7 @@ class CreateCustomerVenders < ActiveRecord::Migration
       t.string :address
       t.string :contact
       t.integer :status
+      t.integer :state, default: 1
       t.references :company, index: true, foreign_key: true
       t.float :balance_total
 

@@ -10,5 +10,13 @@ class CustomerVender < ActiveRecord::Base
     format: {with: VALID_EMAIL_REGEX}, uniqueness: {case_sensitive: false}
 
   enum status: [:customer, :vender]
+  enum state: [:inactive, :active]
 
+  def active
+    update_attributes state: :active
+  end
+
+  def inactive
+    update_attributes state: :inactive
+  end
 end
