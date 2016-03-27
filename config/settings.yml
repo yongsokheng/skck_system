@@ -13,3 +13,8 @@ voucher_types:
 company:
   branch: "PNP"
 
+confirm_modal_types:
+  has_children: "has_children"
+  active: "active"
+  inactive: "inactive"
+  destroy: "destroy"

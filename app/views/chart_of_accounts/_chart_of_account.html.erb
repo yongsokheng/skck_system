@@ -6,8 +6,12 @@
   <td><%= chart_of_account.balance_total %></td>
   <td><%= chart_of_account.statement_ending_balance %></td>
   <td><%= chart_of_account.statement_ending_date %></td>
+  <td><%= chart_of_account_status chart_of_account %></td>
   <td><%= link_to t("btn.edit"), edit_chart_of_account_path(chart_of_account) %></td>
-  <td><%= link_to t("btn.delete"), chart_of_account, method: :delete,
-                  data: {confirm: t("messages.confirm_delete")} %></td>
+  <% if chart_of_account.inactive? %>
+    <td><%= link_to t("btn.active"), modal_chart_of_account_path(chart_of_account), remote: true %></td>
+  <% else %>
+    <td><%= link_to t("btn.delete"), modal_chart_of_account_path(chart_of_account), remote: true %></td>
+  <% end %>
 </tr>
 <%= render partial: "chart_of_account", collection: chart_of_account.children, as: "chart_of_account" %>

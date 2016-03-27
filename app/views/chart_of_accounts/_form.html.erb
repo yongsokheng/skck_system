@@ -4,6 +4,16 @@
     <%= form_for @chart_of_account do |f| %>
       <%= render "shared/errors", object: @chart_of_account %>
 
+      <div class="parent-id" data-parent-id="<%= f.object.try(:parent_id) %>"></div>
+      <div class="account-id" data-account-id="<%= f.object.try(:id) %>"></div>
+      <div class="account-type" data-account-type="<%= f.object.chart_account_type.try(:type_code) %>">
+
+        <%= f.label :chart_account_type_id %>
+        <%= f.select :chart_account_type_id,
+          options_for_select(@chart_account_types.collect{|acc_type| [acc_type.name, acc_type.id, {"data-acc-code" => acc_type.type_code}]}, @chart_of_account.chart_account_type_id),
+          {}, {class: "form-control chart-account-type select2-simple"} %>
+      </div>
+
       <%= f.label :account_no %>
       <%= f.text_field :account_no, class: "form-control" %>
 
@@ -14,12 +24,7 @@
       <%= f.text_area :description, class: "form-control" %>
 
       <%= f.label t("chart_of_accounts.sub_item") %>
-      <%= f.select :parent_id, options_for_select(@parents, f.object.parent_id), {include_blank: true}, class: "form-control select2-tree" %>
-
-      <%= f.label :chart_account_type_id %>
-      <%= f.select :chart_account_type_id,
-        options_for_select(@chart_account_types.collect{|acc_type| [acc_type.name, acc_type.id, {"data-acc-code" => acc_type.type_code}]}, @chart_of_account.chart_account_type_id),
-        {}, {class: "form-control chart-account-type select2-simple"} %>
+      <%= f.select :parent_id, {}, {include_blank: true}, class: "form-control chart-of-account-tree" %>
 
       <div class="statement_ending">
         <%= f.label :statement_ending_balance %>

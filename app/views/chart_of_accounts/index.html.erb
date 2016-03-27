@@ -13,11 +13,13 @@
         <td><%= t "chart_of_accounts.balance_total" %></td>
         <td><%= t "chart_of_accounts.statement_ending_balance" %></td>
         <td><%= t "chart_of_accounts.statement_ending_date" %></td>
+        <td><%= t "chart_of_accounts.status" %></td>
         <td colspan="2"></td>
       </thead>
       <tbody >
         <%= render @chart_of_accounts %>
       </tbody>
     </table>
+    <div class="chart-of-account-confirm-modal"></div>
   </div>
 </div>

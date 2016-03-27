@@ -7,7 +7,22 @@ en:
     statement_ending_balance: "Statement Ending Balance"
     statement_ending_date: "Statement Ending Date"
     chart_of_account: "Chart of Accounts"
+    status: "Status"
     type: "Type"
     messages:
       existed: "already existed!"
+      has_children_confirm: "You cannot delete data that has children!"
+      destroy_confirm: "Are you sure to delete?"
+      active_confirm: "Are you sure to active this data?"
+      inactive_confirm: "You cannot delete data that is already used. Do you want to inactive this data?"
     sub_item: "Sub item of"
+    validate_errors:
+      account_has_children: "You cant't a delete chart of account with children"
+    actions:
+      destroy: "Delete"
+      active: "Active"
+      inactive: "Inactive"
+    flashs:
+      destroy: "Delete success"
+      active: "Data is active"
+      inactive: "Data is inactive"
