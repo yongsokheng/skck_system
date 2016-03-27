@@ -1,2 +1,9 @@
 $(".logbook-modal").html("<%= j render 'log_books/form_modal', object: @log_book %>")
 $(".logbook-form-modal").modal("show");
+
+if($("#journal-entry").length > 0) {
+  var modal_transaction_date = $("#log_book_transaction_date");
+  var modal_cash_type = $("#log_book_cash_type_id");
+  modal_transaction_date.val($(".transaction-date").val());
+  modal_cash_type.val($(".bank_type option:selected").attr("data-cash-type-id"));
+}

@@ -3,6 +3,11 @@
 
 #wrapper {
   height: 100%;
+
+  .nav li, .navbar-brand {
+    font-weight: bold;
+  }
+
   .content {
     min-height: 500px;
   }
