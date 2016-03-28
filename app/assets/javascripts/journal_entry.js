@@ -1,4 +1,4 @@
-$(document).on("page:change", function(){
+$(document).on("ready", function(){
 
   if($("#journal-entry").length > 0) {
     var old_cash_type_id;
@@ -70,7 +70,8 @@ $(document).on("page:change", function(){
 
     $(document).on("change", ".bank_type", function() {
       var new_cash_type_id = $(this).find("option:selected").attr("data-cash-type-id");
-      if(old_cash_type_id != new_cash_type_id) {
+      var value = $(".log_book").attr("selected-value");
+      if((old_cash_type_id != new_cash_type_id) || value) {
         load_logbook_data();
       }else{
         load_journal_entry();
@@ -234,6 +235,7 @@ function load_logbook_data() {
     url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
     success: function(data) {
       load_select2_with_data(data);
+      set_log_book_val();
     }
   });
 }
@@ -288,5 +290,13 @@ function delete_row(e) {
     e.parents(".fields").find("input[type=hidden]").val("1");
   }else {
     e.parents(".fields").find("input[type=hidden]").val("false");
+  }
+}
+
+function set_log_book_val() {
+  var value = $(".log_book").attr("selected-value");
+  if(value) {
+    $(".log_book").select2("val", value);
+    $(".log_book").removeAttr("selected-value");
   }
 }

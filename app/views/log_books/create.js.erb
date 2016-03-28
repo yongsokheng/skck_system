@@ -3,6 +3,17 @@
 <% else %>
   $(".errors").html("");
   $(".logbook-form-modal").modal("hide");
-  $(".logbook-list").html("<%= j render @log_books %>");
-  $(".flash").html("<%= j render 'shared/flash' %>");
+
+  if($("#journal-entry").length > 0) {
+    $(".log_book").attr("selected-value", "<%= @log_book.id %>");
+    var modal_transaction_date = $("#log_book_transaction_date");
+    var modal_cash_type = $("#log_book_cash_type_id");
+    var transaction_date = new Date(modal_transaction_date.val());
+    set_datepicker(transaction_date);
+    var bank_type_id = $(".bank_type option[data-cash-type-id="+ modal_cash_type.val() +"]").first().val();
+    $(".bank_type").select2("val", bank_type_id);
+  }else{
+    $(".logbook-list").html("<%= j render @log_books %>");
+    $(".flash").html("<%= j render 'shared/flash' %>");
+  }
 <% end %>

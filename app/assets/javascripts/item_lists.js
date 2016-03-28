@@ -1,4 +1,4 @@
-$(document).on("page:change", function(){
+$(document).on("ready", function(){
   if($("#item-list").length > 0){
     load_item_list_data();
     hide_show_field();

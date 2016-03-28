@@ -1,6 +1,8 @@
 var parent_id;
 var account_id;
-$(document).on("page:change", function(){
+
+$(document).on("ready", function(){
+
   if($("#chart-of-account").length > 0) {
     parent_id = $(".parent-id").data("parent-id");
     account_id = $(".account-id").data("account-id");

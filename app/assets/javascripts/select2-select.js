@@ -1,4 +1,4 @@
-$(document).on("page:change", function() {
+$(document).on("ready", function() {
   load_select2_tree();
   load_select2_simple();
   load_select2_hide_search_box();

@@ -13,7 +13,10 @@
     <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id), {}, class: "form-control select2-simple bank_type" %>
   </p>
   <p>
-    <%= f.label :log_book_id %>
+    <span><%= f.label :log_book_id %></span>
+    <span class="pull-right">
+      <%= link_to t("journal_entries.actions.add_new"), new_log_book_path(), remote: true %>
+    </span>
     <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id), {}, class: "form-control select2-data select2-simple log_book" %>
   </p>
   <table id="tbl-journal-entry" class="table table-bordered">
