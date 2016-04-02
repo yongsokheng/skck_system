@@ -4,6 +4,9 @@ class BankType < ActiveRecord::Base
 
   has_many :journal_entries
 
+  validates :name, presence: true, length: {maximum: 255},
+    uniqueness: {case_sensitive: false}
+
   enum status: [:inactive, :active]
 
   def open_balance voucher_type_id
@@ -28,5 +31,9 @@ class BankType < ActiveRecord::Base
       open_balance +=last_open_balance
     end
     open_balance
+  end
+
+  def data_used?
+    journal_entries.any?
   end
 end

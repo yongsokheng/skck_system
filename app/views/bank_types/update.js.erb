@@ -1,0 +1,8 @@
+<% if @bank_type.errors.any? %>
+  $(".errors").html("<%= j render 'shared/errors', object: @bank_type %>");
+<% else %>
+  $(".errors").html("");
+  $(".bank-type-form-modal").modal("hide");
+  $(".bank-type-list").html("<%= j render @bank_types %>");
+  $(".flash").html("<%= j render 'shared/flash' %>");
+<% end %>

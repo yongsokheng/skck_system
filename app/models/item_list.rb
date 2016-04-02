@@ -33,7 +33,7 @@ class ItemList < ActiveRecord::Base
     if parent_id.present?
       children_name = ItemList.find(parent_id).children.where.not(id: id).map(&:name)
     else
-      children_name = ItemList.roots.map(&:name)
+      children_name = ItemList.roots.where.not(id: id).map(&:name)
     end
     errors.add :name, I18n.t("chart_of_accounts.messages.existed") if
       children_name.map(&:downcase).include? name.downcase

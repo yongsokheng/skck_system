@@ -1,0 +1,21 @@
+<div class="row bank-types">
+  <div class="col-md-12">
+    <h2 class="text-center"><%= t ("bank_types.bank_type") %></h2>
+    <div class="btn-add-new pull-right ">
+      <%= link_to t("btn.add_new"), new_bank_type_path, remote: true, class: "btn btn-primary" %>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <td><%= t "bank_types.name" %></td>
+        <td><%= t "bank_types.cash_type" %></td>
+        <td><%= t "bank_types.balance_total" %></td>
+        <td colspan="2"></td>
+      </thead>
+      <tbody class="bank-type-list">
+        <%= render @bank_types %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="bank-type-modal"></div>
