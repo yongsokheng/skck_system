@@ -9,6 +9,7 @@ en:
     chart_of_account: "Chart of Accounts"
     status: "Status"
     type: "Type"
+    action: "Action"
     messages:
       existed: "already existed!"
       has_children_confirm: "You cannot delete data that has children!"
@@ -26,3 +27,8 @@ en:
       destroy: "Delete success"
       active: "Data is active"
       inactive: "Data is inactive"
+    breadcrumbs:
+      chart_account: "Chart Of Account"
+      add_new: "New"
+      edit: "Edit: %{name}"
+

@@ -1,41 +1,64 @@
 <div id="chart-of-account" class="row chat-of-accounts-form">
-  <h2 class="text-center"><%= t "chart_of_accounts.chart_of_account" %></h2>
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-9">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li><%= link_to t("chart_of_accounts.breadcrumbs.chart_account"),
+        chart_of_accounts_path %></li>
+      <% if @chart_of_account.new_record? %>
+        <li class="active"><%= t "chart_of_accounts.breadcrumbs.add_new" %></li>
+      <% else %>
+        <li class="active"><%= t "chart_of_accounts.breadcrumbs.edit",
+          name: @chart_of_account.name %></li>
+      <% end %>
+    </ol>
+
+    <div class="title"><%= t "chart_of_accounts.chart_of_account" %></div>
+    <hr>
     <%= form_for @chart_of_account do |f| %>
       <%= render "shared/errors", object: @chart_of_account %>
 
       <div class="parent-id" data-parent-id="<%= f.object.try(:parent_id) %>"></div>
       <div class="account-id" data-account-id="<%= f.object.try(:id) %>"></div>
-      <div class="account-type" data-account-type="<%= f.object.chart_account_type.try(:type_code) %>">
+      <p class="account-type" data-account-type="<%= f.object.chart_account_type.try(:type_code) %>">
 
         <%= f.label :chart_account_type_id %>
         <%= f.select :chart_account_type_id,
           options_for_select(@chart_account_types.collect{|acc_type| [acc_type.name, acc_type.id, {"data-acc-code" => acc_type.type_code}]}, @chart_of_account.chart_account_type_id),
           {}, {class: "form-control chart-account-type select2-simple"} %>
-      </div>
+      </p>
 
-      <%= f.label :account_no %>
-      <%= f.text_field :account_no, class: "form-control" %>
+      <p>
+        <%= f.label :account_no %>
+        <%= f.text_field :account_no, class: "form-control", required: true %>
+      </p>
 
-      <%= f.label :name %>
-      <%= f.text_field :name, class: "form-control" %>
+      <p>
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control", required: true %>
+      </p>
 
-      <%= f.label :description %>
-      <%= f.text_area :description, class: "form-control" %>
+      <p>
+        <%= f.label :description %>
+        <%= f.text_area :description, class: "form-control" %>
+      </p>
 
-      <%= f.label t("chart_of_accounts.sub_item") %>
-      <%= f.select :parent_id, {}, {include_blank: true}, class: "form-control chart-of-account-tree" %>
+      <p>
+        <%= f.label t("chart_of_accounts.sub_item") %>
+        <%= f.select :parent_id, {}, {include_blank: true}, class: "form-control chart-of-account-tree" %>
+      </p>
 
       <div class="statement_ending">
-        <%= f.label :statement_ending_balance %>
-        <%= f.text_field :statement_ending_balance, step: "any", class: "form-control statement-ending-balance" %>
+        <p>
+          <%= f.label :statement_ending_balance %>
+          <%= f.text_field :statement_ending_balance, step: "any", class: "form-control statement-ending-balance" %>
+        </p>
 
-        <%= f.label :statement_ending_date %>
-        <%= f.text_field :statement_ending_date, class: "form-control datepicker" %>
+        <p>
+          <%= f.label :statement_ending_date %>
+          <%= f.text_field :statement_ending_date, class: "form-control datepicker" %>
+        </p>
       </div>
       <br>
-
-      <%= link_to t("btn.cancel"), chart_of_accounts_path, class: "btn btn-default" %>
       <%= f.submit t("btn.save"), class: "btn btn-primary pull-right" %>
     <% end %>
   </div>

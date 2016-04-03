@@ -19,14 +19,14 @@
     </span>
     <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id), {}, class: "form-control select2-data select2-simple log_book" %>
   </p>
-  <table id="tbl-journal-entry" class="table table-bordered">
+  <table id="tbl-journal-entry" class="table table-bordered tbl-journal">
     <thead>
       <tr>
-        <td><%= t "journal_entries.table.chart_of_account" %></td>
-        <td><%= t "journal_entries.table.description" %></td>
-        <td><%= t "journal_entries.table.debit" %></td>
-        <td><%= t "journal_entries.table.credit" %></td>
-        <td><%= t "journal_entries.table.name" %></td>
+        <th class="chart-account-head"><%= t "journal_entries.table.chart_of_account" %></th>
+        <th class="description-head"><%= t "journal_entries.table.description" %></th>
+        <th class="debit-head"><%= t "journal_entries.table.debit" %></th>
+        <th class="credit-head"><%= t "journal_entries.table.credit" %></th>
+        <th class="name-head"><%= t "journal_entries.table.name" %></th>
       </tr>
     </thead>
 
@@ -48,7 +48,7 @@
   <p hidden><%= f.link_to_add t("journal_entries.actions.add"), :journal_entry_transactions,
     data: {target: "#tbl-journal-entry"} %></p>
   <p><%= f.submit t("journal_entries.actions.save"), class: "btn btn-primary btn-save pull-right" %></p>
+  <%= button_to t("journal_entries.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
 <% end %>
-
-<%= button_to t("journal_entries.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete" %>
 <%= render "journal_entries/modal_confirm_delete" unless @journal_entry.new_record? %>
+<%= render "journal_entries/modal_confirm_close_period" %>

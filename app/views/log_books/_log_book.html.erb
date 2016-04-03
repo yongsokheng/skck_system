@@ -1,10 +1,14 @@
 <tr>
-  <td><%= log_book.transaction_date %></td>
-  <td><%= log_book.reference_no %></td>
-  <td><%= log_book.voucher_type.abbreviation %></td>
-  <td><%= log_book.cash_type.name %></td>
-  <td><%= link_to t("logbooks.actions.edit"), edit_log_book_path(log_book),
-    remote: true if is_current_period? log_book %></td>
-  <td><%= link_to t("logbooks.actions.delete"), log_book_path(log_book), method: :delete,
-    data: {confirm: t("logbooks.confirm.delete")} if is_current_period? log_book %></td>
+  <td class="date"><%= log_book.transaction_date %></td>
+  <td class="ref_no"><%= log_book.reference_no %></td>
+  <td class="voucher_type"><%= log_book.voucher_type.abbreviation %></td>
+  <td class="cash_type"><%= log_book.cash_type.name %></td>
+  <td class="action">
+    <% if is_current_period?(log_book) && log_book.journal_entries.blank? %>
+      <%= link_to t("logbooks.actions.edit"), edit_log_book_path(log_book),
+        remote: true %> &nbsp;
+      <%= link_to t("logbooks.actions.delete"), modal_log_book_path(log_book),
+        remote: true %>
+    <% end %>
+  </td>
 </tr>

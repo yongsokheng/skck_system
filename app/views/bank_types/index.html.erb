@@ -1,15 +1,18 @@
-<div class="row bank-types">
+<div id="bank-types" class="row">
   <div class="col-md-12">
-    <h2 class="text-center"><%= t ("bank_types.bank_type") %></h2>
-    <div class="btn-add-new pull-right ">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li class="active"><%= t "bank_types.breadcrumbs.title" %></li>
+    </ol>
+    <span class="title"><%= t ("bank_types.bank_type") %></span>
+    <span class="btn-add-new pull-right ">
       <%= link_to t("btn.add_new"), new_bank_type_path, remote: true, class: "btn btn-primary" %>
-    </div>
-    <table class="table table-bordered table-hover table-striped">
+    </span>
+    <table class="table table-bordered table-striped tbl-bank-type">
       <thead>
-        <td><%= t "bank_types.name" %></td>
-        <td><%= t "bank_types.cash_type" %></td>
-        <td><%= t "bank_types.balance_total" %></td>
-        <td colspan="2"></td>
+        <th class="name"><%= t "bank_types.name" %></th>
+        <th class="cash_type"><%= t "bank_types.cash_type" %></th>
+        <th class="action"><%= t "bank_types.action" %></th>
       </thead>
       <tbody class="bank-type-list">
         <%= render @bank_types %>

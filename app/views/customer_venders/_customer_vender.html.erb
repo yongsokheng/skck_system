@@ -1,9 +1,7 @@
 <tr>
-  <td><%= link_to customer_vender.name, partner_path(@status, customer_vender) %></td>
-  <td><%= customer_vender_state customer_vender %></td>
-  <td><%= link_to t("customer_vender.actions.edit"), edit_partner_path(@status, customer_vender),
-    remote: true %></td>
-  <td>
+  <td class="name"><%= link_to customer_vender.name, partner_path(@status, customer_vender) %></td>
+  <td class="state"><%= customer_vender_state customer_vender %></td>
+  <td class="action"><%= link_to t("customer_vender.actions.edit"), edit_partner_path(@status, customer_vender), remote: true %> &nbsp;
     <% if customer_vender.active? %>
       <%= link_to t("customer_vender.actions.delete"),
         modal_customer_vender_path(@status, customer_vender), remote: true %>

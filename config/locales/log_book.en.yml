@@ -1,5 +1,6 @@
 en:
   logbooks:
+    title: "Log Book"
     tables:
       date: "Date"
       ref_no: "REF No."
@@ -12,7 +13,7 @@ en:
       delete: "Delete"
       save: "Save"
     confirm:
-      delete: "All the associated journal entries and transactions will also be deleted. Are you sure to delete?"
+      delete: "Are you sure to delete?"
     flashs:
       save_success: "Log Book saved"
       delete_success: "Log Book delete"
@@ -22,4 +23,6 @@ en:
     validates:
       update_validate: "You cannot update Log Book that has been used."
       transaction_date_validate: "Transaction date must be in current working period."
+    breadcrumbs:
+      log_book: "Log Book"
 

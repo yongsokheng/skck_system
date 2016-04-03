@@ -1,0 +1,16 @@
+#logbook {
+  .tbl-logbook {
+    .date, .ref_no {
+      width: 30%;
+    }
+
+    .voucher_type, .cash_type {
+      width: 15%;
+    }
+
+    .action {
+      width: 10%;
+      text-align: center;
+    }
+  }
+}

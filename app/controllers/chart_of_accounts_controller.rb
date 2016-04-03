@@ -1,6 +1,7 @@
 class ChartOfAccountsController < ApplicationController
   load_and_authorize_resource
   before_action :select_data, only: [:new, :create, :edit, :update]
+  before_action :has_children, only: :destroy
 
   def index
     @chart_of_accounts = current_user.company.chart_of_accounts.roots
@@ -48,5 +49,12 @@ class ChartOfAccountsController < ApplicationController
   def select_data
     @company = current_user.company
     @chart_account_types = ChartAccountType.all
+  end
+
+  def has_children
+    if @chart_of_account.children.any?
+      flash[:alert] = t "chart_of_accounts.messages.has_children_confirm"
+      redirect_to root_path
+    end
   end
 end

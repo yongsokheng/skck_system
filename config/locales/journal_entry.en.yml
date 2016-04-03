@@ -1,5 +1,9 @@
 en:
   journal_entries:
+    title: "General Journal"
+    breadcrumbs:
+      home: "Home"
+      general_journal: "General Journal"
     table:
       chart_of_account: "Chart Of Account"
       description: "Description"
@@ -9,11 +13,12 @@ en:
       totals: "Totals"
     labels:
       open_balance: "Open Balance"
+      working_peroid: "Working Period"
     actions:
       add: "Add"
       save: "Save"
       delete: "Delete"
-      close_period: "Close Working Period"
+      close_period: "Close Balance"
       add_new: "Add new"
     messages:
       confirm_close_period: "Are you sure to close this current working period?"

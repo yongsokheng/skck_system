@@ -1,22 +1,28 @@
 <div id="logbook" class="row">
-  <div class="col-md-9">
-    <table class="table table-bordered">
-      <thead align="center">
+  <div class="col-md-12">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li class="active"><%= t "logbooks.breadcrumbs.log_book" %></li>
+    </ol>
+    <span class="title"><%= t "logbooks.title" %></span>
+    <span><%= link_to t("logbooks.actions.add"), new_log_book_path, remote: true,
+      class: "btn btn-primary pull-right" %></span>
+    <table class="table table-bordered table-striped tbl-logbook">
+      <thead>
         <tr>
-          <td><%= t "logbooks.tables.date" %></td>
-          <td><%= t "logbooks.tables.ref_no" %></td>
-          <td><%= t "logbooks.tables.voucher_type" %></td>
-          <td><%= t "logbooks.tables.cash_type" %></td>
-          <td colspan="2"><%= t "logbooks.tables.action" %></td>
+          <th class="date"><%= t "logbooks.tables.date" %></th>
+          <th class="ref_no"><%= t "logbooks.tables.ref_no" %></th>
+          <th class="voucher_type"><%= t "logbooks.tables.voucher_type" %></th>
+          <th class="cash_type"><%= t "logbooks.tables.cash_type" %></th>
+          <th class="action"><%= t "logbooks.tables.action" %></th>
         </tr>
       </thead>
       <tbody class="logbook-list">
         <%= render @log_books %>
       </tbody>
     </table>
-    <%= link_to t("logbooks.actions.add"), new_log_book_path, remote: true,
-      class: "btn btn-primary pull-right" %>
   </div>
 </div>
 
 <div class="logbook-modal"></div>
+<div class="logbook-confirm-modal"></div>

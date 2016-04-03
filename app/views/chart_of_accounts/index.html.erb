@@ -1,20 +1,21 @@
-<div class="row chat-of-accounts">
+<div id="chart-account" class="row chat-of-accounts">
   <div class="col-md-12">
-    <h2 class="text-center"><%= t ("chart_of_accounts.chart_of_account") %></h2>
-    <div class="btn-add-new pull-right ">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li class="active"><%= t "chart_of_accounts.breadcrumbs.chart_account" %></li>
+    </ol>
+    <span class="title"><%= t "chart_of_accounts.chart_of_account" %></span>
+    <span class="btn-add-new pull-right ">
       <%= link_to t("btn.add_new"), new_chart_of_account_path, class: "btn btn-primary" %>
-    </div>
-    <table class="table table-bordered table-hover table-striped">
+    </span>
+    <table class="table table-bordered table-striped tbl-chart-account">
       <thead>
-        <td><%= t "chart_of_accounts.account_no" %></td>
-        <td><%= t "chart_of_accounts.name" %></td>
-        <td><%= t "chart_of_accounts.description" %></td>
-        <td><%= t "chart_of_accounts.type" %></td>
-        <td><%= t "chart_of_accounts.balance_total" %></td>
-        <td><%= t "chart_of_accounts.statement_ending_balance" %></td>
-        <td><%= t "chart_of_accounts.statement_ending_date" %></td>
-        <td><%= t "chart_of_accounts.status" %></td>
-        <td colspan="2"></td>
+        <th><%= t "chart_of_accounts.account_no" %></th>
+        <th><%= t "chart_of_accounts.name" %></th>
+        <th><%= t "chart_of_accounts.type" %></th>
+        <th><%= t "chart_of_accounts.balance_total" %></th>
+        <th><%= t "chart_of_accounts.status" %></th>
+        <th class="action"><%= t "chart_of_accounts.action" %></th>
       </thead>
       <tbody >
         <%= render @chart_of_accounts %>

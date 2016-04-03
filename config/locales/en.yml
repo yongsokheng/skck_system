@@ -1,10 +1,11 @@
 en:
-  title: "QV System"
+  title: "QV SYSTEM"
   menu:
     home: "Home"
     company: "Company"
     journal_entry: "Journal Entry"
     log_book: "Log Book"
+    bank_type: "Bank type"
     chart_of_account: "Chart of Account"
     item_list: "Item List"
     customer: "Customer"
