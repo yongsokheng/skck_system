@@ -16,5 +16,5 @@ function load_select2_with_data(data) {
   $(".select2-data").empty().select2({
     theme: "bootstrap",
     data: data
-  }).trigger("change");
+  });
 }
