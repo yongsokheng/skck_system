@@ -52,8 +52,8 @@ function ChartAccountTemplateResult(result) {
   var padding = result.depth * 20 + 20;
   if((result.id == account_id) || ((result.status == "inactive") && (result.id != parent_id))) return;
   var $result = $("<div class='row'>" +
-    "<div class='col-md-4' style='padding-left: " + padding + "px'>" + result.no + "</div>" +
-    "<div class='col-md-4' style='padding-left: " + padding + "px'>" + result.text + "</div>" +
+    "<div class='col-md-3' style='padding-left: " + padding + "px'>" + result.no + "</div>" +
+    "<div class='col-md-5' style='padding-left: " + padding + "px'>" + result.text + "</div>" +
     "<div class='col-md-4'>" + result.type + "</div>" +
     "</div>");
   return $result;

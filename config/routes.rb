@@ -33,4 +33,5 @@ Rails.application.routes.draw do
   get "select_journal/:transaction_date/:cash_type_id/:journal_entry_id" => "journal_entries#select_journal"
   get "chart_of_account/:id" => "confirm_modals#modal_chart_of_account", as: :modal_chart_of_account
   get "bank_type/:id" => "confirm_modals#modal_bank_type", as: :modal_bank_type
+  get "log_book/:id" => "confirm_modals#modal_log_book", as: :modal_log_book
 end

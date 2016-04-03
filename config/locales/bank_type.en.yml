@@ -4,9 +4,12 @@ en:
     cash_type: "Cash Type"
     balance_total: "Balance Total"
     bank_type: "Bank Type"
+    action: "Action"
     messages:
       destroy: "Are you sure to delete?"
       data_used: "You cannot delete bank type that has data!"
     actions:
       destroy: "Delete"
+    breadcrumbs:
+      title: "Bank type"
 

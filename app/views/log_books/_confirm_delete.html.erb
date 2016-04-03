@@ -1,0 +1,18 @@
+<div class="modal fade logbook-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= t "labels.warning" %></h4>
+      </div>
+      <div class="modal-body">
+        <p><%= t "logbooks.confirm.delete" %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t "actions.close" %></button>
+        <%= link_to t("logbooks.actions.delete"), log_book_path(@logbook),
+          method: :delete, class: "btn btn-danger btn-delete" %>
+      </div>
+    </div>
+  </div>
+</div>

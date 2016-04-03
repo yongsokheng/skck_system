@@ -6,7 +6,7 @@ class ConfirmModalsController < ApplicationController
 
   def modal_chart_of_account
     @chart_of_account = ChartOfAccount.find params[:id]
-    if  @chart_of_account.children.any?
+    if @chart_of_account.children.any?
       @type = Settings.confirm_modal_types.has_children
       @btn_state = "hidden"
     elsif @chart_of_account.inactive?
@@ -30,5 +30,9 @@ class ConfirmModalsController < ApplicationController
       @type = Settings.confirm_modal_types.destroy
       @btn_state = "btn-danger"
     end
+  end
+
+  def modal_log_book
+    @logbook = LogBook.find params[:id]
   end
 end

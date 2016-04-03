@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -20,7 +20,7 @@
               <li><%= link_to t("menu.journal_entry"), new_journal_entry_path %></li>
               <li><%= link_to t("menu.chart_of_account"), chart_of_accounts_path %></li>
               <li><%= link_to t("menu.log_book"), log_books_path %></li>
-              <li><%= link_to t("menu.item_list"), item_lists_path %></li>
+              <li><%= link_to t("menu.bank_type"), bank_types_path %></li>
             </ul>
           </li>
           <li><%= link_to t("menu.customer"), partners_path(:customer) %></li>

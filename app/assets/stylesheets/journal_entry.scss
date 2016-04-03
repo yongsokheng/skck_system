@@ -1,5 +1,19 @@
 #journal-entry {
-  .label {
-    font-size: 1.2em;
+  .current-period {
+    font-style: italic;
+  }
+
+  .btn-delete {
+    margin-right: 10px;
+  }
+
+  .btn-close-period {
+    margin-top: 10px;
+  }
+
+  .tbl-journal {
+    .debit-head, .credit-head, .name-head {
+      text-align: center;
+    }
   }
 }

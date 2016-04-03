@@ -1,7 +1,8 @@
 <tr>
-  <td><%= bank_type.name %></td>
-  <td><%= bank_type.cash_type.name %></td>
-  <td><%= bank_type.balance_total %></td>
-  <td><%= link_to t("btn.edit"), edit_bank_type_path(bank_type), remote: true %></td>
-  <td><%= link_to t("btn.delete"), modal_bank_type_path(bank_type), remote: true %></td>
+  <td class="name"><%= bank_type.name %></td>
+  <td class="cash-type"><%= bank_type.cash_type.name %></td>
+  <td class="action">
+    <%= link_to t("btn.edit"), edit_bank_type_path(bank_type), remote: true %> &nbsp;
+    <%= link_to t("btn.delete"), modal_bank_type_path(bank_type), remote: true %>
+  </td>
 </tr>

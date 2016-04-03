@@ -1,0 +1,18 @@
+<div class="modal fade close-period-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= t "labels.warning" %></h4>
+      </div>
+      <div class="modal-body">
+        <p><%= t "journal_entries.messages.confirm_close_period" %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t "actions.close" %></button>
+        <%= link_to t("journal_entries.actions.close_period"), close_working_periods_path,
+          method: :post, class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,9 @@ $(document).on("ready", function(){
     var old_cash_type_id;
     var old_date;
 
+    load_select2_tree();
     load_select2_customer_vender();
+    load_select2_simple();
     total_balance();
     load_name_status();
     set_current_period();
@@ -53,6 +55,10 @@ $(document).on("ready", function(){
       $(".journal-delete-modal").modal("show");
     });
 
+    $(document).on("click", ".btn-close-period", function(event) {
+      $(".close-period-modal").modal("show");
+    });
+
     $(document).on("show", ".transaction-date", function(e) {
       old_date = $(this).val();
     });
@@ -95,8 +101,13 @@ $(document).on("ready", function(){
       set_datepicker(transaction_date);
       load_logbook_data();
     });
-
   }
+});
+
+$(document).on("page:update", function() {
+    if($("#journal-entry").length > 0) {
+      load_select2_hide_search_box();
+    }
 });
 
 function total_balance() {
@@ -196,7 +207,7 @@ function is_current_period() {
 function set_current_period() {
   var current_start_date = $(".working-period").attr("data-start-date");
   var current_end_date = $(".working-period").attr("data-end-date");
-  $(".current-period").html("Working period: " + current_start_date + " to " + current_end_date + "")
+  $(".current-period").html(current_start_date + " to " + current_end_date + "")
 }
 
 function load_name_status() {
@@ -299,4 +310,56 @@ function set_log_book_val() {
     $(".log_book").select2("val", value);
     $(".log_book").removeAttr("selected-value");
   }
+}
+
+function templateResult(result) {
+  if (!result.id) {return result.text;}
+  var padding = result.element.attributes[0]["value"] * 10 + 12;
+  var status = result.element.attributes[2]["value"];
+  if(status == "inactive") return;
+  var $result = $("<div class='row'>" +
+    "<div class='col-md-3' style='padding-left: " + padding + "px'>" + result.text.split("|")[0] + "</div>" +
+    "<div class='col-md-5' style='padding-left: " + padding + "px'>" + result.text.split("|")[1] + "</div>" +
+    "<div class='col-md-4'>" + result.text.split("|")[2] + "</div>" +
+    "</div>");
+  return $result;
+};
+
+function templateSelection(result, container) {
+  var text = (result.text == "") ? "" : result.text.split("|")[1];
+  return $("<div title ='" + text + "'>" + text + "</div>");
+}
+
+function load_select2_tree() {
+  $(".select2-tree").select2({
+    theme: "bootstrap",
+    templateResult: templateResult,
+    templateSelection: templateSelection,
+    dropdownAutoWidth: "true"
+  }).on("select2:open", function () {
+    $("span.select2-results").parent().addClass("select2-tree-result-parent");
+    $("span.select2-results ul").addClass("select2-tree-result-ul");
+  });
+}
+
+function templateResultCustomerVender(result) {
+  if (!result.id) {return result.text;}
+  var state = result.element.attributes[0]["value"];
+  var status = result.element.attributes[1]["value"]
+  if(state == "inactive") return;
+  var $result = $("<div class='row'>" +
+    "<div class='col-md-6'>" + result.text + "</div>" +
+    "<div class='col-md-1'>" + status + "</div>" +
+    "</div>");
+  return $result;
+};
+
+function load_select2_customer_vender() {
+  $(".select2-customer-vender").select2({
+    templateResult: templateResultCustomerVender,
+    theme: "bootstrap",
+  }).on("select2:open", function () {
+    $("span.select2-results").parent().addClass("select2-tree-result-parent-small");
+    $("span.select2-results ul").addClass("select2-tree-result-ul");
+  });;
 }
