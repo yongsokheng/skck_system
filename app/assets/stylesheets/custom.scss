@@ -3,17 +3,25 @@
 
 #wrapper {
   height: 100%;
+  background-color: #e9eaed;
+  padding-top: 55px;
 
   .navbar-default {
     background-color: #FFFFFF;
     .nav li, .navbar-brand {
       font-weight: bold;
     }
+    .navbar-nav li .avatar {
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
   }
 
   .content {
-    padding-top: 70px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     min-height: 500px;
+    background-color: white;
   }
 
   .title {
@@ -21,11 +29,12 @@
   }
 
   .footer {
-    margin-top: 10px;
-    height: 25px;
+    margin-top: 6px;
     border-top: 1px solid #E1E1E1;
-    padding-top: 10px;
     font-weight: bold;
+    background-color: white;
+    height: 50px;
+    line-height: 50px;
   }
 
   #error_explanation {
@@ -85,7 +94,7 @@
   }
 
   .breadcrumb {
-    background-color: #f5f5f5;
+    background-color: white;
   }
 
   .dl-horizontal dt {
