@@ -8,6 +8,7 @@ $(document).on("ready", function(){
     account_id = $(".account-id").data("account-id");
     hide_show_statement_ending();
     load_chart_account_data();
+    load_select2_simple();
     disable_account_type();
 
     $(document).on("change", ".chart-account-type", function(){
