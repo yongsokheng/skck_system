@@ -8,7 +8,7 @@ class JournalEntryTransaction < ActiveRecord::Base
 
   private
   def name_must_exist_on_condition
-    account_type_code = Settings.account_type_need_name.map{|type| type.last}
+    account_type_code = Settings.account_type.map{|type| type.last}
     if chart_of_account.present? && account_type_code.include?(chart_of_account.chart_account_type.type_code) && customer_vender_id.blank?
       errors[:base] << I18n.t("journal_entries.validate_errors.name_validate")
     end

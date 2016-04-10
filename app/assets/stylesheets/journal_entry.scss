@@ -3,8 +3,8 @@
     font-style: italic;
   }
 
-  .btn-delete {
-    margin-right: 10px;
+  .btn-delete, .btn-save {
+    margin-right: 5px;
   }
 
   .btn-close-period {
@@ -12,8 +12,32 @@
   }
 
   .tbl-journal {
-    .debit-head, .credit-head, .name-head {
+    margin-top: 20px;
+    .chart-account-head {
+      width: 30%;
+    }
+    .description-head {
+      width: 25%;
+    }
+    .debit-head, .credit-head {
+      width: 15%;
       text-align: center;
+    }
+    .name-head {
+      width: 15%;
+      text-align: center;
+    }
+  }
+
+  .journal-transaction {
+    .chart-account .selectize-dropdown {
+      width: 600px !important;
+    }
+
+    .selectize-input {
+      border: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
     }
   }
 }

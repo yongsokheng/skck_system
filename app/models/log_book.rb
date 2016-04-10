@@ -15,6 +15,9 @@ class LogBook < ActiveRecord::Base
   scope :find_reference_by, ->transaction_date, cash_type_id{
     where(transaction_date: transaction_date, cash_type_id: cash_type_id)}
 
+  scope :find_reference_not_open_balance, ->transaction_date, cash_type_id{
+    where(transaction_date: transaction_date, cash_type_id: cash_type_id, open_balance: 0)}
+
   scope :find_by_voucher_type, ->voucher_type_id, start_date, end_date{
     where("voucher_type_id = ? AND transaction_date >= ? AND transaction_date <= ?
       AND open_balance = false", voucher_type_id, start_date, end_date)
@@ -27,6 +30,12 @@ class LogBook < ActiveRecord::Base
       find_or_create_by! transaction_date: company.working_period.new_period,
         voucher_type_id: VoucherType.types[:civ], cash_type_id: cash_type.id,
         open_balance: true, company_id: company.id
+    end
+
+    def log_book_list transaction_date, cash_type_id
+      find_reference_by(transaction_date, cash_type_id)
+        .map{|logbook| [logbook.reference_no, logbook.id,
+        "data-open_balance" => logbook.open_balance]}
     end
   end
 

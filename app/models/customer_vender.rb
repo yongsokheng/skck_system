@@ -12,6 +12,9 @@ class CustomerVender < ActiveRecord::Base
   enum status: [:customer, :vender]
   enum state: [:inactive, :active]
 
+  scope :customers, ->{where status: statuses[:customer]}
+  scope :venders, ->{where status: statuses[:vender]}
+
   def active
     update_attributes state: :active
   end

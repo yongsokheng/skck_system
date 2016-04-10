@@ -5,13 +5,21 @@
   $(".logbook-form-modal").modal("hide");
 
   if($("#journal-entry").length > 0) {
-    $(".log_book").attr("selected-value", "<%= @log_book.id %>");
     var modal_transaction_date = $("#log_book_transaction_date");
-    var modal_cash_type = $("#log_book_cash_type_id");
     var transaction_date = new Date(modal_transaction_date.val());
     set_datepicker(transaction_date);
-    var bank_type_id = $(".bank_type option[data-cash-type-id="+ modal_cash_type.val() +"]").first().val();
-    $(".bank_type").select2("val", bank_type_id);
+
+    var bank_type_selectize = $(".bank_type")[0].selectize;
+    var bank_type_id = "<%= @log_book.cash_type.bank_types.first.id %>"
+    bank_type_selectize.addItem(bank_type_id);
+
+    var logbook_selectize = $(".log_book")[0].selectize;
+    var value = "<%= @log_book.id %>";
+    var text = "<%= @log_book.reference_no %>";
+    var data = [{value: value, text: text}];
+    logbook_selectize.addOption(data);
+    logbook_selectize.addItem(data[0].value);
+
   }else{
     $(".logbook-list").html("<%= j render @log_books %>");
     $(".flash").html("<%= j render 'shared/flash' %>");

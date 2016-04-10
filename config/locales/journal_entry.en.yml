@@ -4,9 +4,10 @@ en:
     breadcrumbs:
       home: "Home"
       general_journal: "General Journal"
+      new: "New"
     table:
       chart_of_account: "Chart Of Account"
-      description: "Description"
+      description: "Memo"
       debit: "Debit"
       credit: "Credit"
       name: "Name"
@@ -17,9 +18,12 @@ en:
     actions:
       add: "Add"
       save: "Save"
+      save_close: "Save close"
+      save_new: "Save new"
       delete: "Delete"
       close_period: "Close Balance"
       add_new: "Add new"
+      view_all: "View all"
     messages:
       confirm_close_period: "Are you sure to close this current working period?"
       confirm_delete: "Are you sure to delete this transaction?"

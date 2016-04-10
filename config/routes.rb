@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :journal_entries, only: [:index]
       resources :item_lists, only: :index
       resources :chart_of_accounts, only: :index
+      resources :customer_venders, only: :index
     end
   end
 
@@ -30,7 +31,6 @@ Rails.application.routes.draw do
 
   get "partner/modal/:status/:id" => "confirm_modals#modal_customer_vender", as: :modal_customer_vender
 
-  get "select_journal/:transaction_date/:cash_type_id/:journal_entry_id" => "journal_entries#select_journal"
   get "chart_of_account/:id" => "confirm_modals#modal_chart_of_account", as: :modal_chart_of_account
   get "bank_type/:id" => "confirm_modals#modal_bank_type", as: :modal_bank_type
   get "log_book/:id" => "confirm_modals#modal_log_book", as: :modal_log_book

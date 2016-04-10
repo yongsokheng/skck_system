@@ -1,54 +1,77 @@
-<%= render "shared/errors", object: @journal_entry %>
+<%= render "shared/errors", object: journal_entry %>
 <%= render "shared/error_modal" %>
+<i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
 
-<%= nested_form_for @journal_entry, html: {class: "form-journal"} do |f| %>
+<% journal_entry.journal_entry_transactions.build %>
+<%= nested_form_for journal_entry, html: {class: "form-journal"}, remote: @remote do |f| %>
   <%= f.hidden_field :user_id, value: current_user.id %>
   <%= f.hidden_field :company_id, value: current_user.company.id %>
-  <p>
-    <%= f.label :transaction_date %>
-    <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today, class: "form-control datepicker transaction-date", required: true %>
-  </p>
-  <p>
-    <%= f.label :bank_type_id %>
-    <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id), {}, class: "form-control select2-simple bank_type" %>
-  </p>
-  <p>
-    <span><%= f.label :log_book_id %></span>
-    <span class="pull-right">
-      <%= link_to t("journal_entries.actions.add_new"), new_log_book_path(), remote: true %>
-    </span>
-    <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id), {}, class: "form-control select2-data select2-simple log_book" %>
-  </p>
+  <div class="row">
+    <div class="col-md-4">
+      <%= f.label :transaction_date %>
+      <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today, class: "form-control datepicker transaction-date", required: true, disabled: @disabled %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :bank_type_id %>
+      <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id), {}, class: " selectize-simple bank_type", disabled: @disabled %>
+    </div>
+    <div class="col-md-4">
+      <span><%= f.label :log_book_id %></span>
+      <% if journal_entry.new_record? %>
+        <span class="pull-right">
+          <%= link_to t("journal_entries.actions.add_new"), new_log_book_path(), remote: true %>
+        </span>
+        <%= f.select :log_book_id, {}, {}, class: "selectize-simple log_book", disabled: @disabled %>
+      <% else %>
+        <%= f.select :log_book_id, options_for_select(@current_user.company.log_books
+          .log_book_list(journal_entry.transaction_date, journal_entry.bank_type.cash_type_id),
+          f.object.log_book_id), {}, class: "selectize-simple log_book", disabled: @disabled %>
+      <% end %>
+    </div>
+  </div>
+
   <table id="tbl-journal-entry" class="table table-bordered tbl-journal">
     <thead>
       <tr>
         <th class="chart-account-head"><%= t "journal_entries.table.chart_of_account" %></th>
-        <th class="description-head"><%= t "journal_entries.table.description" %></th>
         <th class="debit-head"><%= t "journal_entries.table.debit" %></th>
         <th class="credit-head"><%= t "journal_entries.table.credit" %></th>
+        <th class="description-head"><%= t "journal_entries.table.description" %></th>
         <th class="name-head"><%= t "journal_entries.table.name" %></th>
       </tr>
     </thead>
 
-    <tbody>
-      <p><i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i></p>
+    <tbody class="journal-transaction">
       <%= render "journal_entry_transaction_fields", f: f %>
     </tbody>
 
     <tfoot>
       <tr>
-        <td></td>
         <td><%= t "journal_entries.table.totals" %></td>
         <td class="total-debit"></td>
         <td class="total-credit"></td>
         <td></td>
+        <td></td>
       </tr>
     </tfoot>
   </table>
+
   <p hidden><%= f.link_to_add t("journal_entries.actions.add"), :journal_entry_transactions,
     data: {target: "#tbl-journal-entry"} %></p>
-  <p><%= f.submit t("journal_entries.actions.save"), class: "btn btn-primary btn-save pull-right" %></p>
-  <%= button_to t("journal_entries.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
+
+  <% if journal_entry.new_record? %>
+    <p>
+      <%= f.submit t("journal_entries.actions.save_new"), value: Settings.commit_params.save_new,
+        class: "btn btn-primary btn-save pull-right" %>
+      <%= f.submit t("journal_entries.actions.save_close"), value: Settings.commit_params.save_close,
+        class: "btn btn-primary btn-save pull-right" %>
+    </p>
+  <% else %>
+    <p>
+      <%= f.submit t("journal_entries.actions.save"), class: "btn btn-primary btn-save pull-right" %>
+      <%= button_to t("journal_entries.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
+    </p>
+    <%= render "journal_entries/modal_confirm_delete", journal_entry: journal_entry  %>
+  <% end %>
 <% end %>
-<%= render "journal_entries/modal_confirm_delete" unless @journal_entry.new_record? %>
 <%= render "journal_entries/modal_confirm_close_period" %>

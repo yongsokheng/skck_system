@@ -1,0 +1,8 @@
+$(".journal-entry").html("<%= j render 'journal_entry_data' %>");
+
+load_chart_account(".chart-account");
+load_selectize_simple(".selectize-simple");
+total_balance();
+load_btn_status();
+load_btn_navigate();
+$(".icon-loading").hide();

@@ -1,17 +1,30 @@
-var value;
 $(document).on("ready", function(){
 
   if($("#journal-entry").length > 0) {
-    var old_cash_type_id;
-    var old_date;
 
-    load_select2_tree();
-    load_select2_customer_vender();
-    load_select2_simple();
+    load_chart_account(".chart-account");
+    load_selectize_simple(".selectize-simple");
     total_balance();
-    load_name_status();
     set_current_period();
     load_btn_status();
+    load_btn_navigate();
+
+    if($(".new-journal").length > 0) {
+      $(document).on("change", ".transaction-date", function() {
+        if($(".logbook-form-modal").length == 0) {
+          load_logbook_data();
+        }
+      });
+
+      $(document).on("change", ".bank_type", function() {
+        load_logbook_data();
+      });
+    }
+
+    $(document).on("click", ".pagination a", function() {
+      $.getScript(this.href);
+      return false;
+    });
 
     $(document).on("change", ".debit", function() {
       $(this).parent().parent().find(".credit").val("");
@@ -30,15 +43,33 @@ $(document).on("ready", function(){
     });
 
     $(document).on("change", ".chart-account", function() {
-      var account_type_code = ["ar", "ap"];
-      var selected_account_type_code = $(this).find("option:selected").attr("type");
-      var name = $(this).parents(".fields").find(".name");
+      var user_email = $(".api").data("email");
+      var user_token = $(".api").data("token");
+      var name_selector = $(this).parents(".fields").find(".name");
+      var chart_account_selectize = $(this)[0].selectize;
+      var name_selectize = name_selector[0].selectize;
+      var chart_account_value = chart_account_selectize.getValue();
 
-      if($.inArray(selected_account_type_code, account_type_code) > -1 || $(this).val() == "") {
-        name.attr("disabled", false);
-      } else {
-        name.select2("val", "");
-        name.attr("disabled", true);
+      if(chart_account_value == "") {
+        name_selectize.clearOptions();
+      }else{
+        var account_type = chart_account_selectize.options[chart_account_value].type_code
+
+        $.ajax({
+          type: "get",
+          data: {account_type: account_type},
+          dataType: "json",
+          url: "/api/customer_venders?user_token=" + user_token + "&user_email=" + user_email,
+          success: function(data) {
+            if(data.length > 0) {
+              name_selectize.clearOptions();
+              name_selectize.addOption(data);
+              name_selectize.addItem(data[0].value);
+            }else{
+              name_selectize.clearOptions();
+            }
+          }
+        });
       }
     });
 
@@ -60,55 +91,24 @@ $(document).on("ready", function(){
       $(".close-period-modal").modal("show");
     });
 
-    $(document).on("show", ".transaction-date", function(e) {
-      old_date = $(this).val();
-    });
-
-    $(document).on("hide", ".transaction-date", function(e) {
-      var new_date = $(this).val();
-      if(old_date !== new_date) {
-        load_logbook_data();
-      }
-    });
-
-    $(document).on("select2:open", ".bank_type", function(event) {
-      old_cash_type_id = $(this).find("option:selected").attr("data-cash-type-id");
-    });
-
-    $(document).on("change", ".bank_type", function() {
-      var new_cash_type_id = $(this).find("option:selected").attr("data-cash-type-id");
-      value = $(".log_book").attr("selected-value");
-      if((old_cash_type_id != new_cash_type_id) || value) {
-        load_logbook_data();
-      }else{
-        load_journal_entry();
-      }
-    });
-
-    $(document).on("change", ".log_book", function() {
-      load_journal_entry();
-    });
-
     $(document).on("click", ".btn-prev", function() {
-      var transaction_date = new Date($(".transaction-date").val());
-      transaction_date.setDate(transaction_date.getDate() - 1);
-      set_datepicker(transaction_date);
-      load_logbook_data();
+      if($(this).is('[disabled=disabled]')) {
+        event.preventDefault();
+      }else{
+        $(".icon-loading").show();
+        $(".pagination .previous_page a").trigger("click");
+      }
     });
 
     $(document).on("click", ".btn-next", function() {
-      var transaction_date = new Date($(".transaction-date").val());
-      transaction_date.setDate(transaction_date.getDate() + 1);
-      set_datepicker(transaction_date);
-      load_logbook_data();
+      if($(this).is('[disabled=disabled]')) {
+        event.preventDefault();
+      }else{
+        $(".icon-loading").show();
+        $(".pagination .next_page a").trigger("click");
+      }
     });
   }
-});
-
-$(document).on("page:update", function() {
-    if($("#journal-entry").length > 0) {
-      load_select2_hide_search_box();
-    }
 });
 
 function total_balance() {
@@ -135,11 +135,11 @@ function set_msg_valid(event, msg) {
 }
 
 function validate_save(event) {
-  if($(".log_book option:selected").attr("open-balance") == "true") {
+  if(is_open_balance()) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.open_balance_validate"));
   }else if(is_current_period() == false){
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.wrong_period", {period: $(".current-period").text()}));
-  }else if($(".log_book").val() == null) {
+  }else if($(".log_book").val() == "") {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.log_book_not_blank"));
   }else if(is_transaction_exist() == false) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.trans_validate"));
@@ -150,6 +150,17 @@ function validate_save(event) {
   }else if(is_name_valid() == false) {
     set_msg_valid(event, I18n.t("journal_entries.validate_errors.name_validate"));
   }
+}
+
+function is_open_balance() {
+  var logbook_selectize = $(".log_book")[0].selectize;
+  var logbook_value = logbook_selectize.getValue();
+  if(logbook_value == "") return false;
+
+  var open_balance = logbook_selectize.options[logbook_value].open_balance
+  if(open_balance == true)
+    return true;
+  return false;
 }
 
 function is_account_balance() {
@@ -174,7 +185,10 @@ function is_name_valid() {
   var valid = true;
   var account_type_code = ["ar", "ap"];
   $(".fields").each(function() {
-    var selected_account_type_code = $(this).find(".chart-account option:selected").attr("type");
+    var chart_account_selectize = $(this).find(".chart-account")[0].selectize;
+    var chart_account_value = chart_account_selectize.getValue();
+    if(chart_account_value == "") return true;
+    var selected_account_type_code = chart_account_selectize.options[chart_account_value].type_code
     if($.inArray(selected_account_type_code, account_type_code) > -1
       && $(this).find(".name").val() == "") {
       valid = false;
@@ -211,23 +225,10 @@ function set_current_period() {
   $(".current-period").html(current_start_date + " to " + current_end_date + "")
 }
 
-function load_name_status() {
-  var account_type_code = ["ar", "ap"];
-  $(".fields").each(function() {
-    var selected_account_type_code = $(this).find(".chart-account option:selected").attr("type");
-    if($.inArray(selected_account_type_code, account_type_code) < 0 &&
-      $(this).find(".chart-account").val() != "") {
-        $(this).find(".name").select2("val", "");
-        $(this).find(".name").attr("disabled", true);
-    }
-  });
-}
-
 function load_btn_status() {
-  if((is_current_period() == false) ||
-    ($(".log_book option:selected").attr("open-balance") == "true")) {
+  if((is_current_period() == false) || is_open_balance()) {
     $(".btn-delete, .btn-save").attr("disabled", true);
-  }else if(is_transaction_exist() == false){
+  }else if(is_transaction_exist() == false) {
     $(".btn-delete").attr("disabled", true);
     $(".btn-save").attr("disabled", false);
   }else{
@@ -235,67 +236,54 @@ function load_btn_status() {
   }
 }
 
+function load_btn_navigate() {
+  if($(".pagination").length == 0) {
+    $(".btn-prev").attr("disabled", true);
+    $(".btn-next").attr("disabled", true);
+  }else{
+    if($(".pagination .previous_page").hasClass("disabled")) {
+      $(".btn-prev").attr("disabled", true);
+    }else{
+      $(".btn-prev").attr("disabled", false);
+    }
+
+    if($(".pagination .next_page").hasClass("disabled")) {
+      $(".btn-next").attr("disabled", true);
+    }else{
+      $(".btn-next").attr("disabled", false);
+    }
+  }
+}
+
 function load_logbook_data() {
   var user_email = $(".api").data("email");
   var user_token = $(".api").data("token");
   var transaction_date = $(".transaction-date").val();
-  var cash_type_id = $(".bank_type option:selected").attr("data-cash-type-id");
-  $.ajax({
-    type: "get",
-    data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
-    dataType: "json",
-    url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
-    success: function(data) {
-      load_select2_with_data(data);
-      if(value == null) {
-        $(".select2-data").trigger("change");
-      }
-      set_log_book_val();
-    }
-  });
-}
+  var bank_type_selectize = $(".bank_type")[0].selectize;
+  var logbook_selectize = $(".log_book")[0].selectize;
+  var bank_type_value = bank_type_selectize.getValue();
 
-function reset_journal_transaction_list() {
-  $("#tbl-journal-entry").find("tbody").empty();
-  for(var i = 0; i < 10; i++) {
-    $(".add_nested_fields").click();
+  if(bank_type_value == "") {
+    logbook_selectize.clearOptions();
+  }else{
+    var cash_type_id = bank_type_selectize.options[bank_type_value].cash_type
+    $.ajax({
+      type: "get",
+      data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
+      dataType: "json",
+      url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
+      success: function(data) {
+        if(data.length > 0) {
+          logbook_selectize.clearOptions();
+          logbook_selectize.addOption(data);
+          logbook_selectize.addItem(data[0].value);
+        }else{
+          logbook_selectize.clearOptions();
+        }
+        load_btn_status();
+      }
+    });
   }
-
-  load_select2_tree();
-  load_select2_simple();
-  load_select2_customer_vender();
-  load_btn_status();
-
-  $(".total-debit").html(""+ $.number(0, 2));
-  $(".total-credit").html(""+ $.number(0, 2));
-  $(".icon-loading").hide();
-  $(".form-journal").attr("action", "/journal_entries");
-  $(".form-journal input[name='_method']").val("post");
-}
-
-function load_journal_entry() {
-  var user_email = $(".api").data("email");
-  var user_token = $(".api").data("token");
-  var log_book_id = $(".log_book").val();
-  var bank_type_id = $(".bank_type").val();
-  var transaction_date = $(".transaction-date").val();
-  var cash_type_id = $(".bank_type option:selected").attr("data-cash-type-id");
-
-  $(".icon-loading").show();
-
-  $.ajax({
-    type: "get",
-    data: {log_book_id: log_book_id, bank_type_id: bank_type_id},
-    dataType: "json",
-    url: "/api/journal_entries?user_token=" + user_token + "&user_email=" + user_email,
-    success: function(data) {
-      if(data) {
-        $.get("/select_journal/"+ transaction_date +"/"+ cash_type_id +"/"+ data.id);
-      }else{
-        reset_journal_transaction_list();
-      }
-    }
-  });
 }
 
 function delete_row(e) {
@@ -308,62 +296,28 @@ function delete_row(e) {
   }
 }
 
-function set_log_book_val() {
-  if(value) {
-    $(".log_book").select2("val", value);
-    $(".log_book").removeAttr("selected-value");
-    value = $(".log_book").attr("selected-value");
-  }
-}
-
-function templateResult(result) {
-  if (!result.id) {return result.text;}
-  var padding = result.element.attributes[0]["value"] * 10 + 12;
-  var status = result.element.attributes[2]["value"];
-  if(status == "inactive") return;
-  var $result = $("<div class='row'>" +
-    "<div class='col-md-3' style='padding-left: " + padding + "px'>" + result.text.split("|")[0] + "</div>" +
-    "<div class='col-md-5' style='padding-left: " + padding + "px'>" + result.text.split("|")[1] + "</div>" +
-    "<div class='col-md-4'>" + result.text.split("|")[2] + "</div>" +
-    "</div>");
-  return $result;
-};
-
-function templateSelection(result, container) {
-  var text = (result.text == "") ? "" : result.text.split("|")[1];
-  return $("<div title ='" + text + "'>" + text + "</div>");
-}
-
-function load_select2_tree() {
-  $(".select2-tree").select2({
-    theme: "bootstrap",
-    templateResult: templateResult,
-    templateSelection: templateSelection,
-    dropdownAutoWidth: "true"
-  }).on("select2:open", function () {
-    $("span.select2-results").parent().addClass("select2-tree-result-parent");
-    $("span.select2-results ul").addClass("select2-tree-result-ul");
+function load_chart_account(selector) {
+  $(""+selector).selectize({
+    onInitialize: function () {
+      var s = this;
+      this.revertSettings.$children.each(function () {
+        $.extend(s.options[this.value], $(this).data());
+      });
+    },
+    render: {
+      option: function(item, escape) {
+        var padding = item.depth * 10 + 12;
+        var status = item.status;
+        if(status == "inactive") return "";
+        var result = ("<div class='row'>" +
+          "<div class='col-md-8'>" + item.text + "</div>" +
+          "<div class='col-md-4'>" + item.type + "</div>" +
+          "</div>");
+          return result;
+      },
+      item: function(item, escape) {
+        return "<div>" + item.text + "</div>";
+      },
+    }
   });
-}
-
-function templateResultCustomerVender(result) {
-  if (!result.id) {return result.text;}
-  var state = result.element.attributes[0]["value"];
-  var status = result.element.attributes[1]["value"]
-  if(state == "inactive") return;
-  var $result = $("<div class='row'>" +
-    "<div class='col-md-6'>" + result.text + "</div>" +
-    "<div class='col-md-1'>" + status + "</div>" +
-    "</div>");
-  return $result;
-};
-
-function load_select2_customer_vender() {
-  $(".select2-customer-vender").select2({
-    templateResult: templateResultCustomerVender,
-    theme: "bootstrap",
-  }).on("select2:open", function () {
-    $("span.select2-results").parent().addClass("select2-tree-result-parent-small");
-    $("span.select2-results ul").addClass("select2-tree-result-ul");
-  });;
 }
