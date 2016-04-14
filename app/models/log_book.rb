@@ -23,7 +23,8 @@ class LogBook < ActiveRecord::Base
       AND open_balance = false", voucher_type_id, start_date, end_date)
   }
 
-  scope :find_except_open_balance, ->{where(open_balance: false).order transaction_date: :DESC}
+  scope :find_except_open_balance, ->{includes(:journal_entries, :voucher_type, :cash_type)
+    .where(open_balance: false).order transaction_date: :DESC}
 
   class << self
     def create_or_find cash_type, company

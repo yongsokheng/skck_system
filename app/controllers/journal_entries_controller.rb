@@ -5,7 +5,9 @@ class JournalEntriesController < ApplicationController
   before_action :check_condition, only: :destroy
 
   def index
-    @journal_entries = @current_company.journal_entries.paginate(page: params[:page], per_page: 1)
+    @journal_entries = @current_company.journal_entries
+      .includes(:journal_entry_transactions => :chart_of_account)
+      .paginate(page: params[:page], per_page: 1)
       .order(transaction_date: :desc, id: :desc)
     @disabled = true
     @remote = true
@@ -71,7 +73,7 @@ class JournalEntriesController < ApplicationController
       {"state" => data.state}, {"status" => data.status}]}
     @venders = @current_company.customer_venders.venders.map{|data| [data.name, data.id,
       {"state" => data.state}, {"status" => data.status}]}
-    @bank_types = @current_company.bank_types.map{|type| [type.name, type.id,
+    @bank_types = @current_company.bank_types.find_data.map{|type| [type.name, type.id,
       "data-cash_type" => type.cash_type_id]}
   end
 
