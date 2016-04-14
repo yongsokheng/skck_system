@@ -17,31 +17,10 @@ class ChartOfAccount < ActiveRecord::Base
 
   enum status: [:inactive, :active]
 
-  def chart_account chart_arr = []
-    chart_arr << [chart_account_name, id, {"depth" => depth}, {"type" => chart_account_type.type_code}, {"status" => status}]
-    children.each do |child|
-      child.chart_account chart_arr
-    end
-    chart_arr
-  end
-
-  class << self
-    def chart_account_tree account_arr = [{id: ""}], account_roots
-      account_roots.each do |account|
-        account_arr << {id: account.id, text: account.name, depth: account.depth,
-          type: account.chart_account_type.name, no: account.account_no, status: account.status}
-        account.children.each do |child|
-          account_arr << {id: child.id, text: child.name, depth: child.depth,
-            type: child.chart_account_type.name, no: child.account_no, status: child.status}
-          chart_account_tree account_arr, child.children
-        end
-      end
-      account_arr
-    end
-  end
+  scope :find_data, ->{includes(:chart_account_type).order("chart_account_types.name ASC")}
 
   def chart_account_name
-    "#{account_no}|#{name}|#{chart_account_type.name}"
+    "#{account_no}-#{name}"
   end
 
   def balance_total
@@ -63,6 +42,13 @@ class ChartOfAccount < ActiveRecord::Base
     update_attributes status: :inactive
   end
 
+  def account_receivable?
+    chart_account_type.type_code == Settings.account_type.ar
+  end
+
+  def account_payable?
+    chart_account_type.type_code == Settings.account_type.ap
+  end
   private
   def ending_balance_exist?
     statement_ending_balance.present?

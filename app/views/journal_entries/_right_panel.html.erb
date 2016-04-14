@@ -1,0 +1,13 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= t "journal_entries.labels.working_peroid" %></h3>
+  </div>
+  <div class="panel-body">
+    <i class="fa fa-calendar-check-o"></i>
+    <span class=" current-period"></span><br>
+    <div>
+      <%= link_to t("journal_entries.actions.close_period"), "javascript:void(0)",
+        method: :post, class: "btn btn-danger btn-close-period" %>
+    </div>
+  </div>
+</div>

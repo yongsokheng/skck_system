@@ -1,35 +1,24 @@
-<div id="journal-entry" class="row">
+<div id="journal-entry" class="row new-journal">
   <div class="col-md-9">
     <ol class="breadcrumb">
       <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
-      <li class="active"><%= t "journal_entries.breadcrumbs.general_journal" %></li>
+      <li><%= link_to t("journal_entries.breadcrumbs.general_journal"), journal_entries_path %></li>
+      <li class="active"><%= t "journal_entries.breadcrumbs.new" %></li>
     </ol>
     <div class="journal-header">
       <span class="title"><%= t "journal_entries.title" %></span>
       <span class="btn-navigate pull-right">
-        <%= link_to "", "javascript:void(0)", class: "btn btn-default btn-prev glyphicon glyphicon-chevron-left" %>
-        <%= link_to "", "javascript:void(0)", class: "btn btn-default btn-next glyphicon glyphicon-chevron-right" %>
+        <%= link_to t("journal_entries.actions.view_all"), journal_entries_path,
+          class: "btn btn-default" %>
       </span>
     </div>
     <hr>
     <div class="journal-entry">
-      <%= render "journal_entry" %>
+      <%= render "journal_entry", journal_entry: @journal_entry %>
     </div>
   </div>
   <div class="col-md-3">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= t "journal_entries.labels.working_peroid" %></h3>
-      </div>
-      <div class="panel-body">
-        <i class="fa fa-calendar-check-o"></i>
-        <span class=" current-period"></span><br>
-        <div>
-          <%= link_to t("journal_entries.actions.close_period"), "javascript:void(0)",
-            method: :post, class: "btn btn-danger btn-close-period" %>
-        </div>
-      </div>
-    </div>
+    <%= render "right_panel" %>
   </div>
   <div class="logbook-modal"></div>
 </div>

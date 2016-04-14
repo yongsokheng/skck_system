@@ -1,4 +1,4 @@
-account_type_need_name:
+account_type:
   ar: "ar"
   ap: "ap"
 
@@ -19,3 +19,7 @@ confirm_modal_types:
   inactive: "inactive"
   destroy: "destroy"
   data_used: "data_used"
+
+commit_params:
+  save_new: "Save new"
+  save_close: "Save close"

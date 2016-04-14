@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require selectize
 //= require jquery_nested_form
 //= require bootstrap-datepicker
 //= require select2

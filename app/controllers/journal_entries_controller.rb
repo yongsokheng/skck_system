@@ -1,22 +1,22 @@
 class JournalEntriesController < ApplicationController
   load_and_authorize_resource
   before_action :set_current_compay
-  before_action :load_data, only: [:new, :select_journal]
+  before_action :load_data, only: [:index, :new]
   before_action :check_condition, only: :destroy
 
+  def index
+    @journal_entries = @current_company.journal_entries.paginate(page: params[:page], per_page: 1)
+      .order(transaction_date: :desc, id: :desc)
+    @disabled = true
+    @remote = true
+  end
+
   def new
-    log_books = @current_company.log_books.find_reference_by(Date.today, BankType.first.cash_type.id)
-    @log_books = log_books.map{|logbook| [logbook.reference_no, logbook.id, "open-balance" => logbook.open_balance]}
-    journal_entry = log_books.present? ? JournalEntry.find_by(log_book_id: log_books.first.id) : nil
-    if journal_entry.present?
-      @journal_entry = journal_entry
+    9.times do
       @journal_entry.journal_entry_transactions.build
-    else
-      @journal_entry = JournalEntry.new
-      10.times do
-        @journal_entry.journal_entry_transactions.build
-      end
     end
+    @disabled = false
+    @remote = false
   end
 
   def create
@@ -25,22 +25,23 @@ class JournalEntriesController < ApplicationController
     else
       flash[:alert] = t "journal_entries.flashs.save_not_success"
     end
-    redirect_to root_path
+
+    path = params[:commit] == Settings.commit_params.save_new ? new_journal_entry_path : journal_entries_path
+    redirect_to path
   end
 
   def update
     if @journal_entry.update_attributes journal_entry_params
-      flash[:success] = t "journal_entries.flashs.update_success"
+      flash.now[:success] = t "journal_entries.flashs.update_success"
     else
-      flash[:alert] = t "journal_entries.flashs.update_not_success"
+      flash.now[:alert] = t "journal_entries.flashs.update_not_success"
     end
-    redirect_to root_path
   end
 
   def destroy
     @journal_entry.destroy
     flash[:success] = t "journal_entries.flashs.delete_success"
-    redirect_to new_journal_entry_path
+    redirect_to journal_entries_path
   end
 
   def select_journal
@@ -62,11 +63,16 @@ class JournalEntriesController < ApplicationController
   end
 
   def load_data
-    @chart_accounts = @current_company.chart_account_tree
-    @customer_venders = @current_company.customer_venders.map{|data| [data.name, data.id,
+    @chart_accounts = @current_company.chart_of_accounts.find_data
+      .map{|ca| [ca.chart_account_name, ca.id,
+      {"data-type_code" => ca.chart_account_type.type_code},
+      {"data-status" => ca.status}, {"data-type" => ca.chart_account_type.name}]}
+    @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id,
+      {"state" => data.state}, {"status" => data.status}]}
+    @venders = @current_company.customer_venders.venders.map{|data| [data.name, data.id,
       {"state" => data.state}, {"status" => data.status}]}
     @bank_types = @current_company.bank_types.map{|type| [type.name, type.id,
-      {"data-cash-type-id" => type.cash_type.id}]}
+      "data-cash_type" => type.cash_type_id]}
   end
 
   def check_condition

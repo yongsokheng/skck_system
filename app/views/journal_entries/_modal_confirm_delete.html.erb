@@ -10,7 +10,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><%= t "actions.close" %></button>
-        <%= link_to t("journal_entries.actions.delete"), journal_entry_path(@journal_entry),
+        <%= link_to t("journal_entries.actions.delete"), journal_entry_path(journal_entry),
           method: :delete, class: "btn btn-danger btn-delete" %>
       </div>
     </div>

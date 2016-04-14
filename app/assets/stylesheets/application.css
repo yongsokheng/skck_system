@@ -16,4 +16,6 @@
  *= require select2-bootstrap
  *= require bootstrap-datepicker3
  *= require font-awesome
+ *= require selectize
+ *= require selectize.default
  */

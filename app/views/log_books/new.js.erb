@@ -3,7 +3,10 @@ $(".logbook-form-modal").modal("show");
 
 if($("#journal-entry").length > 0) {
   var modal_transaction_date = $("#log_book_transaction_date");
-  var modal_cash_type = $("#log_book_cash_type_id");
   modal_transaction_date.val($(".transaction-date").val());
-  modal_cash_type.val($(".bank_type option:selected").attr("data-cash-type-id"));
+
+  var cash_type_selectize = $(".cash_type")[0].selectize;
+  var bank_type_selectize = $(".bank_type")[0].selectize;
+  var cash_type_id = bank_type_selectize.options[bank_type_selectize.getValue()].cash_type
+  cash_type_selectize.addItem(cash_type_id);
 }

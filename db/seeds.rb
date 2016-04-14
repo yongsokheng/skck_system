@@ -50,7 +50,7 @@ BankType.create! name: "Petty cash", cash_type_id: 1, company_id: 1
 company.customer_venders.create! name: "customer", email: "customer@gmail.com", status: 0
 company.customer_venders.create! name: "vender", email: "vender@gmail.com", status: 1
 
-WorkingPeriod.create! start_date: "2016-03-01", end_date: "2016-03-31", company_id: 1
+WorkingPeriod.create! start_date: "2016-04-01", end_date: "2016-04-30", company_id: 1
 
 # item list type
 item_list_types = ["Service", "Inventory Part", "Non-inventory Part", "Other Charge",

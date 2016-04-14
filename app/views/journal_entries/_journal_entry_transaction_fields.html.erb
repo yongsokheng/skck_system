@@ -1,16 +1,29 @@
  <%= f.fields_for :journal_entry_transactions, wrapper: false do |ff| %>
   <tr class="fields" data-chart-account-selected-id="<%= ff.object.chart_of_account_id %>">
     <td>
-      <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "form-control select2-tree grid-cell chart-account" %>
+      <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "grid-cell chart-account" %>
     </td>
-    <td><%= ff.text_field :description, class: "form-control grid-cell description", autocomplete: "off" %></td>
     <td><%= ff.text_field :debit,
       value: number_with_precision(ff.object.debit, precision: 2, delimiter: ","),
       class: "form-control grid-cell debit", autocomplete: "off" %></td>
     <td><%= ff.text_field :credit,
       value: number_with_precision(ff.object.credit, precision: 2, delimiter: ","),
       class: "form-control grid-cell credit", autocomplete: "off" %></td>
-    <td><%= ff.select :customer_vender_id, options_for_select(@customer_venders, ff.object.customer_vender_id), {include_blank: true}, class: "form-control select2-customer-vender grid-cell name" %></td>
-     <td hidden><%= ff.link_to_remove "Remove" %></td>
+    <td><%= ff.text_field :description, class: "form-control grid-cell description",
+      autocomplete: "off" %></td>
+    <td>
+      <% if ff.object.chart_of_account %>
+        <% if ff.object.chart_of_account.account_receivable? %>
+          <%= render "name", ff: ff, data: @customers %>
+        <% elsif ff.object.chart_of_account.account_payable? %>
+          <%= render "name", ff: ff, data: @venders %>
+        <% else %>
+          <%= render "name", ff: ff, data: [] %>
+        <% end %>
+      <% else %>
+        <%= render "name", ff: ff, data: [] %>
+      <% end %>
+    </td>
+    <td hidden><%= ff.link_to_remove "Remove" %></td>
   </tr>
 <% end %>
