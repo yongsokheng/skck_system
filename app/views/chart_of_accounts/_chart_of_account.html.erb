@@ -1,15 +1,14 @@
 <tr>
   <td><%= chart_of_account.account_no %></td>
-  <td style="padding-left: <%= chart_of_account.depth * 20 + 10 %>px"><%= chart_of_account.name %></td>
+  <td><%= chart_of_account.name %></td>
   <td><%= chart_of_account.chart_account_type_name %></td>
   <td><%= chart_of_account.balance_total %></td>
   <td><%= chart_of_account_status chart_of_account %></td>
   <td class="action"><%= link_to t("btn.edit"), edit_chart_of_account_path(chart_of_account) %> &nbsp;
-    <% if chart_of_account.inactive? %>
-      <%= link_to t("btn.active"), modal_chart_of_account_path(chart_of_account), remote: true %>
-    <% else %>
+    <% if chart_of_account.active? %>
       <%= link_to t("btn.delete"), modal_chart_of_account_path(chart_of_account), remote: true %>
+    <% else %>
+      <%= link_to t("btn.active"), modal_chart_of_account_path(chart_of_account), remote: true %>
     <% end %>
   </td>
 </tr>
-<%= render partial: "chart_of_account", collection: chart_of_account.children, as: "chart_of_account" %>

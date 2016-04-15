@@ -5,4 +5,6 @@ class ChartAccountType < ActiveRecord::Base
     uniqueness: {case_sensitive: false}
 
   enum increament_at: [:debit, :credit]
+
+  scope :not_ar_ap, ->{where.not("type_code = 'ar' or type_code = 'ap'")}
 end

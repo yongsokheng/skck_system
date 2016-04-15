@@ -17,14 +17,10 @@
     <%= form_for @chart_of_account do |f| %>
       <%= render "shared/errors", object: @chart_of_account %>
 
-      <div class="parent-id" data-parent-id="<%= f.object.try(:parent_id) %>"></div>
-      <div class="account-id" data-account-id="<%= f.object.try(:id) %>"></div>
-      <p class="account-type" data-account-type="<%= f.object.chart_account_type.try(:type_code) %>">
-
         <%= f.label :chart_account_type_id %>
         <%= f.select :chart_account_type_id,
-          options_for_select(@chart_account_types.collect{|acc_type| [acc_type.name, acc_type.id, {"data-acc-code" => acc_type.type_code}]}, @chart_of_account.chart_account_type_id),
-          {}, {class: "form-control chart-account-type select2-simple"} %>
+          options_for_select(@account_types, f.object.chart_account_type_id),
+          {}, {class: "chart-account-type"} %>
       </p>
 
       <p>
@@ -40,11 +36,6 @@
       <p>
         <%= f.label :description %>
         <%= f.text_area :description, class: "form-control" %>
-      </p>
-
-      <p>
-        <%= f.label t("chart_of_accounts.sub_item") %>
-        <%= f.select :parent_id, {}, {include_blank: true}, class: "form-control chart-of-account-tree" %>
       </p>
 
       <div class="statement_ending">

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2016022206262240) do
+ActiveRecord::Schema.define(version: 20160308151817) do
 
   create_table "bank_types", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -40,27 +40,17 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "chart_of_account_hierarchies", id: false, force: :cascade do |t|
-    t.integer "ancestor_id",   limit: 4, null: false
-    t.integer "descendant_id", limit: 4, null: false
-    t.integer "generations",   limit: 4, null: false
-  end
-
-  add_index "chart_of_account_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "chart_of_account_anc_desc_idx", unique: true, using: :btree
-  add_index "chart_of_account_hierarchies", ["descendant_id"], name: "chart_of_account_desc_idx", using: :btree
-
   create_table "chart_of_accounts", force: :cascade do |t|
     t.string   "account_no",               limit: 255
     t.string   "name",                     limit: 255
     t.string   "description",              limit: 255
     t.float    "statement_ending_balance", limit: 24,  default: 0.0
     t.date     "statement_ending_date"
-    t.integer  "parent_id",                limit: 4
-    t.integer  "status",                   limit: 4,   default: 1
+    t.boolean  "active",                               default: true
     t.integer  "chart_account_type_id",    limit: 4
     t.integer  "company_id",               limit: 4
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
   end
 
   add_index "chart_of_accounts", ["chart_account_type_id"], name: "index_chart_of_accounts_on_chart_account_type_id", using: :btree
