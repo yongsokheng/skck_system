@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
     t.date     "transaction_date"
     t.string   "reference_no",     limit: 255
     t.boolean  "open_balance",                 default: false
+    t.integer  "no",               limit: 4
     t.integer  "cash_type_id",     limit: 4
     t.integer  "voucher_type_id",  limit: 4
     t.integer  "company_id",       limit: 4

@@ -4,6 +4,7 @@ class CreateLogBooks < ActiveRecord::Migration
       t.date :transaction_date
       t.string :reference_no
       t.boolean :open_balance, default: false
+      t.integer :no
       t.references :cash_type, index: true, foreign_key: true
       t.references :voucher_type, index: true, foreign_key: true
       t.references :company, index: true, foreign_key: true

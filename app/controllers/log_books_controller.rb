@@ -33,11 +33,13 @@ class LogBooksController < ApplicationController
   private
   def log_book_params
     params.require(:log_book).permit :transaction_date, :cash_type_id,
-      :voucher_type_id, :company_id
+      :voucher_type_id, :company_id, :no
   end
 
   def load_data
-    @log_books = current_user.company.log_books.find_except_open_balance
+    company = current_user.company
+    period = company.working_period
+    @log_books = company.log_books.find_in_current_period period.start_date, period.end_date
   end
 
   def load_item_select

@@ -46,13 +46,6 @@ class JournalEntriesController < ApplicationController
     redirect_to journal_entries_path
   end
 
-  def select_journal
-    @journal_entry = JournalEntry.find params[:journal_entry_id]
-    @log_books = @current_company.log_books.find_reference_by(params[:transaction_date], params[:cash_type_id])
-      .map{|logbook| [logbook.reference_no, logbook.id, "open-balance" => logbook.open_balance]}
-    @journal_entry.journal_entry_transactions.build
-  end
-
   private
   def journal_entry_params
     params.require(:journal_entry).permit :user_id, :company_id, :transaction_date,
