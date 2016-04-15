@@ -9,6 +9,10 @@ class BankType < ActiveRecord::Base
 
   enum status: [:inactive, :active]
 
+  scope :find_data, ->{includes(:cash_type).order(name: :ASC)}
+
+  delegate :id, to: :cash_type, prefix: true, allow_nil: true
+
   def open_balance voucher_type_id
     current_period = company.working_period
     log_books = company.log_books.find_by_voucher_type(voucher_type_id,

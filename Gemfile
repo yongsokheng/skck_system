@@ -24,6 +24,7 @@ gem "selectize-rails"
 gem "will_paginate", "3.0.7"
 gem "bootstrap-will_paginate", "0.0.10"
 group :development, :test do
+  gem "bullet"
   gem "byebug"
   gem "web-console", "~> 2.0"
   gem "spring"

@@ -46,10 +46,14 @@ class BankTypesController < ApplicationController
   end
 
   def load_bank_type_data
-    @bank_types = @company.bank_types
+    @bank_types = @company.bank_types.find_data
   end
 
   def bank_type_params
-    params.require(:bank_type).permit :name, :cash_type_id, :company_id
+    if @bank_type && @bank_type.data_used?
+      params.require(:bank_type).permit :name, :company_id
+    else
+      params.require(:bank_type).permit :name, :cash_type_id, :company_id
+    end
   end
 end
