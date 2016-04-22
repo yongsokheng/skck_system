@@ -10,7 +10,7 @@
           <div class="errors"></div>
           <%= f.hidden_field :company_id, value: @company.id %>
           <%= f.label :name %>
-          <%= f.text_field :name, class: "form-control" %>
+          <%= f.text_field :name, class: "form-control", required: true %>
 
           <%= f.label :cash_type_id %>
           <%= f.select :cash_type_id,

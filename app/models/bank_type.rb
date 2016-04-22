@@ -6,6 +6,7 @@ class BankType < ActiveRecord::Base
 
   validates :name, presence: true, length: {maximum: 255},
     uniqueness: {case_sensitive: false}
+  validates :cash_type, presence: true
 
   enum status: [:inactive, :active]
 

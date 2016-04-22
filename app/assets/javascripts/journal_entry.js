@@ -108,6 +108,10 @@ $(document).on("ready", function(){
         $(".pagination .next_page a").trigger("click");
       }
     });
+
+    $(".logbook-modal").on("hidden.bs.modal", function (e) {
+      $(".logbook-modal").html("");
+    })
   }
 });
 
