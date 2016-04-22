@@ -42,6 +42,11 @@ $(document).on("ready", function(){
       delete_row($(this));
     });
 
+    $(document).on("focus", ".tbl-journal .selectize-input", function() {
+      $(".tbl-journal .selectize-input").addClass("unfocus");
+      $(this).addClass("focus").removeClass("unfocus");
+    });
+
     $(document).on("change", ".chart-account", function() {
       var user_email = $(".api").data("email");
       var user_token = $(".api").data("token");
