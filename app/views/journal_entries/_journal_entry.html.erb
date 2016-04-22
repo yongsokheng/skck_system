@@ -13,7 +13,8 @@
     </div>
     <div class="col-md-4">
       <%= f.label :bank_type_id %>
-      <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id), {}, class: "selectize-simple bank_type", disabled: @disabled %>
+      <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id),
+        {}, class: "selectize-simple bank_type form-control", disabled: @disabled %>
     </div>
     <div class="col-md-4">
       <span><%= f.label :log_book_id %></span>
@@ -21,11 +22,11 @@
         <span class="pull-right">
           <%= link_to t("journal_entries.actions.add_new"), new_log_book_path(), remote: true %>
         </span>
-        <%= f.select :log_book_id, {}, {}, class: "selectize-simple log_book", disabled: @disabled %>
+        <%= f.select :log_book_id, {}, {}, class: "selectize-simple log_book form-control", disabled: @disabled %>
       <% else %>
         <%= f.select :log_book_id, options_for_select(@current_user.company.log_books
           .log_book_list(journal_entry.transaction_date, journal_entry.bank_type.cash_type_id),
-          f.object.log_book_id), {}, class: "selectize-simple log_book", disabled: @disabled %>
+          f.object.log_book_id), {}, class: "selectize-simple log_book form-control", disabled: @disabled %>
       <% end %>
     </div>
   </div>
