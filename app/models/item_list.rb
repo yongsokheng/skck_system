@@ -7,13 +7,17 @@ class ItemList < ActiveRecord::Base
   belongs_to :item_list_type
   belongs_to :unit_of_measure
 
+  has_many :invoice_transactions
+
   validates :name, presence: true, length: {maximum: 255}
   validate :name_existed
 
+  scope :select_data, ->{includes(:item_list_type, :unit_of_measure)}
 
   delegate :name, :id, to: :item_list_type, prefix: true, allow_nil: true
   delegate :name, to: :chart_of_account, prefix: true, allow_nil: true
   delegate :name, :id, to: :customer_vender, prefix: true, allow_nil: true
+  delegate :name, :id, to: :unit_of_measure, prefix: true, allow_nil: true
 
   class << self
     def item_list_tree item_arr=[], item_lists

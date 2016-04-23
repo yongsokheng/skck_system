@@ -90,6 +90,40 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
 
   add_index "customer_venders", ["company_id"], name: "index_customer_venders_on_company_id", using: :btree
 
+  create_table "invoice_transactions", force: :cascade do |t|
+    t.string   "description",        limit: 255
+    t.float    "quantity",           limit: 24
+    t.float    "price_each",         limit: 24
+    t.integer  "invoice_id",         limit: 4
+    t.integer  "item_list_id",       limit: 4
+    t.integer  "sale_tax_code_id",   limit: 4
+    t.integer  "unit_of_measure_id", limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "invoice_transactions", ["invoice_id"], name: "index_invoice_transactions_on_invoice_id", using: :btree
+  add_index "invoice_transactions", ["item_list_id"], name: "index_invoice_transactions_on_item_list_id", using: :btree
+  add_index "invoice_transactions", ["sale_tax_code_id"], name: "index_invoice_transactions_on_sale_tax_code_id", using: :btree
+  add_index "invoice_transactions", ["unit_of_measure_id"], name: "index_invoice_transactions_on_unit_of_measure_id", using: :btree
+
+  create_table "invoices", force: :cascade do |t|
+    t.date     "transaction_date"
+    t.string   "bill_to",            limit: 255
+    t.string   "ship_to",            limit: 255
+    t.integer  "invoice_no",         limit: 4
+    t.string   "po_number",          limit: 255
+    t.integer  "term_id",            limit: 4
+    t.integer  "customer_vender_id", limit: 4
+    t.integer  "company_id",         limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "invoices", ["company_id"], name: "index_invoices_on_company_id", using: :btree
+  add_index "invoices", ["customer_vender_id"], name: "index_invoices_on_customer_vender_id", using: :btree
+  add_index "invoices", ["term_id"], name: "index_invoices_on_term_id", using: :btree
+
   create_table "item_list_hierarchies", id: false, force: :cascade do |t|
     t.integer "ancestor_id",   limit: 4, null: false
     t.integer "descendant_id", limit: 4, null: false
@@ -114,13 +148,14 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
     t.string   "purchase_description",     limit: 255
     t.string   "sale_description",         limit: 255
     t.integer  "parent_id",                limit: 4
+    t.boolean  "active",                               default: true
     t.integer  "chart_of_account_id",      limit: 4
     t.integer  "company_id",               limit: 4
     t.integer  "customer_vender_id",       limit: 4
     t.integer  "item_list_type_id",        limit: 4
     t.integer  "unit_of_measure_id",       limit: 4
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
   end
 
   add_index "item_lists", ["chart_of_account_id"], name: "index_item_lists_on_chart_of_account_id", using: :btree
@@ -185,6 +220,28 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
 
   add_index "measures", ["company_id"], name: "index_measures_on_company_id", using: :btree
 
+  create_table "sale_tax_codes", force: :cascade do |t|
+    t.string   "tax_code",    limit: 255
+    t.string   "description", limit: 255
+    t.boolean  "taxable"
+    t.integer  "company_id",  limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "sale_tax_codes", ["company_id"], name: "index_sale_tax_codes_on_company_id", using: :btree
+
+  create_table "terms", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.date     "net_due"
+    t.float    "discount",   limit: 24
+    t.integer  "company_id", limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "terms", ["company_id"], name: "index_terms_on_company_id", using: :btree
+
   create_table "unit_of_measures", force: :cascade do |t|
     t.string   "name",         limit: 255
     t.string   "abbreviation", limit: 255
@@ -243,6 +300,13 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
   add_foreign_key "chart_of_accounts", "chart_account_types"
   add_foreign_key "chart_of_accounts", "companies"
   add_foreign_key "customer_venders", "companies"
+  add_foreign_key "invoice_transactions", "invoices"
+  add_foreign_key "invoice_transactions", "item_lists"
+  add_foreign_key "invoice_transactions", "sale_tax_codes"
+  add_foreign_key "invoice_transactions", "unit_of_measures"
+  add_foreign_key "invoices", "companies"
+  add_foreign_key "invoices", "customer_venders"
+  add_foreign_key "invoices", "terms"
   add_foreign_key "item_lists", "chart_of_accounts"
   add_foreign_key "item_lists", "companies"
   add_foreign_key "item_lists", "customer_venders"
@@ -259,6 +323,8 @@ ActiveRecord::Schema.define(version: 2016022206262240) do
   add_foreign_key "log_books", "companies"
   add_foreign_key "log_books", "voucher_types"
   add_foreign_key "measures", "companies"
+  add_foreign_key "sale_tax_codes", "companies"
+  add_foreign_key "terms", "companies"
   add_foreign_key "unit_of_measures", "companies"
   add_foreign_key "unit_of_measures", "measures"
   add_foreign_key "users", "companies"

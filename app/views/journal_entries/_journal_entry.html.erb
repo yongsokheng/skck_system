@@ -2,7 +2,16 @@
 <%= render "shared/error_modal" %>
 <i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
 
-<% journal_entry.journal_entry_transactions.build %>
+<%
+  unless journal_entry.new_record?
+    count_transaction = journal_entry.journal_entry_transactions.size
+    if count_transaction < 10
+      (10 - count_transaction).times {journal_entry.journal_entry_transactions.build}
+    else
+      journal_entry.journal_entry_transactions.build
+    end
+  end
+%>
 <%= nested_form_for journal_entry, html: {class: "form-journal"}, remote: @remote do |f| %>
   <%= f.hidden_field :user_id, value: current_user.id %>
   <%= f.hidden_field :company_id, value: current_user.company.id %>
@@ -31,7 +40,7 @@
     </div>
   </div>
 
-  <table id="tbl-journal-entry" class="table table-bordered tbl-journal">
+  <table id="tbl-journal-entry" class="table table-bordered tbl-journal grid">
     <thead>
       <tr>
         <th class="chart-account-head"><%= t "journal_entries.table.chart_of_account" %></th>

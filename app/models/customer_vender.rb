@@ -14,6 +14,8 @@ class CustomerVender < ActiveRecord::Base
 
   scope :customers, ->{where status: statuses[:customer]}
   scope :venders, ->{where status: statuses[:vender]}
+  scope :active_customers, ->{where(status: statuses[:customer], state: states[:active])}
+  scope :active_venders, ->{where(status: statuses[:vender], state: states[:active])}
 
   def active
     update_attributes state: :active

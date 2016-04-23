@@ -1,9 +1,10 @@
 $(document).on("ready", function(){
 
   if($("#journal-entry").length > 0) {
-    $("#tbl-journal-entry").tableScroll({height: 250});
-    load_chart_account(".chart-account");
+    $("#tbl-journal-entry").tableScroll();
+    load_chart_account(".fields .chart-account");
     load_selectize_simple(".selectize-simple");
+    load_name(".fields .name");
     total_balance();
     set_current_period();
     load_btn_status();
@@ -40,11 +41,6 @@ $(document).on("ready", function(){
         $(this).val($.number($(this).val(), 2));
       total_balance();
       delete_row($(this));
-    });
-
-    $(document).on("focus", ".tbl-journal .selectize-input", function() {
-      $(".tbl-journal .selectize-input").addClass("unfocus");
-      $(this).addClass("focus").removeClass("unfocus");
     });
 
     $(document).on("change", ".chart-account", function() {
@@ -117,6 +113,12 @@ $(document).on("ready", function(){
     $(".logbook-modal").on("hidden.bs.modal", function (e) {
       $(".logbook-modal").html("");
     })
+
+    $(document).on("change", ".fields:last .form-control", function() {
+      $(".add_nested_fields").click();
+      load_chart_account(".fields .chart-account:last");
+      load_name(".fields .name:last");
+    });
   }
 });
 
@@ -139,7 +141,7 @@ function total_balance() {
 
 function set_msg_valid(event, msg) {
   event.preventDefault();
-  $(".journal-modal").modal("show");
+  $(".error-modal").modal("show");
   $(".invalid-msg").html(msg);
 }
 
@@ -312,11 +314,11 @@ function load_chart_account(selector) {
       this.revertSettings.$children.each(function () {
         $.extend(s.options[this.value], $(this).data());
       });
+      s.positionDropdown();
     },
     dropdownParent: "body",
     render: {
       option: function(item, escape) {
-        var padding = item.depth * 10 + 12;
         var status = item.status;
         if(status == "inactive") return "";
         var result = ("<div class='row'>" +
@@ -328,6 +330,27 @@ function load_chart_account(selector) {
       item: function(item, escape) {
         return "<div>" + item.text + "</div>";
       },
+    }
+  });
+}
+
+function load_name(selector) {
+  $(""+selector).selectize({
+    onInitialize: function () {
+      var s = this;
+      this.revertSettings.$children.each(function () {
+        $.extend(s.options[this.value], $(this).data());
+      });
+      s.positionDropdown();
+    },
+    dropdownParent: "body",
+    render: {
+      option: function(item, escape) {
+        var state = item.state;
+        if(state == "inactive") return "";
+        var result = ("<div>" + item.text + "</div>");
+        return result;
+      }
     }
   });
 }

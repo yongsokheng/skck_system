@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :close_working_periods, only: :create
   resources :customer_venders, only: :index
   resources :bank_types
+  resources :invoices
 
   namespace :api, defaults: {format: "json"} do
     devise_for :users, only: :session

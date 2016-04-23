@@ -14,7 +14,7 @@ class JournalEntriesController < ApplicationController
   end
 
   def new
-    9.times do
+    10.times do
       @journal_entry.journal_entry_transactions.build
     end
     @disabled = false
@@ -62,10 +62,8 @@ class JournalEntriesController < ApplicationController
       .map{|ca| [ca.chart_account_name, ca.id,
       {"data-type_code" => ca.chart_account_type.type_code},
       {"data-status" => ca.status}, {"data-type" => ca.chart_account_type.name}]}
-    @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id,
-      {"state" => data.state}, {"status" => data.status}]}
-    @venders = @current_company.customer_venders.venders.map{|data| [data.name, data.id,
-      {"state" => data.state}, {"status" => data.status}]}
+    @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id]}
+    @venders = @current_company.customer_venders.venders.map{|data| [data.name, data.id]}
     @bank_types = @current_company.bank_types.find_data.map{|type| [type.name, type.id,
       "data-cash_type" => type.cash_type_id]}
   end

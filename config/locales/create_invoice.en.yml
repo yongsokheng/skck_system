@@ -1,0 +1,28 @@
+en:
+  create_invoice:
+    title: "Invoices"
+    breadcrumbs:
+      new: "New"
+    actions:
+      view_all: "View all"
+      save_new: "Save new"
+      save_close: "Save close"
+      save: "Add"
+      delete: "Delete"
+    tables:
+      item_list: "Item List"
+      description: "Description"
+      quantity: "Quantity"
+      unit_of_measure: "U/M"
+      price_each: "Price each"
+      amount: "Amount"
+    flashs:
+      save_success: "Save success"
+      save_not_success: "Save not success"
+    validate_errors:
+      need_item_list: "Item list is missing"
+      trans_validate: "Invoice must have at least one valid transaction."
+      customer_blank: "Customer cannot be blank."
+      transaction_valid: "Transactions require an item."
+    labels:
+      total: "Total:"

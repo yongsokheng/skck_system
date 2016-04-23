@@ -1,0 +1,55 @@
+#create-invoice {
+  .tbl-invoice {
+    .item-list-head {
+      width: 30%;
+    }
+    .description-head {
+      width: 30%;
+    }
+    .quantity-head, .price-each-head, .amount-head, .unit-of-measure-head {
+      width: 10%;
+    }
+    .quantity, .price-each, .amount {
+      text-align: right;
+    }
+  }
+
+  .invoice-transaction {
+    .item-list .selectize-dropdown {
+      width: 600px !important;
+    }
+  }
+
+  .btn-delete, .btn-save {
+    margin-right: 5px;
+  }
+
+  .total-balance {
+    font-weight: bold;
+    font-size: 1.5em;
+    float: right;
+    margin: 10px 0px;
+  }
+}
+
+.selectize-dropdown.item-list {
+  width: 600px !important;
+  padding: 0;
+  height: auto;
+  border: none;
+}
+
+.selectize-dropdown.unit-of-measure {
+  width: 150px !important;
+  padding: 0;
+  height: auto;
+  border: none;
+}
+
+.unit-of-measure {
+  .optgroup-header {
+    color: #110303;
+    font-weight: bold;
+    border-top: 1px solid #E1E1E1;
+  }
+}
