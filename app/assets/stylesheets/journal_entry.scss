@@ -12,7 +12,6 @@
   }
 
   .tbl-journal {
-    margin-top: 20px;
     .chart-account-head {
       width: 30%;
     }
@@ -30,10 +29,6 @@
   }
 
   .journal-transaction {
-    .chart-account .selectize-dropdown {
-      width: 600px !important;
-    }
-
     .selectize-input, .form-control {
       border: none;
       -webkit-box-shadow: none;
@@ -65,3 +60,9 @@
     -o-appearance: none;
   }
 }
+
+.selectize-dropdown.chart-account {
+  width: 600px !important;
+  height: 210px !important;
+}
+

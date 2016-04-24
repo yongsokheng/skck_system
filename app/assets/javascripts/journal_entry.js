@@ -1,7 +1,7 @@
 $(document).on("ready", function(){
 
   if($("#journal-entry").length > 0) {
-
+    $("#tbl-journal-entry").tableScroll({height: 250});
     load_chart_account(".chart-account");
     load_selectize_simple(".selectize-simple");
     total_balance();
@@ -313,6 +313,7 @@ function load_chart_account(selector) {
         $.extend(s.options[this.value], $(this).data());
       });
     },
+    dropdownParent: "body",
     render: {
       option: function(item, escape) {
         var padding = item.depth * 10 + 12;

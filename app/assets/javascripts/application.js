@@ -24,6 +24,7 @@
 //= require datepicker
 //= require select2-select
 //= require jquery-number-format
+//= require jquery.tablescroll
 //= require grid
 //= require journal_entry
 //= require chart_of_accounts
