@@ -1,0 +1,29 @@
+.tablescroll {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .tablescroll_head {
+    thead tr th {
+      background-color: #f5f5f5;
+      padding: 4px;
+      border: none;
+    }
+  }
+
+  .tablescroll_foot {
+    tfoot tr {
+      background-color: #f5f5f5;
+      padding: 4px;
+      text-align: right;
+      font-weight: bold;
+    }
+  }
+
+  .tablescroll_wrapper {
+    overflow-x: hidden !important;
+  }
+
+  .table {
+    margin: 0px;
+  }
+}
