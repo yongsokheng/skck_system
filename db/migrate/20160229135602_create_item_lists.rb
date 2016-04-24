@@ -8,7 +8,6 @@ class CreateItemLists < ActiveRecord::Migration
       t.float :price
       t.string :purchase_description
       t.string :sale_description
-      t.integer :parent_id
       t.boolean :active, default: 1
       t.references :chart_of_account, index: true, foreign_key: true
       t.references :company, index: true, foreign_key: true

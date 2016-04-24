@@ -1,9 +1,10 @@
 class ItemListsController < ApplicationController
   load_and_authorize_resource
-  before_action :select_data, only: [:new, :edit, :create]
+  before_action :company, execpt: :show
+  before_action :select_data, only: [:new, :create, :edit, :update]
 
   def index
-    @item_lists = ItemList.roots
+    @item_lists = @company.item_lists.find_data
   end
 
   def new
@@ -38,17 +39,20 @@ class ItemListsController < ApplicationController
   end
 
   private
-  def select_data
-    @types = ItemListType.all
+  def company
     @company = current_user.company
-    @chart_accounts = @company.chart_account_tree
-    @customer_venders = @company.customer_venders
-    @measures = Measure.all
+  end
+
+  def select_data
+    @types = ItemListType.all.collect{|type| [type.name, type.id]}
+    @chart_accounts = @company.chart_of_accounts.find_data.collect{|account| [account.name, account.id]}
+    @customer_venders = @company.customer_venders.collect{|cv| [cv.name, cv.id]}
+    @measures = @company.measures.includes :unit_of_measures
   end
 
   def item_list_params
     params.require(:item_list).permit :item_list_type_id, :name, :description,
-      :chart_of_account_id, :parent_id, :manufacturer_part_number, :customer_vender_id,
+      :chart_of_account_id, :manufacturer_part_number, :customer_vender_id,
       :unit_of_measure_id, :cost, :purchase_description, :price, :sale_description
   end
 end

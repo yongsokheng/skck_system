@@ -1,5 +1,5 @@
 <tr>
-  <td style="padding-left: <%= item_list.depth * 20 + 10 %>px"><%= item_list.name %></td>
+  <td><%= item_list.name %></td>
   <td><%= item_list.description %></td>
   <td><%= item_list.item_list_type_name %></td>
   <td><%= item_list.chart_of_account_name %></td>
@@ -10,5 +10,3 @@
   <td><%= link_to t("btn.delete"), item_list, method: :delete,
                   data: {confirm: t("messages.confirm_delete")} %></td>
 </tr>
-
-<%= render partial: "item_list", collection: item_list.children, as: "item_list" %>

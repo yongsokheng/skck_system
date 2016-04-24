@@ -1,60 +1,93 @@
 <div class="row" id="item-list">
-  <h2 class="text-center"><%= t "item_lists.item_list" %></h2>
+  <div class="col-md-9">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li><%= link_to t("item_lists.breadcrumbs.item_list"),
+        item_lists_path %></li>
+      <% if @item_list.new_record? %>
+        <li class="active"><%= t "item_lists.breadcrumbs.add_new" %></li>
+      <% else %>
+        <li class="active"><%= t "item_lists.breadcrumbs.edit",
+          name: @item_list.name %></li>
+      <% end %>
+    </ol>
+
+    <div class="title"><%= t "item_lists.item_list" %></div>
+    <hr>
+
     <%= form_for @item_list do |f| %>
-      <div class="col-md-6">
+      <div class="row">
 
         <%= render "shared/errors", object: @item_list %>
+        <p class="col-md-12">
+          <%= f.label :item_list_type_id %>
+          <%= f.select :item_list_type_id,
+            options_for_select(@types, f.object.item_list_type_id), {}, {class: "item-list-type"} %>
+        </p>
 
-        <%= f.label :item_list_type_id %>
-        <%= f.select :item_list_type_id,
-          options_for_select(@types.collect{|type| [type.name, type.id]}, @item_list.item_list_type.try(:id)), {}, {class: "form-control item-list-type"} %>
+        <p class="col-md-6">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: "form-control" %>
 
-        <%= f.label :name %>
-        <%= f.text_field :name, class: "form-control" %>
+          <%= f.label :description %>
+          <%= f.text_field :description, class: "form-control" %>
+        </p>
 
-        <%= f.label :description %>
-        <%= f.text_area :description, class: "form-control" %>
+        <p class="col-md-6">
+          <%= f.label :chart_of_account_id %>
+          <%= f.select :chart_of_account_id,
+            options_for_select(@chart_accounts, f.object.chart_of_account_id),
+            {}, {class: "chart-of-account"} %>
+        </p>
 
-        <%= f.label t("item_lists.sub_item") %>
-        <%= f.select :parent_id, {}, {include_blank: true}, {class: "form-control select2-item-list item-list"} %>
-
-        <%= f.label :chart_of_account_id %>
-        <%= f.select :chart_of_account_id,
-          options_for_select(@chart_accounts, f.object.chart_of_account_id),
-          {}, {class: "form-control select2-tree"} %>
-
-        <br>
-        <%= link_to t("btn.cancel"), item_lists_path, class: "btn btn-default" %>
-        <%= f.submit t("btn.save"), class: "btn btn-primary pull-right" %>
-      </div>
-      <div class="col-md-6">
-        <div class="manufacturer">
+        <p class="manufacturer col-md-6">
           <%= f.label :manufacturer_part_number %>
           <%= f.text_field :manufacturer_part_number, class: "form-control" %>
-        </div>
+        </p>
 
-        <div class="other-field">
+        <p class="other-field col-md-6">
           <%= f.label :customer_vender_id %>
           <%= f.select :customer_vender_id,
-            options_for_select(@customer_venders.collect{|cv| [cv.name, cv.id]}, f.object.customer_vender.try(:id)),
-            {}, {class: "form-control"} %>
+            options_for_select(@customer_venders, f.object.customer_vender_id),
+            {}, {class: "customer-vender"} %>
+        </p>
 
+        <p class="other-field col-md-6">
           <%= f.label :unit_of_measure_id %>
           <%= f.select :unit_of_measure_id,
-            option_groups_from_collection_for_select(@measures, :unit_of_measures, :name, :id, :name), {}, class: "form-control select2-simple" %>
+            option_groups_from_collection_for_select(@measures, :unit_of_measures, :name, :id, :name), {}, class: "unit-of-measure" %>
+        </p>
+        <p class="col-md-6">
+          <div class="panel panel-default other-field">
+            <div class="panel-footer">Panel footer</div>
+            <div class="panel-body">
+              <%= f.label :cost %>
+              <%= f.text_field :cost, class: "form-control" %>
 
-          <%= f.label :cost %>
-          <%= f.text_field :cost, class: "form-control" %>
+              <%= f.label :purchase_description %>
+              <%= f.text_area :purchase_description, class: "form-control" %>
+            </div>
+          </div>
+        </p>
 
-          <%= f.label :purchase_description %>
-          <%= f.text_area :purchase_description, class: "form-control" %>
+        <p class="col-md-6">
+          <div class="panel panel-default other-field">
+            <div class="panel-footer">Panel footer</div>
+            <div class="panel-body">
+              <%= f.label :price %>
+              <%= f.text_field :price, class: "form-control" %>
 
-          <%= f.label :price %>
-          <%= f.text_field :price, class: "form-control" %>
-
-          <%= f.label :sale_description %>
-          <%= f.text_area :sale_description, class: "form-control" %>
-        </div>
+              <%= f.label :sale_description %>
+              <%= f.text_area :sale_description, class: "form-control" %>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="col-md-12">
+          <%= link_to t("btn.cancel"), item_lists_path, class: "btn btn-default" %>
+          <%= f.submit t("btn.save"), class: "btn btn-primary pull-right" %>
+        </p>
       </div>
     <% end %>
+  </div>
 </div>
