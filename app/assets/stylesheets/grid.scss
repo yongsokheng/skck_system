@@ -1,14 +1,18 @@
-.fields {
+.grid {
+  .form-control, .selectize-input, .selectize-input.focus {
+    width: 100%;
+    border: none;
+    outline: none;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+  }
+
   td {
     padding: 0px !important;
   }
-
-  .debit, .credit {
-    width: 100%;
-    border: none;
-    text-align: right;
-    outline: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
 }
+
+

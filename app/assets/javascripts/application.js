@@ -17,18 +17,18 @@
 //= require selectize
 //= require jquery_nested_form
 //= require bootstrap-datepicker
-//= require select2
 //= require jquery.validate
 //= require i18n
 //= require i18n/translations
 //= require datepicker
-//= require select2-select
+//= require selectize_init
 //= require jquery-number-format
 //= require jquery.tablescroll
 //= require grid
 //= require journal_entry
 //= require chart_of_accounts
 //= require item_lists
+//= require create_invoice
 
 var flash = function() {
   setTimeout(function() {

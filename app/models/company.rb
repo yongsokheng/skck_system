@@ -9,6 +9,7 @@ class Company < ActiveRecord::Base
   has_many :item_lists, dependent: :destroy
   has_many :measures
   has_many :unit_of_measures
+  has_many :terms
 
   def chart_account_tree
     tree_chart = []

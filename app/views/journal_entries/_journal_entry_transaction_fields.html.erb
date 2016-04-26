@@ -1,15 +1,15 @@
  <%= f.fields_for :journal_entry_transactions, wrapper: false do |ff| %>
-  <tr class="fields" data-chart-account-selected-id="<%= ff.object.chart_of_account_id %>">
+  <tr class="fields">
     <td>
-      <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "grid-cell chart-account form-control" %>
+      <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "chart-account form-control" %>
     </td>
     <td><%= ff.text_field :debit,
       value: number_with_precision(ff.object.debit, precision: 2, delimiter: ","),
-      class: "form-control grid-cell debit", autocomplete: "off" %></td>
+      class: "form-control debit", autocomplete: "off" %></td>
     <td><%= ff.text_field :credit,
       value: number_with_precision(ff.object.credit, precision: 2, delimiter: ","),
-      class: "form-control grid-cell credit", autocomplete: "off" %></td>
-    <td><%= ff.text_field :description, class: "form-control grid-cell description",
+      class: "form-control credit", autocomplete: "off" %></td>
+    <td><%= ff.text_field :description, class: "form-control description",
       autocomplete: "off" %></td>
     <td>
       <% if ff.object.chart_of_account %>

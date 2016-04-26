@@ -70,7 +70,7 @@ count = 0
 measures.each do |measure|
   m = Measure.create! name: measure, company: company
   unit_of_measures[count].each do |unit|
-    m.unit_of_measures.create! name: unit, abbreviation: unit
+    m.unit_of_measures.create! name: unit, abbreviation: unit, company_id: company.id
   end
   count = count + 1
 end

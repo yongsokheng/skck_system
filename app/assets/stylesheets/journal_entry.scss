@@ -12,11 +12,13 @@
   }
 
   .tbl-journal {
+    margin-top: 20px;
     .chart-account-head {
       width: 30%;
     }
     .description-head {
       width: 25%;
+      text-align: center;
     }
     .debit-head, .credit-head {
       width: 15%;
@@ -26,43 +28,21 @@
       width: 15%;
       text-align: center;
     }
-  }
-
-  .journal-transaction {
-    .selectize-input, .form-control {
-      border: none;
-      -webkit-box-shadow: none;
-      box-shadow: none;
+    .debit, .credit {
+      text-align: right;
     }
-  }
-
-  .tbl-journal .selectize-input:after, .selectize-input.unfocus:after {
-    display: none;
-  }
-
-  .selectize-input.focus:after {
-    display: block;
-  }
-
-  .selectize-control.form-control {
-    padding: 0;
-    border: none;
-  }
-
-  .selectize-dropdown.form-control {
-    padding: 0;
-    height: auto;
-  }
-
-  .form-control {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -o-appearance: none;
   }
 }
 
 .selectize-dropdown.chart-account {
   width: 600px !important;
-  height: 210px !important;
+  padding: 0;
+  height: auto;
+  border: none;
 }
 
+.selectize-dropdown.name {
+  padding: 0;
+  height: auto;
+  border: none;
+}

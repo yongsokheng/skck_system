@@ -1,7 +1,6 @@
-$(function() {
-  $(document).on("change", ".fields:last .grid-cell", function() {
-    $(".add_nested_fields").click();
-    load_chart_account(".chart-account:last");
-    load_selectize_simple(".name:last");
+$(document).on("ready", function(){
+  $(document).on("focus", ".grid .selectize-input", function() {
+    $(".grid .selectize-input").addClass("unfocus");
+    $(this).addClass("focus").removeClass("unfocus");
   });
 });

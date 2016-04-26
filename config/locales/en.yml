@@ -8,6 +8,7 @@ en:
     bank_type: "Bank type"
     chart_of_account: "Chart of Account"
     item_list: "Item List"
+    create_invoice: "Create Invoice"
     customer: "Customer"
     vender: "Vender"
     sign_in: "Sign in"

@@ -1,8 +1,14 @@
 $(".journal-entry").html("<%= j render 'journal_entry_data' %>");
 
-load_chart_account(".chart-account");
+$(".selectize-dropdown.chart-account").remove()
+$(".selectize-dropdown.name").remove();
+
+$("#tbl-journal-entry").tableScroll();
+load_chart_account(".fields .chart-account");
+load_name(".fields .name");
 load_selectize_simple(".selectize-simple");
 total_balance();
 load_btn_status();
 load_btn_navigate();
 $(".icon-loading").hide();
+

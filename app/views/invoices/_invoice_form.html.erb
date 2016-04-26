@@ -1,0 +1,81 @@
+<%= render "shared/errors", object: invoice %>
+<%= render "shared/error_modal" %>
+<i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
+
+<% invoice.invoice_transactions.build %>
+<%= nested_form_for invoice, html: {class: "form-journal"},
+  remote: @remote do |f| %>
+  <%= f.hidden_field :company_id, value: current_user.company.id %>
+  <div class="row">
+    <div class="col-md-2">
+      <%= f.label :invoice_no %>
+      <%= f.text_field :invoice_no, value: f.object.invoice_no || @invoice_no, class: "form-control invoice_no" %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :transaction_date %>
+      <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today,
+        class: "form-control datepicker transaction-date", required: true,
+        disabled: @disabled %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :customer %>
+      <%= f.select :customer_vender_id, options_for_select(@customers, f.object.customer_vender_id),
+        {}, class: "customer form-control", disabled: @disabled %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :bill_to %>
+      <%= f.text_area :bill_to, class: "form-control" %>
+
+      <%= f.label :ship_to %>
+      <%= f.text_area :ship_to, class: "form-control" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-8">
+      <%= f.label :term_id %>
+      <%= f.select :term_id, options_for_select(@terms, f.object.term_id),
+        {}, class: "term form-control" %>
+    </div>
+  </div>
+
+  <table id="tbl-invoice" class="table table-bordered tbl-invoice grid">
+    <thead>
+      <tr>
+        <th class="item-list-head"><%= t "create_invoice.tables.item_list" %></th>
+        <th class="description-head"><%= t "create_invoice.tables.description" %></th>
+        <th class="quantity-head"><%= t "create_invoice.tables.quantity" %></th>
+        <th class="unit-of-measure-head"><%= t "create_invoice.tables.unit_of_measure" %></th>
+        <th class="price-each-head"><%= t "create_invoice.tables.price_each" %></th>
+        <th class="amount-head"><%= t "create_invoice.tables.amount" %></th>
+      </tr>
+    </thead>
+
+    <tbody class="invoice-transaction">
+      <%= render "invoice_transaction_fields", f: f %>
+    </tbody>
+  </table>
+
+  <div class="total-balance">
+    <span><%= t "create_invoice.labels.total" %></span>
+    <span class="total"></span>
+  </div>
+  <div class="clearfix"></div>
+
+  <p hidden><%= f.link_to_add t("create_invoice.actions.add"), :invoice_transactions,
+    data: {target: "#tbl-invoice"} %></p>
+
+  <% if invoice.new_record? %>
+    <p>
+      <%= f.submit t("journal_entries.actions.save_new"), value: Settings.commit_params.save_new,
+        class: "btn btn-primary btn-save pull-right" %>
+      <%= f.submit t("create_invoice.actions.save_close"), value: Settings.commit_params.save_close,
+        class: "btn btn-primary btn-save pull-right" %>
+    </p>
+  <% else %>
+    <p>
+      <%= f.submit t("create_invoice.actions.save"), class: "btn btn-primary btn-save pull-right" %>
+      <%= button_to t("create_invoice.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
+    </p>
+    <%= render "create_invoice/modal_confirm_delete", invoice: invoice  %>
+  <% end %>
+<% end %>

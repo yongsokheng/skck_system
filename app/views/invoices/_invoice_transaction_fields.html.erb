@@ -1,0 +1,22 @@
+ <%= f.fields_for :invoice_transactions, wrapper: false do |ff| %>
+  <tr class="fields">
+    <td>
+      <%= ff.select :item_list_id, options_for_select(@item_lists, ff.object.item_list_id),
+        {include_blank: true}, class: "item-list form-control" %>
+    </td>
+    <td><%= ff.text_field :description, class: "form-control", autocomplete: "off" %></td>
+    <td>
+      <%= ff.text_field :quantity, class: "form-control quantity", autocomplete: "off" %>
+    </td>
+    <td>
+      <%= ff.select :unit_of_measure_id, option_groups_from_collection_for_select(@measures, :unit_of_measures, :name, :id, :name),
+        {include_blank: true}, class: "form-control unit-of-measure", disabled: false %>
+    </td>
+    <td><%= ff.text_field :price_each,
+      value: number_with_precision(ff.object.price_each, precision: 2, delimiter: ","),
+      class: "form-control price-each", autocomplete: "off" %></td>
+    <td><%= text_field_tag :amount, nil, class: "form-control amount",
+      disabled: true %></td>
+    <td hidden><%= ff.link_to_remove "Remove" %></td>
+  </tr>
+<% end %>
