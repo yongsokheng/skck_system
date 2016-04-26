@@ -17,6 +17,6 @@ module ApplicationHelper
   end
 
   def chart_of_account_status object
-    (object.active? ? "<span class='label label-success'>#{object.status}</span>" : "<span class='label label-warning'>#{object.status}</span>").html_safe
+    (object.active? ? "<span class='label label-success'>" + t("chart_of_accounts.actions.active") + "</span>" : "<span class='label label-warning'>" + t("chart_of_accounts.actions.inactive") + "</span>").html_safe
   end
 end

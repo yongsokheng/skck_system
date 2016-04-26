@@ -23,12 +23,8 @@ ChartAccountType.create! name: "Other Income", type_code: "oi", increament_at: 1
 ChartAccountType.create! name: "Other Expense", type_code: "oe", increament_at: 0
 
 ChartAccountType.all.each_with_index do |type, no|
-  account = company.chart_of_accounts.create! account_no: "account no #{no}",
-    name: "Chart Of Account #{no}", chart_account_type: type, status: 1
-  3.times do |n|
-    company.chart_of_accounts.create! account_no: "#{account.account_no}.#{n}",
-      name: "#{account.name}.#{n}", chart_account_type: type, parent_id: account.id, status: 0
-  end
+  company.chart_of_accounts.create! account_no: "#{no}",
+    name: "Chart Of Account #{no}", chart_account_type: type, active: 1
 end
 
 # company.chart_of_accounts.create! account_no: "1234", name: "ANZ Royal Bank", chart_account_type_id: 1

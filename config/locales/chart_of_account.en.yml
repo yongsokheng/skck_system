@@ -21,8 +21,8 @@ en:
       account_has_children: "You cant't a delete chart of account with children"
     actions:
       destroy: "Delete"
-      active: "Active"
-      inactive: "Inactive"
+      update_active: "Active"
+      update_inactive: "Inactive"
     flashs:
       destroy: "Delete success"
       active: "Data is active"

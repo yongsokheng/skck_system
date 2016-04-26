@@ -6,8 +6,7 @@ class CreateChartOfAccounts < ActiveRecord::Migration
       t.string :description
       t.float :statement_ending_balance, default: 0
       t.date :statement_ending_date
-      t.integer :parent_id
-      t.integer :status, default: 1
+      t.boolean :active, default: 1
       t.references :chart_account_type, index: true, foreign_key: true
       t.references :company, index: true, foreign_key: true
 

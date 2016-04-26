@@ -1,17 +1,19 @@
 class ChartOfAccountsController < ApplicationController
   load_and_authorize_resource
-  before_action :select_data, only: [:new, :create, :edit, :update]
-  before_action :has_children, only: :destroy
+  before_action :company, only: [:index, :create]
+  before_action :data_create, only: [:new, :create]
+  before_action :data_edit, only: [:edit, :update]
+  before_action :account_type_data, except: [:index, :destroy]
+  before_action :set_company_id, only: :create
 
   def index
-    @chart_of_accounts = current_user.company.chart_of_accounts.roots
+    @chart_of_accounts = @company.chart_of_accounts.find_data
   end
 
   def new
   end
 
   def create
-    @chart_of_account = @company.chart_of_accounts.new chart_of_account_params
     if @chart_of_account.save
       flash[:notice] = t "flashs.messages.created"
       redirect_to chart_of_accounts_path
@@ -42,19 +44,27 @@ class ChartOfAccountsController < ApplicationController
   private
   def chart_of_account_params
     params.require(:chart_of_account).permit :name, :description, :account_no,
-      :statement_ending_balance, :statement_ending_date,:chart_account_type_id,
-      :parent_id
+      :statement_ending_balance, :statement_ending_date, :chart_account_type_id
   end
 
-  def select_data
+  def company
     @company = current_user.company
-    @chart_account_types = ChartAccountType.all
   end
 
-  def has_children
-    if @chart_of_account.children.any?
-      flash[:alert] = t "chart_of_accounts.messages.has_children_confirm"
-      redirect_to root_path
-    end
+  def data_create
+    @account_types = ChartAccountType.all
+  end
+
+  def data_edit
+    @account_types = @chart_of_account.selectize_data
+  end
+
+  def set_company_id
+    @chart_of_account.company_id = @company.id
+  end
+
+  def account_type_data
+    @account_types = @account_types.collect{|type| [type.name, type.id,
+      {"data-acc_code" => type.type_code}]}
   end
 end

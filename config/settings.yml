@@ -15,8 +15,8 @@ company:
 
 confirm_modal_types:
   has_children: "has_children"
-  active: "active"
-  inactive: "inactive"
+  update_active: "update_active"
+  update_inactive: "update_inactive"
   destroy: "destroy"
   data_used: "data_used"
 
