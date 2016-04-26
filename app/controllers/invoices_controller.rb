@@ -5,6 +5,13 @@ class InvoicesController < ApplicationController
   before_action :set_company, only: [:create]
   before_action :set_invoice_no, only: :new
 
+  def index
+    @invoices = @current_company.invoices.paginate(page: params[:page], per_page: 1)
+      .order invoice_no: :desc
+    @disabled = true
+    @remote = true
+  end
+
   def new
     10.times do
       @invoice.invoice_transactions.build
@@ -22,6 +29,20 @@ class InvoicesController < ApplicationController
 
     path = params[:commit] == Settings.commit_params.save_new ? new_invoice_path : invoices_path
     redirect_to path
+  end
+
+  def update
+    if @invoice.update_attributes invoice_params
+      flash.now[:success] = t "create_invoice.flashs.update_success"
+    else
+      flash.now[:alert] = t "create_invoice.flashs.update_not_success"
+    end
+  end
+
+  def destroy
+    @invoice.destroy
+    flash[:success] = t "create_invoice.flashs.delete_success"
+    redirect_to invoices_path
   end
 
   private

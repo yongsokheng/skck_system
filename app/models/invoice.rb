@@ -3,7 +3,7 @@ class Invoice < ActiveRecord::Base
   belongs_to :customer_vender
   belongs_to :company
 
-  has_many :invoice_transactions
+  has_many :invoice_transactions, dependent: :destroy
 
   validates :transaction_date, presence: true
   validates :customer_vender_id, presence: true

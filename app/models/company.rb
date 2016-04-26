@@ -10,6 +10,7 @@ class Company < ActiveRecord::Base
   has_many :measures
   has_many :unit_of_measures
   has_many :terms
+  has_many :invoices
 
   def chart_account_tree
     tree_chart = []

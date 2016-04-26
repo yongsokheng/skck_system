@@ -1,0 +1,14 @@
+$(".invoices").html("<%= j render 'invoice_data' %>");
+
+$(".selectize-dropdown.item-list").remove()
+$(".selectize-dropdown.unit-of-measure").remove();
+
+$("#tbl-invoice").tableScroll();
+load_selectize_simple(".customer");
+load_selectize_simple(".term");
+load_um(".fields .unit-of-measure");
+load_item_list(".fields .item-list");
+load_invoice_amount();
+load_btn_navigate();
+$(".icon-loading").hide();
+

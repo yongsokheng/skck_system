@@ -9,7 +9,7 @@
       <%= ff.text_field :quantity, class: "form-control quantity", autocomplete: "off" %>
     </td>
     <td>
-      <%= ff.select :unit_of_measure_id, option_groups_from_collection_for_select(@measures, :unit_of_measures, :name, :id, :name),
+      <%= ff.select :unit_of_measure_id, option_groups_from_collection_for_select(@measures, :unit_of_measures, :name, :id, :name, ff.object.unit_of_measure_id),
         {include_blank: true}, class: "form-control unit-of-measure", disabled: false %>
     </td>
     <td><%= ff.text_field :price_each,

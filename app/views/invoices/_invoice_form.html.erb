@@ -2,7 +2,16 @@
 <%= render "shared/error_modal" %>
 <i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
 
-<% invoice.invoice_transactions.build %>
+<%
+  unless invoice.new_record?
+    count_transaction = invoice.invoice_transactions.size
+    if count_transaction < 10
+      (10 - count_transaction).times {invoice.invoice_transactions.build}
+    else
+      invoice.invoice_transactions.build
+    end
+  end
+%>
 <%= nested_form_for invoice, html: {class: "form-journal"},
   remote: @remote do |f| %>
   <%= f.hidden_field :company_id, value: current_user.company.id %>
@@ -23,18 +32,19 @@
         {}, class: "customer form-control", disabled: @disabled %>
     </div>
     <div class="col-md-4">
-      <%= f.label :bill_to %>
-      <%= f.text_area :bill_to, class: "form-control" %>
-
-      <%= f.label :ship_to %>
-      <%= f.text_area :ship_to, class: "form-control" %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4 col-md-offset-8">
       <%= f.label :term_id %>
       <%= f.select :term_id, options_for_select(@terms, f.object.term_id),
         {}, class: "term form-control" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <%= f.label :bill_to %>
+      <%= f.text_area :bill_to, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :ship_to %>
+      <%= f.text_area :ship_to, class: "form-control" %>
     </div>
   </div>
 
@@ -76,6 +86,6 @@
       <%= f.submit t("create_invoice.actions.save"), class: "btn btn-primary btn-save pull-right" %>
       <%= button_to t("create_invoice.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
     </p>
-    <%= render "create_invoice/modal_confirm_delete", invoice: invoice  %>
+    <%= render "invoices/modal_confirm_delete", invoice: invoice %>
   <% end %>
 <% end %>
