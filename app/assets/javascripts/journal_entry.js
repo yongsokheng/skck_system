@@ -5,7 +5,7 @@ $(document).on("ready", function(){
     load_chart_account(".fields .chart-account");
     load_selectize_simple(".selectize-simple");
     load_name(".fields .name");
-    total_balance();
+    total_balance_journal();
     set_current_period();
     load_btn_status();
     load_btn_navigate();
@@ -22,16 +22,11 @@ $(document).on("ready", function(){
       });
     }
 
-    $(document).on("click", ".pagination a", function() {
-      $.getScript(this.href);
-      return false;
-    });
-
     $(document).on("change", ".debit", function() {
       $(this).parent().parent().find(".credit").val("");
       if($(this).val() != "")
         $(this).val($.number($(this).val(), 2));
-      total_balance();
+      total_balance_journal();
       delete_row($(this));
     });
 
@@ -39,7 +34,7 @@ $(document).on("ready", function(){
       $(this).parent().parent().find(".debit").val("");
       if($(this).val() != "")
         $(this).val($.number($(this).val(), 2));
-      total_balance();
+      total_balance_journal();
       delete_row($(this));
     });
 
@@ -92,24 +87,6 @@ $(document).on("ready", function(){
       $(".close-period-modal").modal("show");
     });
 
-    $(document).on("click", ".btn-prev", function() {
-      if($(this).is('[disabled=disabled]')) {
-        event.preventDefault();
-      }else{
-        $(".icon-loading").show();
-        $(".pagination .previous_page a").trigger("click");
-      }
-    });
-
-    $(document).on("click", ".btn-next", function() {
-      if($(this).is('[disabled=disabled]')) {
-        event.preventDefault();
-      }else{
-        $(".icon-loading").show();
-        $(".pagination .next_page a").trigger("click");
-      }
-    });
-
     $(".logbook-modal").on("hidden.bs.modal", function (e) {
       $(".logbook-modal").html("");
     })
@@ -119,10 +96,67 @@ $(document).on("ready", function(){
       load_chart_account(".fields .chart-account:last");
       load_name(".fields .name:last");
     });
+
+    // functions
+    function set_msg_valid(event, msg) {
+      event.preventDefault();
+      $(".error-modal").modal("show");
+      $(".invalid-msg").html(msg);
+    }
+
+    function validate_save(event) {
+      if(is_open_balance()) {
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.open_balance_validate"));
+      }else if(is_current_period() == false){
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.wrong_period", {period: $(".current-period").text()}));
+      }else if($(".log_book").val() == "") {
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.log_book_not_blank"));
+      }else if(is_journal_transaction_exist() == false) {
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.trans_validate"));
+      }else if(is_account_balance() == false) {
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.balance_validate"));
+      }else if(is_chart_account_valid() == false) {
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.chart_account_validate"))
+      }else if(is_name_valid() == false) {
+        set_msg_valid(event, I18n.t("journal_entries.validate_errors.name_validate"));
+      }
+    }
+
+    function load_logbook_data() {
+      var user_email = $(".api").data("email");
+      var user_token = $(".api").data("token");
+      var transaction_date = $(".transaction-date").val();
+      var bank_type_selectize = $(".bank_type")[0].selectize;
+      var logbook_selectize = $(".log_book")[0].selectize;
+      var bank_type_value = bank_type_selectize.getValue();
+
+      if(bank_type_value == "") {
+        logbook_selectize.clearOptions();
+      }else{
+        var cash_type_id = bank_type_selectize.options[bank_type_value].cash_type
+        $.ajax({
+          type: "get",
+          data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
+          dataType: "json",
+          url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
+          success: function(data) {
+            if(data.length > 0) {
+              logbook_selectize.clearOptions();
+              logbook_selectize.addOption(data);
+              logbook_selectize.addItem(data[0].value);
+            }else{
+              logbook_selectize.clearOptions();
+            }
+            load_btn_status();
+          }
+        });
+      }
+    }
+    //end functions
   }
 });
 
-function total_balance() {
+function total_balance_journal() {
   var total_debit = 0;
   var total_credit = 0;
 
@@ -137,30 +171,6 @@ function total_balance() {
 
   $(".total-debit").html(""+ $.number(total_debit, 2));
   $(".total-credit").html(""+ $.number(total_credit, 2));
-}
-
-function set_msg_valid(event, msg) {
-  event.preventDefault();
-  $(".error-modal").modal("show");
-  $(".invalid-msg").html(msg);
-}
-
-function validate_save(event) {
-  if(is_open_balance()) {
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.open_balance_validate"));
-  }else if(is_current_period() == false){
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.wrong_period", {period: $(".current-period").text()}));
-  }else if($(".log_book").val() == "") {
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.log_book_not_blank"));
-  }else if(is_transaction_exist() == false) {
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.trans_validate"));
-  }else if(is_account_balance() == false) {
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.balance_validate"));
-  }else if(is_chart_account_valid() == false) {
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.chart_account_validate"))
-  }else if(is_name_valid() == false) {
-    set_msg_valid(event, I18n.t("journal_entries.validate_errors.name_validate"));
-  }
 }
 
 function is_open_balance() {
@@ -209,7 +219,7 @@ function is_name_valid() {
   return valid;
 }
 
-function is_transaction_exist() {
+function is_journal_transaction_exist() {
   var exist = false;
   $(".fields").each(function() {
     if(($(this).find(".debit").val() != "") || ($(this).find(".credit").val() != "")) {
@@ -239,61 +249,11 @@ function set_current_period() {
 function load_btn_status() {
   if((is_current_period() == false) || is_open_balance()) {
     $(".btn-delete, .btn-save").attr("disabled", true);
-  }else if(is_transaction_exist() == false) {
+  }else if(is_journal_transaction_exist() == false) {
     $(".btn-delete").attr("disabled", true);
     $(".btn-save").attr("disabled", false);
   }else{
     $(".btn-delete, .btn-save").attr("disabled", false);
-  }
-}
-
-function load_btn_navigate() {
-  if($(".pagination").length == 0) {
-    $(".btn-prev").attr("disabled", true);
-    $(".btn-next").attr("disabled", true);
-  }else{
-    if($(".pagination .previous_page").hasClass("disabled")) {
-      $(".btn-prev").attr("disabled", true);
-    }else{
-      $(".btn-prev").attr("disabled", false);
-    }
-
-    if($(".pagination .next_page").hasClass("disabled")) {
-      $(".btn-next").attr("disabled", true);
-    }else{
-      $(".btn-next").attr("disabled", false);
-    }
-  }
-}
-
-function load_logbook_data() {
-  var user_email = $(".api").data("email");
-  var user_token = $(".api").data("token");
-  var transaction_date = $(".transaction-date").val();
-  var bank_type_selectize = $(".bank_type")[0].selectize;
-  var logbook_selectize = $(".log_book")[0].selectize;
-  var bank_type_value = bank_type_selectize.getValue();
-
-  if(bank_type_value == "") {
-    logbook_selectize.clearOptions();
-  }else{
-    var cash_type_id = bank_type_selectize.options[bank_type_value].cash_type
-    $.ajax({
-      type: "get",
-      data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
-      dataType: "json",
-      url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
-      success: function(data) {
-        if(data.length > 0) {
-          logbook_selectize.clearOptions();
-          logbook_selectize.addOption(data);
-          logbook_selectize.addItem(data[0].value);
-        }else{
-          logbook_selectize.clearOptions();
-        }
-        load_btn_status();
-      }
-    });
   }
 }
 

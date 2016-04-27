@@ -25,6 +25,7 @@
 //= require jquery-number-format
 //= require jquery.tablescroll
 //= require grid
+//=  require navigation_btn
 //= require journal_entry
 //= require chart_of_accounts
 //= require item_lists

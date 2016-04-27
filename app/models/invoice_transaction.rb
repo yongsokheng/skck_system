@@ -6,7 +6,6 @@ class InvoiceTransaction < ActiveRecord::Base
 
   validates :item_list_id, presence: true
 
-  private
   def amount
     (quantity.blank? ? 1 : quantity.to_f) * price_each.to_f
   end

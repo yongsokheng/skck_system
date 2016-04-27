@@ -2,10 +2,11 @@ $(document).on("ready", function() {
   if($("#create-invoice").length > 0) {
     $("#tbl-invoice").tableScroll();
     load_selectize_simple(".customer");
-    load_um(".fields .unit-of-measure");
     load_selectize_simple(".term");
+    load_um(".fields .unit-of-measure");
     load_item_list(".fields .item-list");
-    total_balance();
+    load_invoice_amount();
+    load_btn_navigate();
 
     $(document).on("keypress", ".quantity, .price-each, .amount", function(event) {
       if ((event.which != 46 || $(this).val().indexOf(".") != -1) && (event.which < 48 || event.which > 57)) {
@@ -41,7 +42,7 @@ $(document).on("ready", function() {
       var quantity_num = quantity.val() == "" ? 1 : parseFloat(quantity.val());
       var amount_num = quantity_num * price_each_num;
       amount.val($.number(amount_num, 2));
-      total_balance();
+      total_balance_invoice();
     });
 
     $(document).on("change", ".fields:last .form-control", function() {
@@ -54,12 +55,16 @@ $(document).on("ready", function() {
       validate_save(event);
     });
 
+    $(document).on("click", ".btn-delete", function(event) {
+      $(".invoice-delete-modal").modal("show");
+    });
+
     //functions
 
     function validate_save(event) {
       if($(".customer").val() == "") {
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.customer_blank"));
-      }else if(is_transaction_exist() == false) {
+      }else if(is_invoice_transaction_exist() == false) {
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.trans_validate"));
       }else if(is_transaction_valid() == false){
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.transaction_valid"));
@@ -72,7 +77,7 @@ $(document).on("ready", function() {
       $(".invalid-msg").html(msg);
     }
 
-    function is_transaction_exist() {
+    function is_invoice_transaction_exist() {
       var exist = false;
       $(".fields").each(function() {
         var item_list = $(this).find(".item-list").val();
@@ -97,65 +102,86 @@ $(document).on("ready", function() {
       });
       return valid;
     }
-
-    function total_balance() {
-      var total = 0;
-
-      $(".fields").each(function() {
-        var amount =  $(this).find(".amount").val();
-        if( amount != "") {
-          total += parseFloat(amount.replace(/,/g, ""));
-        }
-      });
-
-      $(".total").html(""+ $.number(total, 2));
-    }
-
-    function load_item_list(selector) {
-      $(""+selector).selectize({
-        onInitialize: function () {
-          var s = this;
-          this.revertSettings.$children.each(function () {
-            $.extend(s.options[this.value], $(this).data());
-          });
-          s.positionDropdown();
-        },
-        dropdownParent: "body",
-        render: {
-          option: function(item, escape) {
-            var status = item.status;
-            if(status == "inactive") return "";
-            var result = ("<div class='row'>" +
-              "<div class='col-md-8'>" + item.text + "</div>" +
-              "<div class='col-md-4'>" + item.type + "</div>" +
-              "</div>");
-              return result;
-          },
-          item: function(item, escape) {
-            return "<div>" + item.text + "</div>";
-          },
-        }
-      });
-    }
-
-    function load_um(selector) {
-      $(""+selector).selectize({
-        onInitialize: function () {
-          var s = this;
-          this.revertSettings.$children.each(function () {
-            $.extend(s.options[this.value], $(this).data());
-          });
-          s.positionDropdown();
-        },
-        dropdownParent: "body",
-        render: {
-          option: function(item, escape) {
-            var result = ("<div>" + item.text + "</div>");
-            return result;
-          },
-        }
-      });
-    }
     //end functions
   }
 })
+
+function load_invoice_amount() {
+  var total = 0;
+
+  $(".fields").each(function() {
+    var quantity =  $(this).find(".quantity");
+    var price_each = $(this).find(".price-each");
+    var amount = $(this).find(".amount");
+    if(quantity.val() !="" || price_each.val() != "") {
+      var price_each_num = price_each.val() == "" ? 0 : parseFloat(price_each.val().replace(/,/g, ""));
+      var quantity_num = quantity.val() == "" ? 1 : parseFloat(quantity.val());
+      var amount_num = quantity_num * price_each_num;
+      amount.val($.number(amount_num, 2));
+    }
+
+    if( amount.val() != "") {
+      total += parseFloat(amount.val().replace(/,/g, ""));
+    }
+    $(".total").html(""+ $.number(total, 2));
+  });
+}
+
+function total_balance_invoice() {
+  var total = 0;
+
+  $(".fields").each(function() {
+    var amount =  $(this).find(".amount").val();
+    if( amount != "") {
+      total += parseFloat(amount.replace(/,/g, ""));
+    }
+  });
+
+  $(".total").html(""+ $.number(total, 2));
+}
+
+function load_item_list(selector) {
+  $(""+selector).selectize({
+    onInitialize: function () {
+      var s = this;
+      this.revertSettings.$children.each(function () {
+        $.extend(s.options[this.value], $(this).data());
+      });
+      s.positionDropdown();
+    },
+    dropdownParent: "body",
+    render: {
+      option: function(item, escape) {
+        var status = item.status;
+        if(status == "inactive") return "";
+        var result = ("<div class='row'>" +
+          "<div class='col-md-8'>" + item.text + "</div>" +
+          "<div class='col-md-4'>" + item.type + "</div>" +
+          "</div>");
+          return result;
+      },
+      item: function(item, escape) {
+        return "<div>" + item.text + "</div>";
+      },
+    }
+  });
+}
+
+function load_um(selector) {
+  $(""+selector).selectize({
+    onInitialize: function () {
+      var s = this;
+      this.revertSettings.$children.each(function () {
+        $.extend(s.options[this.value], $(this).data());
+      });
+      s.positionDropdown();
+    },
+    dropdownParent: "body",
+    render: {
+      option: function(item, escape) {
+        var result = ("<div>" + item.text + "</div>");
+        return result;
+      },
+    }
+  });
+}
