@@ -2,9 +2,9 @@ $(document).on("ready", function() {
   if($("#create-invoice").length > 0) {
     $("#tbl-invoice").tableScroll();
     load_selectize_simple(".customer");
-    load_selectize_simple(".term");
     load_um(".fields .unit-of-measure");
     load_item_list(".fields .item-list");
+    load_account_receivable(".account-receivable");
     load_invoice_amount();
     load_btn_navigate();
 
@@ -64,6 +64,8 @@ $(document).on("ready", function() {
     function validate_save(event) {
       if($(".customer").val() == "") {
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.customer_blank"));
+      }else if($(".account-receivable").val() == "") {
+        set_msg_valid(event, I18n.t("create_invoice.validate_errors.account_receivable_blank"));
       }else if(is_invoice_transaction_exist() == false) {
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.trans_validate"));
       }else if(is_transaction_valid() == false){
@@ -152,8 +154,8 @@ function load_item_list(selector) {
     dropdownParent: "body",
     render: {
       option: function(item, escape) {
-        var status = item.status;
-        if(status == "inactive") return "";
+        var active = item.active;
+        if(active == 0) return "";
         var result = ("<div class='row'>" +
           "<div class='col-md-8'>" + item.text + "</div>" +
           "<div class='col-md-4'>" + item.type + "</div>" +
@@ -181,6 +183,32 @@ function load_um(selector) {
       option: function(item, escape) {
         var result = ("<div>" + item.text + "</div>");
         return result;
+      },
+    }
+  });
+}
+
+function load_account_receivable(selector) {
+  $(""+selector).selectize({
+    onInitialize: function () {
+      var s = this;
+      this.revertSettings.$children.each(function () {
+        $.extend(s.options[this.value], $(this).data());
+      });
+      s.positionDropdown();
+    },
+    render: {
+      option: function(item, escape) {
+        var active = item.active;
+        if(active == 0) return "";
+        var result = ("<div class='row'>" +
+          "<div class='col-md-6'>" + item.text + "</div>" +
+          "<div class='col-md-6'>" + item.type + "</div>" +
+          "</div>");
+          return result;
+      },
+      item: function(item, escape) {
+        return "<div>" + item.text + "</div>";
       },
     }
   });

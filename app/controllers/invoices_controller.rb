@@ -8,7 +8,7 @@ class InvoicesController < ApplicationController
   def index
     @invoices = @current_company.invoices.paginate(page: params[:page], per_page: 1)
       .order invoice_no: :desc
-    @disabled = true
+    @disabled = false
     @remote = true
   end
 
@@ -48,7 +48,7 @@ class InvoicesController < ApplicationController
   private
   def invoice_params
     params.require(:invoice).permit :invoice_no, :transaction_date, :customer_vender_id,
-      :bill_to, :ship_to, :term_id, invoice_transactions_attributes: [:id, :item_list_id,
+      :bill_to, :ship_to, invoice_transactions_attributes: [:id, :item_list_id,
       :description, :quantity, :unit_of_measure_id, :price_each, :_destroy]
   end
 
@@ -68,7 +68,9 @@ class InvoicesController < ApplicationController
     @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id,
       {"state" => data.state}, {"status" => data.status}]}
     @measures = @current_company.measures.find_measures
-    @terms = @current_company.terms.map{|term| [term.name, term.id]}
+    @account_receivables = @current_company.chart_of_accounts.find_account_receivables
+      .map{|data| [data.name, data.id, {"data-active" => data.active},
+      {"data-type" => data.chart_account_type.name}]}
   end
 
   def set_invoice_no

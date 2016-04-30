@@ -279,8 +279,8 @@ function load_chart_account(selector) {
     dropdownParent: "body",
     render: {
       option: function(item, escape) {
-        var status = item.status;
-        if(status == "inactive") return "";
+        var active = item.active;
+        if(active == 0) return "";
         var result = ("<div class='row'>" +
           "<div class='col-md-8'>" + item.text + "</div>" +
           "<div class='col-md-4'>" + item.type + "</div>" +

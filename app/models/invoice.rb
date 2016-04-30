@@ -1,5 +1,4 @@
 class Invoice < ActiveRecord::Base
-  belongs_to :term
   belongs_to :customer_vender
   belongs_to :company
 

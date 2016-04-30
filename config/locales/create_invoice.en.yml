@@ -28,6 +28,7 @@ en:
       need_item_list: "Item list is missing"
       trans_validate: "Invoice must have at least one valid transaction."
       customer_blank: "Customer cannot be blank."
+      account_receivable_blank: "Account Receivable cannot be blank"
       transaction_valid: "Transactions require an item."
     labels:
       total: "Total:"
