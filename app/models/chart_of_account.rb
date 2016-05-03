@@ -14,6 +14,10 @@ class ChartOfAccount < ActiveRecord::Base
   delegate :name, :id, to: :chart_account_type, prefix: true, allow_nil: true
 
   scope :find_data, ->{includes(:chart_account_type).order("chart_account_types.name ASC")}
+  scope :find_account_receivables, ->{includes(:chart_account_type)
+    .where("chart_account_types.type_code = ?", Settings.account_type.ar)
+    .order(name: :ASC)
+    .references("chart_account_types")}
 
   def chart_account_name
     "#{account_no}-#{name}"

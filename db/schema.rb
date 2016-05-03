@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308151817) do
+ActiveRecord::Schema.define(version: 20160422085821) do
 
   create_table "bank_types", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -99,20 +99,20 @@ ActiveRecord::Schema.define(version: 20160308151817) do
 
   create_table "invoices", force: :cascade do |t|
     t.date     "transaction_date"
-    t.string   "bill_to",            limit: 255
-    t.string   "ship_to",            limit: 255
-    t.integer  "invoice_no",         limit: 4
-    t.string   "po_number",          limit: 255
-    t.integer  "term_id",            limit: 4
-    t.integer  "customer_vender_id", limit: 4
-    t.integer  "company_id",         limit: 4
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.string   "bill_to",             limit: 255
+    t.string   "ship_to",             limit: 255
+    t.integer  "invoice_no",          limit: 4
+    t.string   "po_number",           limit: 255
+    t.integer  "customer_vender_id",  limit: 4
+    t.integer  "company_id",          limit: 4
+    t.integer  "chart_of_account_id", limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
+  add_index "invoices", ["chart_of_account_id"], name: "index_invoices_on_chart_of_account_id", using: :btree
   add_index "invoices", ["company_id"], name: "index_invoices_on_company_id", using: :btree
   add_index "invoices", ["customer_vender_id"], name: "index_invoices_on_customer_vender_id", using: :btree
-  add_index "invoices", ["term_id"], name: "index_invoices_on_term_id", using: :btree
 
   create_table "item_list_hierarchies", id: false, force: :cascade do |t|
     t.integer "ancestor_id",   limit: 4, null: false
@@ -221,17 +221,6 @@ ActiveRecord::Schema.define(version: 20160308151817) do
 
   add_index "sale_tax_codes", ["company_id"], name: "index_sale_tax_codes_on_company_id", using: :btree
 
-  create_table "terms", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.date     "net_due"
-    t.float    "discount",   limit: 24
-    t.integer  "company_id", limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "terms", ["company_id"], name: "index_terms_on_company_id", using: :btree
-
   create_table "unit_of_measures", force: :cascade do |t|
     t.string   "name",         limit: 255
     t.string   "abbreviation", limit: 255
@@ -294,9 +283,9 @@ ActiveRecord::Schema.define(version: 20160308151817) do
   add_foreign_key "invoice_transactions", "item_lists"
   add_foreign_key "invoice_transactions", "sale_tax_codes"
   add_foreign_key "invoice_transactions", "unit_of_measures"
+  add_foreign_key "invoices", "chart_of_accounts"
   add_foreign_key "invoices", "companies"
   add_foreign_key "invoices", "customer_venders"
-  add_foreign_key "invoices", "terms"
   add_foreign_key "item_lists", "chart_of_accounts"
   add_foreign_key "item_lists", "companies"
   add_foreign_key "item_lists", "customer_venders"
@@ -314,7 +303,6 @@ ActiveRecord::Schema.define(version: 20160308151817) do
   add_foreign_key "log_books", "voucher_types"
   add_foreign_key "measures", "companies"
   add_foreign_key "sale_tax_codes", "companies"
-  add_foreign_key "terms", "companies"
   add_foreign_key "unit_of_measures", "companies"
   add_foreign_key "unit_of_measures", "measures"
   add_foreign_key "users", "companies"

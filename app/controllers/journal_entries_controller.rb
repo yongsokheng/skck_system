@@ -61,7 +61,7 @@ class JournalEntriesController < ApplicationController
     @chart_accounts = @current_company.chart_of_accounts.find_data
       .map{|ca| [ca.chart_account_name, ca.id,
       {"data-type_code" => ca.chart_account_type.type_code},
-      {"data-status" => ca.status}, {"data-type" => ca.chart_account_type.name}]}
+      {"data-active" => ca.active}, {"data-type" => ca.chart_account_type.name}]}
     @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id]}
     @venders = @current_company.customer_venders.venders.map{|data| [data.name, data.id]}
     @bank_types = @current_company.bank_types.find_data.map{|type| [type.name, type.id,
