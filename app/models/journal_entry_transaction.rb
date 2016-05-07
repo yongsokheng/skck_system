@@ -1,5 +1,5 @@
 class JournalEntryTransaction < ActiveRecord::Base
-  belongs_to :journal_entry
+  belongs_to :journal, polymorphic: true
   belongs_to :chart_of_account
   belongs_to :customer_vender
 

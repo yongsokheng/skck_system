@@ -1,4 +1,5 @@
 class InvoicesController < ApplicationController
+  before_action :set_params, only: [:create, :update]
   load_and_authorize_resource
   before_action :set_current_compay
   before_action :load_data, only: [:index, :new, :update]
@@ -6,7 +7,9 @@ class InvoicesController < ApplicationController
   before_action :set_invoice_no, only: :new
 
   def index
-    @invoices = @current_company.invoices.paginate(page: params[:page], per_page: 1)
+    @invoices = @current_company.invoices
+      .includes(:invoice_transactions => :journal_entry_transactions)
+      .paginate(page: params[:page], per_page: 1)
       .order invoice_no: :desc
     @remote = true
   end
@@ -47,8 +50,9 @@ class InvoicesController < ApplicationController
   private
   def invoice_params
     params.require(:invoice).permit :invoice_no, :transaction_date, :customer_vender_id,
-      :bill_to, :ship_to, :company_id, :chart_of_account_id, invoice_transactions_attributes: [:id, :item_list_id,
-      :description, :quantity, :unit_of_measure_id, :price_each, :_destroy]
+      :chart_of_account_id, :company_id, :bill_to, :ship_to, invoice_transactions_attributes: [:id, :item_list_id,
+      :description, :quantity, :unit_of_measure_id, :price_each, :_destroy,
+      journal_entry_transactions_attributes: [:id, :description, :debit, :credit, :chart_of_account_id, :customer_vender_id, :_destroy]]
   end
 
   def set_current_compay
@@ -77,5 +81,46 @@ class InvoicesController < ApplicationController
   def set_invoice_no
     last_invoice = Invoice.order(invoice_no: :DESC).limit(1).last
     @invoice_no = last_invoice.present? ? last_invoice.invoice_no + 1 : 1
+  end
+
+  def set_params
+    account_receivable = params[:invoice][:chart_of_account_id]
+    customer_vender = params[:invoice][:customer_vender_id]
+
+    invoice_transactions_params = params[:invoice][:invoice_transactions_attributes]
+    invoice_transactions_params.each do |key, val|
+      if val[:item_list_id].present?
+        item_list = ItemList.find val[:item_list_id].to_i
+        item_list_type = item_list.item_list_type_name
+        account_income = item_list.chart_of_account_id
+        description = val[:description]
+        journal_entry_transactions_params = val[:journal_entry_transactions_attributes]
+
+        quantity = (val[:quantity].blank? ? 1 : val[:quantity].to_f)
+        amount = quantity * val[:price_each].to_f
+        journal_entry_transactions_params["0"][:debit] = amount
+        journal_entry_transactions_params["0"][:chart_of_account_id] =  account_receivable
+        journal_entry_transactions_params["1"][:credit] = amount
+        journal_entry_transactions_params["1"][:chart_of_account_id] =  account_income
+
+        journal_entry_transactions_params.each do |k, v|
+          v[:customer_vender_id] = customer_vender
+          v[:description] = description
+        end
+
+        if item_list.is_inventory?
+          cost = item_list.cost * quantity
+          journal_entry_transactions_params["2"][:credit] = cost
+          # fix later on account id
+          journal_entry_transactions_params["2"][:chart_of_account_id] =  item_list.chart_of_account_id
+          journal_entry_transactions_params["3"][:debit] = cost
+          # fix later on account id
+          journal_entry_transactions_params["3"][:chart_of_account_id] =  item_list.chart_of_account_id
+        else
+          journal_entry_transactions_params["2"][:_destroy] = true
+          journal_entry_transactions_params["3"][:_destroy] = true
+        end
+      end
+    end
   end
 end

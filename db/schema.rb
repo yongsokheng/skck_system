@@ -173,16 +173,16 @@ ActiveRecord::Schema.define(version: 20160422085821) do
     t.string   "description",         limit: 255
     t.float    "debit",               limit: 24
     t.float    "credit",              limit: 24
+    t.integer  "journal_id",          limit: 4
+    t.string   "journal_type",        limit: 255
     t.integer  "chart_of_account_id", limit: 4
     t.integer  "customer_vender_id",  limit: 4
-    t.integer  "journal_entry_id",    limit: 4
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
 
   add_index "journal_entry_transactions", ["chart_of_account_id"], name: "index_journal_entry_transactions_on_chart_of_account_id", using: :btree
   add_index "journal_entry_transactions", ["customer_vender_id"], name: "index_journal_entry_transactions_on_customer_vender_id", using: :btree
-  add_index "journal_entry_transactions", ["journal_entry_id"], name: "index_journal_entry_transactions_on_journal_entry_id", using: :btree
 
   create_table "log_books", force: :cascade do |t|
     t.date     "transaction_date"
@@ -297,7 +297,6 @@ ActiveRecord::Schema.define(version: 20160422085821) do
   add_foreign_key "journal_entries", "users"
   add_foreign_key "journal_entry_transactions", "chart_of_accounts"
   add_foreign_key "journal_entry_transactions", "customer_venders"
-  add_foreign_key "journal_entry_transactions", "journal_entries"
   add_foreign_key "log_books", "cash_types"
   add_foreign_key "log_books", "companies"
   add_foreign_key "log_books", "voucher_types"

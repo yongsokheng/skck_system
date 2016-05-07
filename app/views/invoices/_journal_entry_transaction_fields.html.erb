@@ -1,0 +1,11 @@
+<%
+  numbers = ff.object.new_record? ? 4 : 2
+  numbers.times {ff.object.journal_entry_transactions.build}
+%>
+<%= ff.fields_for :journal_entry_transactions, wrapper: false do |fff| %>
+  <%= fff.hidden_field :description %>
+  <%= fff.hidden_field :debit %>
+  <%= fff.hidden_field :credit %>
+  <%= fff.hidden_field :chart_of_account_id %>
+  <%= fff.hidden_field :customer_vender_id %>
+<% end %>

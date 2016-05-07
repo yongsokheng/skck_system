@@ -32,6 +32,10 @@ class ItemList < ActiveRecord::Base
     end
   end
 
+  def is_inventory?
+    item_list_type_name == Settings.item_list_types.inventory
+  end
+
   private
   def name_existed
     if parent_id.present?

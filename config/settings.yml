@@ -2,6 +2,10 @@ account_type:
   ar: "ar"
   ap: "ap"
 
+item_list_types:
+  service: "Service"
+  inventory: "Inventory Part"
+
 cash_types:
   bank: "bank"
   safe: "safe"
