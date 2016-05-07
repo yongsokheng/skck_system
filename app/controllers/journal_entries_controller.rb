@@ -1,7 +1,7 @@
 class JournalEntriesController < ApplicationController
   load_and_authorize_resource
   before_action :set_current_compay
-  before_action :load_data, only: [:index, :new]
+  before_action :load_data, only: [:index, :new, :update]
   before_action :check_condition, only: :destroy
 
   def index
@@ -38,6 +38,8 @@ class JournalEntriesController < ApplicationController
     else
       flash.now[:alert] = t "journal_entries.flashs.update_not_success"
     end
+    @disabled = true
+    @remote = true
   end
 
   def destroy

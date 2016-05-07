@@ -1,1 +1,12 @@
 $(".flash").html("<%= j render 'shared/flash' %>");
+$(".journal-entry-form").html("<%= j render 'journal_entry', journal_entry: @journal_entry %>");
+
+$(".selectize-dropdown.chart-account").remove()
+$(".selectize-dropdown.name").remove();
+
+$("#tbl-journal-entry").tableScroll();
+load_chart_account(".fields .chart-account");
+load_name(".fields .name");
+load_selectize_simple(".selectize-simple");
+total_balance_journal();
+
