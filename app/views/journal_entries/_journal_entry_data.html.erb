@@ -1,2 +1,4 @@
-<%= render partial: "journal_entry", collection: @journal_entries, as: :journal_entry %>
+<div class="journal-entry-form">
+  <%= render partial: "journal_entry", collection: @journal_entries, as: :journal_entry %>
+</div>
 <div hidden><%= will_paginate @journal_entries %></div>

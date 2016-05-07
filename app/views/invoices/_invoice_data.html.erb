@@ -1,2 +1,4 @@
-<%= render partial: "invoice_form", collection: @invoices, as: :invoice %>
+<div class="invoice-form">
+  <%= render partial: "invoice_form", collection: @invoices, as: :invoice %>
+</div>
 <div hidden><%= will_paginate @invoices %></div>

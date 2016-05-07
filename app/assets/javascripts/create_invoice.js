@@ -56,6 +56,7 @@ $(document).on("ready", function() {
     });
 
     $(document).on("click", ".btn-delete", function(event) {
+      event.preventDefault();
       $(".invoice-delete-modal").modal("show");
     });
 

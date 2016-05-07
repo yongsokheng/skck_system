@@ -80,6 +80,7 @@ $(document).on("ready", function(){
     });
 
     $(document).on("click", ".btn-delete", function(event) {
+      event.preventDefault();
       $(".journal-delete-modal").modal("show");
     });
 
