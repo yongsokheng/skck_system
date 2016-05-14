@@ -67,7 +67,7 @@ class JournalEntriesController < ApplicationController
     @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id]}
     @venders = @current_company.customer_venders.venders.map{|data| [data.name, data.id]}
     @bank_types = @current_company.bank_types.find_data.map{|type| [type.name, type.id,
-      "data-cash_type" => type.cash_type_id]}
+      "data-cash_type" => type.cash_type_id, "data-cash_name" => type.cash_type_name]}
   end
 
   def check_condition
