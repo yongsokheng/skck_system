@@ -4,6 +4,7 @@ class InvoicesController < ApplicationController
   before_action :load_data, only: [:index, :new, :update]
   before_action :set_company, only: [:create]
   before_action :set_invoice_no, only: :new
+  before_action :check_condition, only: :destroy
 
   def index
     @invoices = @current_company.invoices.paginate(page: params[:page], per_page: 1)
@@ -77,5 +78,12 @@ class InvoicesController < ApplicationController
   def set_invoice_no
     last_invoice = Invoice.order(invoice_no: :DESC).limit(1).last
     @invoice_no = last_invoice.present? ? last_invoice.invoice_no + 1 : 1
+  end
+
+  def check_condition
+    unless @current_company.working_period.current_period? @invoice.transaction_date
+      flash[:alert] = t "create_invoice.validate_errors.wrong_period"
+      redirect_to new_invoice_path
+    end
   end
 end

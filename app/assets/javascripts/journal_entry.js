@@ -12,9 +12,8 @@ $(document).on("ready", function(){
 
     if($(".new-journal").length > 0) {
       $(document).on("change", ".transaction-date", function() {
-        if($(".logbook-form-modal").length == 0) {
-          load_logbook_data();
-        }
+        load_btn_status();
+        load_logbook_data();
       });
 
       $(document).on("change", ".bank_type", function() {
@@ -148,7 +147,6 @@ $(document).on("ready", function(){
             }else{
               logbook_selectize.clearOptions();
             }
-            load_btn_status();
           }
         });
       }
@@ -250,9 +248,6 @@ function set_current_period() {
 function load_btn_status() {
   if((is_current_period() == false) || is_open_balance()) {
     $(".btn-delete, .btn-save").attr("disabled", true);
-  }else if(is_journal_transaction_exist() == false) {
-    $(".btn-delete").attr("disabled", true);
-    $(".btn-save").attr("disabled", false);
   }else{
     $(".btn-delete, .btn-save").attr("disabled", false);
   }

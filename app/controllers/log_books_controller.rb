@@ -2,6 +2,7 @@ class LogBooksController < ApplicationController
   load_and_authorize_resource
   before_action :load_data, only: [:index, :create, :update]
   before_action :load_item_select, only: [:new, :edit]
+  before_action :set_company, only: [:create]
 
   def index
   end
@@ -37,13 +38,17 @@ class LogBooksController < ApplicationController
   end
 
   def load_data
-    company = current_user.company
-    period = company.working_period
-    @log_books = company.log_books.find_in_current_period period.start_date, period.end_date
+    @company = current_user.company
+    period = @company.working_period
+    @log_books = @company.log_books.find_in_current_period period.start_date, period.end_date
   end
 
   def load_item_select
     @cash_types = CashType.all
     @voucher_types = VoucherType.all
+  end
+
+  def set_company
+    @log_book.company_id = @company.id
   end
 end

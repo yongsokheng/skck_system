@@ -3,7 +3,7 @@ var datetime_options = {
   enableOnReadonly: true,
   orientation: "auto",
   autoclose: true,
-  todayBtn: "linked",
+  todayBtn: "linked"
 };
 
 $(document).on("page:update", function() {

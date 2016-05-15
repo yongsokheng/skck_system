@@ -12,7 +12,7 @@ class BankType < ActiveRecord::Base
 
   scope :find_data, ->{includes(:cash_type).order(name: :ASC)}
 
-  delegate :id, to: :cash_type, prefix: true, allow_nil: true
+  delegate :id, :name, to: :cash_type, prefix: true, allow_nil: true
 
   def open_balance voucher_type_id
     current_period = company.working_period
