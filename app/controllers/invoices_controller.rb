@@ -68,7 +68,7 @@ class InvoicesController < ApplicationController
     @customers = @current_company.customer_venders.customers.map{|data| [data.name, data.id,
       {"state" => data.state}, {"status" => data.status}]}
     @measures = @current_company.measures.find_measures
-    @account_receivables = @current_company.chart_of_accounts.find_account_receivables
+    @account_receivables = @current_company.chart_of_accounts.find_accounts(Settings.account_type.ar)
       .map{|data| [data.name, data.id, {"data-active" => data.active},
       {"data-type" => data.chart_account_type.name}]}
 

@@ -30,6 +30,7 @@
 //= require chart_of_accounts
 //= require item_lists
 //= require create_invoice
+//= require receive_payments
 
 var flash = function() {
   setTimeout(function() {

@@ -9,6 +9,7 @@ en:
     chart_of_account: "Chart of Account"
     item_list: "Item List"
     create_invoice: "Create Invoice"
+    receive_payment: "Receive Payment"
     customer: "Customer"
     vender: "Vender"
     sign_in: "Sign in"

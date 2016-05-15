@@ -1,6 +1,7 @@
 account_type:
   ar: "ar"
   ap: "ap"
+  bank: "bank"
 
 cash_types:
   bank: "bank"

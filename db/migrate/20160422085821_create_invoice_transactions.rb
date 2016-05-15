@@ -3,7 +3,7 @@ class CreateInvoiceTransactions < ActiveRecord::Migration
     create_table :invoice_transactions do |t|
       t.string :description
       t.float :quantity
-      t.float :price_each
+      t.decimal :price_each, precision: 15, scale: 2
       t.references :invoice, index: true, foreign_key: true
       t.references :item_list, index: true, foreign_key: true
       t.references :sale_tax_code, index: true, foreign_key: true

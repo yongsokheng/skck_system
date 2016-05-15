@@ -1,0 +1,31 @@
+#receive-payment {
+  .tbl-payment {
+    .pay-head {
+      width: 10%;
+    }
+
+    .transaction-date-head {
+      width: 20%;
+    }
+
+    .number-head {
+      width: 10%;
+    }
+
+    .orig-amt-head, .amt-due-head, .payment-head {
+      width: 20%;
+    }
+
+    .orig-amt, .amt-due, .payment {
+      text-align: right;
+    }
+
+    .pay {
+      text-align: center;
+    }
+  }
+
+  .selectize-dropdown.chart-account {
+    width: 350px !important;
+  }
+}

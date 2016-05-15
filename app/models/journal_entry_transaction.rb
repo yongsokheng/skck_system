@@ -6,6 +6,16 @@ class JournalEntryTransaction < ActiveRecord::Base
   validates :chart_of_account_id, presence: true
   validate :name_must_exist_on_condition
 
+  def debit= debit
+    debit = debit.gsub(",", "")
+    self[:debit] = debit
+  end
+
+  def credit= credit
+    credit = credit.gsub(",", "")
+    self[:credit] = credit
+  end
+
   private
   def name_must_exist_on_condition
     account_type_code = Settings.account_type.map{|type| type.last}

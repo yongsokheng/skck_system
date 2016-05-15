@@ -1,0 +1,33 @@
+en:
+  receive_payments:
+    title: "Customer Payment"
+    tables:
+      headers:
+        date: "Date"
+        number: "Number"
+        orig_amt: "Orig AMT"
+        amt_due: "AMT Due"
+        payment: "Payment"
+    actions:
+      save_new: "Save new"
+      save_close: "Save close"
+      view_all: "View all"
+      pay: "Pay"
+    flashes:
+      save_success: "Save success"
+      save_not_success: "Save not success"
+    breadcrumbs:
+      new: "New"
+    labels:
+      total: "Total"
+      no_unpaid_invoice: "No unpaid invoice"
+      no_customer_select: "No customer selected"
+    validate_errors:
+      trans_validate: "Payment must have at least one valid transaction."
+      customer_blank: "Customer cannot be blank."
+      account_blank: "Account cannot be blank"
+      bank_type_blank: "Bank type cannot be blank."
+      log_book_blank: "Log Book cannot be blank."
+      transaction_valid: "Transactions require an item."
+      wrong_period: "You can only add/edit transaction in your current working period."
+      wrong_payment: "Payment must be less than or equal to its due amount."

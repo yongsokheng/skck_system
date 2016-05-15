@@ -19,4 +19,8 @@ module ApplicationHelper
   def chart_of_account_status object
     (object.active? ? "<span class='label label-success'>" + t("chart_of_accounts.actions.active") + "</span>" : "<span class='label label-warning'>" + t("chart_of_accounts.actions.inactive") + "</span>").html_safe
   end
+
+  def format_number number
+    number_with_precision number, precision: 2, delimiter: ","
+  end
 end
