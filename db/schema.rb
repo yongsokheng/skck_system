@@ -124,12 +124,14 @@ ActiveRecord::Schema.define(version: 20160422085821) do
     t.string   "name",                     limit: 255
     t.string   "description",              limit: 255
     t.string   "manufacturer_part_number", limit: 255
-    t.float    "cost",                     limit: 24
-    t.float    "price",                    limit: 24
+    t.float    "cost",                     limit: 24,  default: 0.0
+    t.float    "price",                    limit: 24,  default: 0.0
     t.string   "purchase_description",     limit: 255
     t.string   "sale_description",         limit: 255
     t.boolean  "active",                               default: true
     t.integer  "chart_of_account_id",      limit: 4
+    t.integer  "income_account_id",        limit: 4
+    t.integer  "cogs_account_id",          limit: 4
     t.integer  "company_id",               limit: 4
     t.integer  "customer_vender_id",       limit: 4
     t.integer  "item_list_type_id",        limit: 4
