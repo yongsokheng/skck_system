@@ -114,15 +114,6 @@ ActiveRecord::Schema.define(version: 20160422085821) do
   add_index "invoices", ["company_id"], name: "index_invoices_on_company_id", using: :btree
   add_index "invoices", ["customer_vender_id"], name: "index_invoices_on_customer_vender_id", using: :btree
 
-  create_table "item_list_hierarchies", id: false, force: :cascade do |t|
-    t.integer "ancestor_id",   limit: 4, null: false
-    t.integer "descendant_id", limit: 4, null: false
-    t.integer "generations",   limit: 4, null: false
-  end
-
-  add_index "item_list_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "item_list_anc_desc_idx", unique: true, using: :btree
-  add_index "item_list_hierarchies", ["descendant_id"], name: "item_list_desc_idx", using: :btree
-
   create_table "item_list_types", force: :cascade do |t|
     t.string   "name",       limit: 255
     t.datetime "created_at",             null: false
@@ -137,7 +128,6 @@ ActiveRecord::Schema.define(version: 20160422085821) do
     t.float    "price",                    limit: 24
     t.string   "purchase_description",     limit: 255
     t.string   "sale_description",         limit: 255
-    t.integer  "parent_id",                limit: 4
     t.boolean  "active",                               default: true
     t.integer  "chart_of_account_id",      limit: 4
     t.integer  "company_id",               limit: 4
