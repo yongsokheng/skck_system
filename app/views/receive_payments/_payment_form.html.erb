@@ -1,0 +1,96 @@
+<%= render "shared/errors", object: @receive_payment %>
+<%= render "shared/error_modal" %>
+<i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
+
+<%= nested_form_for @receive_payment do |f| %>
+  <div class="row">
+    <div class="col-md-3">
+      <%= f.label :received_from %>
+      <%= f.select :customer_vender_id, options_for_select(@customers, f.object.customer_vender_id),
+        {include_blank: true}, class: "customer form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :transaction_date %>
+      <%= f.text_field :transaction_date,
+        class: "form-control transaction-date datepicker", required: true %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :chart_of_account %>
+      <%= f.select :chart_of_account_id,
+        options_for_select(@chart_accounts, f.object.chart_of_account_id),
+        {}, class: "chart-account form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :customer_balance %>
+      <div class="customer-balance"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <%= f.label :bank_type %>
+      <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id),
+        {}, class: "bank-type form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :log_book %>
+      <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id),
+        {}, class: "log-book form-control" %>
+    </div>
+  </div>
+
+  <table class="table table-bordered tbl-payment grid">
+    <thead>
+      <tr>
+        <th class="pay-head"></th>
+        <th class="transaction-date-head"><%= t "receive_payments.tables.headers.date" %></th>
+        <th class="number-head"><%= t "receive_payments.tables.headers.number" %></th>
+        <th class="orig-amt-head"><%= t "receive_payments.tables.headers.orig_amt" %></th>
+        <th class="amt-due-head"><%= t "receive_payments.tables.headers.amt_due" %></th>
+        <th class="payment-head"><%= t "receive_payments.tables.headers.payment" %></th>
+      </tr>
+    </thead>
+    <tbody class="invoice_transactions">
+      <% if @invoices.present? %>
+        <% @invoices.includes(:invoice_transactions, :receive_payment_transactions)
+          .each do |invoice| %>
+          <%= f.fields_for :receive_payment_transactions,
+            @receive_payment.receive_payment_transactions.build, wrapper: false do |ff| %>
+            <tr class="fields">
+              <td class="label-text pay"><%= link_to t("receive_payments.actions.pay"),
+                "javascript:void(0)", class: "btn-paid" %></td>
+              <td class="label-text"><%= invoice.transaction_date %></td>
+              <td class="label-text"><%= invoice.invoice_no %></td>
+              <td class="label-text orig-amt"><%= format_number invoice.origin_amount %></td>
+              <td class="label-text amt-due"><%= format_number invoice.amount_due %></td>
+              <td>
+                <%= ff.hidden_field :invoice_id, value: invoice.id %>
+                <%= ff.text_field :payment, value: format_number(0),
+                  class: "form-control payment", autocomplete: "off" %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% elsif @customer_id.present? %>
+        <tr><td><%= t "receive_payments.labels.no_unpaid_invoice" %></td></tr>
+      <% else %>
+        <tr><td><%= t "receive_payments.labels.no_customer_select" %></td></tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td><%= t "receive_payments.labels.total" %></td>
+        <td class="orig-amt-foot"></td>
+        <td class="amt-due-foot"></td>
+        <td class="payment-foot"></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <p>
+    <%= f.submit t("receive_payments.actions.save_new"), value: Settings.commit_params.save_new,
+      class: "btn btn-primary btn-save pull-right" %>
+    <%= f.submit t("receive_payments.actions.save_close"), value: Settings.commit_params.save_close,
+      class: "btn btn-primary btn-save pull-right" %>
+  </p>
+<% end %>

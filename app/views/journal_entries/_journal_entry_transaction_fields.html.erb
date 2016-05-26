@@ -4,10 +4,10 @@
       <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "chart-account form-control" %>
     </td>
     <td><%= ff.text_field :debit,
-      value: number_with_precision(ff.object.debit, precision: 2, delimiter: ","),
+      value: format_number(ff.object.debit),
       class: "form-control debit", autocomplete: "off" %></td>
     <td><%= ff.text_field :credit,
-      value: number_with_precision(ff.object.credit, precision: 2, delimiter: ","),
+      value: format_number(ff.object.credit),
       class: "form-control credit", autocomplete: "off" %></td>
     <td><%= ff.text_field :description, class: "form-control description",
       autocomplete: "off" %></td>

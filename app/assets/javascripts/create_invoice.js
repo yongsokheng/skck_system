@@ -7,7 +7,7 @@ $(document).on("ready", function() {
     load_account_receivable(".account-receivable");
     load_invoice_amount();
     load_btn_navigate();
-    load_btn_status_invoice();
+    set_btn_status();
 
     $(document).on("keypress", ".quantity, .price-each, .amount", function(event) {
       if ((event.which != 46 || $(this).val().indexOf(".") != -1) && (event.which < 48 || event.which > 57)) {
@@ -62,7 +62,7 @@ $(document).on("ready", function() {
     });
 
     $(document).on("change", ".transaction-date", function() {
-      load_btn_status_invoice();
+      set_btn_status();
     });
 
     //functions
@@ -137,7 +137,7 @@ function load_invoice_amount() {
   });
 }
 
-function load_btn_status_invoice() {
+function set_btn_status() {
   if(is_current_period() == false) {
     $(".btn-delete, .btn-save").attr("disabled", true);
   }else{

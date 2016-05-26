@@ -6,6 +6,7 @@ class ChartOfAccount < ActiveRecord::Base
 
   has_many :journal_entry_transactions
   has_many :item_lists
+  has_many :receive_payments
 
   validates :account_no, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: {case_sensitive: false}
@@ -14,8 +15,8 @@ class ChartOfAccount < ActiveRecord::Base
   delegate :name, :id, to: :chart_account_type, prefix: true, allow_nil: true
 
   scope :find_data, ->{includes(:chart_account_type).order("chart_account_types.name ASC")}
-  scope :find_account_receivables, ->{includes(:chart_account_type)
-    .where("chart_account_types.type_code = ?", Settings.account_type.ar)
+  scope :find_accounts, ->account_code{includes(:chart_account_type)
+    .where("chart_account_types.type_code = ?", account_code)
     .order(name: :ASC)
     .references("chart_account_types")}
 

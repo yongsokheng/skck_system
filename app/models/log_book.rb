@@ -3,7 +3,8 @@ class LogBook < ActiveRecord::Base
   belongs_to :voucher_type
   belongs_to :company
 
-  has_many :journal_entries, dependent: :destroy
+  has_many :journal_entries
+  has_many :receive_payments
 
   before_validation :format_reference_no, if: :transaction_data_exist?
 

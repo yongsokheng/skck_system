@@ -1,0 +1,14 @@
+$(".payment-form").html("<%= j render 'receive_payments/payment_form' %>");
+total_amount_payment();
+$(".tbl-payment").tableScroll();
+
+$(".customer").val("<%= @customer_id %>");
+$(".transaction-date").val("<%= @transaction_date %>");
+$(".chart-account").val("<%= @chart_account %>");
+$(".bank-type").val("<%= @bank_type %>");
+$(".log-book").val("<%= @log_book %>");
+
+load_selectize_simple(".customer");
+load_account_payment(".chart-account");
+load_selectize_simple(".bank-type");
+load_selectize_simple(".log-book");

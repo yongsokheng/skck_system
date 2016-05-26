@@ -1,0 +1,20 @@
+<div id="receive-payment" class="row">
+  <div class="col-md-9">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li><%= link_to t("receive_payments.title"), invoices_path %></li>
+      <li class="active"><%= t "receive_payments.breadcrumbs.new" %></li>
+    </ol>
+    <div class="receive-payment-header">
+      <span class="title"><%= t "receive_payments.title" %></span>
+      <span class="btn-navigate pull-right">
+        <%= link_to t("receive_payments.actions.view_all"), invoices_path,
+          class: "btn btn-default" %>
+      </span>
+    </div>
+    <hr>
+    <div class="payment-form">
+      <%= render "payment_form" %>
+    </div>
+  </div>
+</div>

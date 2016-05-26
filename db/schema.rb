@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422085821) do
+ActiveRecord::Schema.define(version: 20160515135134) do
 
   create_table "bank_types", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -83,13 +83,13 @@ ActiveRecord::Schema.define(version: 20160422085821) do
   create_table "invoice_transactions", force: :cascade do |t|
     t.string   "description",        limit: 255
     t.float    "quantity",           limit: 24
-    t.float    "price_each",         limit: 24
+    t.decimal  "price_each",                     precision: 15, scale: 2
     t.integer  "invoice_id",         limit: 4
     t.integer  "item_list_id",       limit: 4
     t.integer  "sale_tax_code_id",   limit: 4
     t.integer  "unit_of_measure_id", limit: 4
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
   end
 
   add_index "invoice_transactions", ["invoice_id"], name: "index_invoice_transactions_on_invoice_id", using: :btree
@@ -103,11 +103,12 @@ ActiveRecord::Schema.define(version: 20160422085821) do
     t.string   "ship_to",             limit: 255
     t.integer  "invoice_no",          limit: 4
     t.string   "po_number",           limit: 255
+    t.boolean  "paid",                            default: false
     t.integer  "customer_vender_id",  limit: 4
     t.integer  "company_id",          limit: 4
     t.integer  "chart_of_account_id", limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   add_index "invoices", ["chart_of_account_id"], name: "index_invoices_on_chart_of_account_id", using: :btree
@@ -171,13 +172,13 @@ ActiveRecord::Schema.define(version: 20160422085821) do
 
   create_table "journal_entry_transactions", force: :cascade do |t|
     t.string   "description",         limit: 255
-    t.float    "debit",               limit: 24
-    t.float    "credit",              limit: 24
+    t.decimal  "debit",                           precision: 15, scale: 2
+    t.decimal  "credit",                          precision: 15, scale: 2
     t.integer  "chart_of_account_id", limit: 4
     t.integer  "customer_vender_id",  limit: 4
     t.integer  "journal_entry_id",    limit: 4
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                                               null: false
+    t.datetime "updated_at",                                               null: false
   end
 
   add_index "journal_entry_transactions", ["chart_of_account_id"], name: "index_journal_entry_transactions_on_chart_of_account_id", using: :btree
@@ -209,6 +210,34 @@ ActiveRecord::Schema.define(version: 20160422085821) do
   end
 
   add_index "measures", ["company_id"], name: "index_measures_on_company_id", using: :btree
+
+  create_table "receive_payment_transactions", force: :cascade do |t|
+    t.decimal  "payment",                      precision: 15, scale: 2, default: 0.0
+    t.integer  "receive_payment_id", limit: 4
+    t.integer  "invoice_id",         limit: 4
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
+  end
+
+  add_index "receive_payment_transactions", ["invoice_id"], name: "index_receive_payment_transactions_on_invoice_id", using: :btree
+  add_index "receive_payment_transactions", ["receive_payment_id"], name: "index_receive_payment_transactions_on_receive_payment_id", using: :btree
+
+  create_table "receive_payments", force: :cascade do |t|
+    t.date     "transaction_date"
+    t.integer  "company_id",          limit: 4
+    t.integer  "customer_vender_id",  limit: 4
+    t.integer  "chart_of_account_id", limit: 4
+    t.integer  "bank_type_id",        limit: 4
+    t.integer  "log_book_id",         limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "receive_payments", ["bank_type_id"], name: "index_receive_payments_on_bank_type_id", using: :btree
+  add_index "receive_payments", ["chart_of_account_id"], name: "index_receive_payments_on_chart_of_account_id", using: :btree
+  add_index "receive_payments", ["company_id"], name: "index_receive_payments_on_company_id", using: :btree
+  add_index "receive_payments", ["customer_vender_id"], name: "index_receive_payments_on_customer_vender_id", using: :btree
+  add_index "receive_payments", ["log_book_id"], name: "index_receive_payments_on_log_book_id", using: :btree
 
   create_table "sale_tax_codes", force: :cascade do |t|
     t.string   "tax_code",    limit: 255
@@ -302,6 +331,13 @@ ActiveRecord::Schema.define(version: 20160422085821) do
   add_foreign_key "log_books", "companies"
   add_foreign_key "log_books", "voucher_types"
   add_foreign_key "measures", "companies"
+  add_foreign_key "receive_payment_transactions", "invoices"
+  add_foreign_key "receive_payment_transactions", "receive_payments"
+  add_foreign_key "receive_payments", "bank_types"
+  add_foreign_key "receive_payments", "chart_of_accounts"
+  add_foreign_key "receive_payments", "companies"
+  add_foreign_key "receive_payments", "customer_venders"
+  add_foreign_key "receive_payments", "log_books"
   add_foreign_key "sale_tax_codes", "companies"
   add_foreign_key "unit_of_measures", "companies"
   add_foreign_key "unit_of_measures", "measures"

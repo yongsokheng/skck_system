@@ -3,6 +3,7 @@ class BankType < ActiveRecord::Base
   belongs_to :company
 
   has_many :journal_entries
+  has_many :receive_payments
 
   validates :name, presence: true, length: {maximum: 255},
     uniqueness: {case_sensitive: false}

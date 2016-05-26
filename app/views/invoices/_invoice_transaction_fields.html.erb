@@ -13,7 +13,7 @@
         {include_blank: true}, class: "form-control unit-of-measure", disabled: false %>
     </td>
     <td><%= ff.text_field :price_each,
-      value: number_with_precision(ff.object.price_each, precision: 2, delimiter: ","),
+      value: format_number(ff.object.price_each),
       class: "form-control price-each", autocomplete: "off" %></td>
     <td><%= text_field_tag :amount, nil, class: "form-control amount",
       disabled: true %></td>
