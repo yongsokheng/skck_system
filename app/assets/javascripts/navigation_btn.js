@@ -1,7 +1,8 @@
 $(document).on("ready", function(){
   var journal_entry = $("#journal-entry").length;
   var invoice = $("#create-invoice").length;
-  if(journal_entry > 0 ||  invoice > 0) {
+  var receive_payment = $("#receive-payment").length;
+  if(journal_entry > 0 ||  invoice > 0 || receive_payment > 0) {
 
     $(document).on("click", ".pagination a", function() {
       $.getScript(this.href);

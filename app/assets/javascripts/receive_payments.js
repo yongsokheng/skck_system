@@ -2,18 +2,19 @@ $(document).on("ready", function() {
   if($("#receive-payment").length > 0) {
     load_selectize_simple(".customer");
     load_account_payment(".chart-account");
-    load_selectize_simple(".bank-type");
-    load_selectize_simple(".log-book");
+    load_selectize_simple(".bank_type");
+    load_selectize_simple(".log_book");
     $(".tbl-payment").tableScroll();
     total_amount_payment();
     set_btn_status();
+    load_btn_navigate();
 
     $(document).on("change", ".customer", function() {
       var customer_id = $(".customer option:selected").val();
       var transaction_date = $(".transaction-date").val();
       var chart_account = $(".chart-account option:selected").val();
-      var bank_type = $(".bank-type option:selected").val();
-      var log_book = $(".log-book option:selected").val();
+      var bank_type = $(".bank_type option:selected").val();
+      var log_book = $(".log_book option:selected").val();
       $.getScript("/receive_payments/new?customer_id=" + customer_id
         +"&transaction_date=" + transaction_date
         +"&chart_account=" + chart_account
@@ -23,6 +24,11 @@ $(document).on("ready", function() {
 
     $(document).on("change", ".transaction-date", function() {
       set_btn_status();
+      load_logbook_data();
+    });
+
+    $(document).on("change", ".bank_type", function() {
+      load_logbook_data();
     });
 
     $(document).on("click", ".btn-paid", function(event) {
@@ -62,14 +68,19 @@ $(document).on("ready", function() {
       validate_save(event);
     });
 
+    $(document).on("click", ".btn-delete", function(event) {
+      event.preventDefault();
+      $(".payment-delete-modal").modal("show");
+    });
+
     function validate_save(event) {
       if($(".customer").val() == "") {
         set_msg_valid(event, I18n.t("receive_payments.validate_errors.customer_blank"));
       }else if($(".chart-account").val() == "") {
         set_msg_valid(event, I18n.t("receive_payments.validate_errors.account_blank"));
-      }else if($(".bank-type").val() == "") {
+      }else if($(".bank_type").val() == "") {
         set_msg_valid(event, I18n.t("receive_payments.validate_errors.bank_type_blank"));
-      }else if($(".log-book").val() == "") {
+      }else if($(".log_book").val() == "") {
         set_msg_valid(event, I18n.t("receive_payments.validate_errors.log_book_blank"));
       }else if(is_current_period() == false) {
         set_msg_valid(event, I18n.t("receive_payments.validate_errors.wrong_period"));

@@ -2,7 +2,12 @@ class ReceivePaymentsController < ApplicationController
   load_and_authorize_resource
   before_action :load_company
   before_action :set_company, only: [:create]
-  before_action :load_data, only: [:new]
+  before_action :load_data, only: [:index, :new]
+
+  def index
+    @receive_payments = @current_company.receive_payments.paginate(page: params[:page], per_page: 1)
+    @remote = true
+  end
 
   def new
     @customer_id = params[:customer_id]
@@ -19,8 +24,22 @@ class ReceivePaymentsController < ApplicationController
     else
       flash[:alert] = t "receive_payments.flashes.save_not_success"
     end
-    path = params[:commit] == Settings.commit_params.save_new ? new_receive_payment_path : new_receive_payment_path
+    path = params[:commit] == Settings.commit_params.save_new ? new_receive_payment_path : receive_payments_path
     redirect_to path
+  end
+
+  def update
+    if @receive_payment.update_attributes receive_payment_params
+      flash.now[:success] = t "receive_payments.flashs.update_success"
+    else
+      flash.now[:alert] = t "receive_payments.flashs.update_not_success"
+    end
+  end
+
+  def destroy
+    @receive_payment.destroy
+    flash[:success] = t "receive_payments.flashs.delete_success"
+    redirect_to receive_payments_path
   end
 
   private
@@ -33,7 +52,8 @@ class ReceivePaymentsController < ApplicationController
     @chart_accounts = @current_company.chart_of_accounts.includes(:chart_account_type)
       .map{|data| [data.name, data.id, {"data-active" => data.active},
       {"data-type" => data.chart_account_type.name}]}
-    @bank_types = @current_company.bank_types.map{|bank_type| [bank_type.name, bank_type.id]}
+    @bank_types = @current_company.bank_types.map{|bank_type| [bank_type.name,
+      bank_type.id, {"data-cash_type" => bank_type.cash_type_id}]}
 
     voucher_type = VoucherType.types[:civ]
     start_date = @current_company.working_period.start_date

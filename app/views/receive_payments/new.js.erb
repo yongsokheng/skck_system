@@ -1,4 +1,4 @@
-$(".payment-form").html("<%= j render 'receive_payments/payment_form' %>");
+$(".payment-form").html("<%= j render 'receive_payments/payment_form', receive_payment: @receive_payment %>");
 total_amount_payment();
 $(".tbl-payment").tableScroll();
 

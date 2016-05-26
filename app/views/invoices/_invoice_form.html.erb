@@ -76,7 +76,7 @@
 
   <% if invoice.new_record? %>
     <p>
-      <%= f.submit t("journal_entries.actions.save_new"), value: Settings.commit_params.save_new,
+      <%= f.submit t("create_invoice.actions.save_new"), value: Settings.commit_params.save_new,
         class: "btn btn-primary btn-save pull-right" %>
       <%= f.submit t("create_invoice.actions.save_close"), value: Settings.commit_params.save_close,
         class: "btn btn-primary btn-save pull-right" %>

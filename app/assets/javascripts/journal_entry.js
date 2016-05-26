@@ -121,39 +121,39 @@ $(document).on("ready", function(){
         set_msg_valid(event, I18n.t("journal_entries.validate_errors.name_validate"));
       }
     }
-
-    function load_logbook_data() {
-      var user_email = $(".api").data("email");
-      var user_token = $(".api").data("token");
-      var transaction_date = $(".transaction-date").val();
-      var bank_type_selectize = $(".bank_type")[0].selectize;
-      var logbook_selectize = $(".log_book")[0].selectize;
-      var bank_type_value = bank_type_selectize.getValue();
-
-      if(bank_type_value == "") {
-        logbook_selectize.clearOptions();
-      }else{
-        var cash_type_id = bank_type_selectize.options[bank_type_value].cash_type
-        $.ajax({
-          type: "get",
-          data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
-          dataType: "json",
-          url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
-          success: function(data) {
-            if(data.length > 0) {
-              logbook_selectize.clearOptions();
-              logbook_selectize.addOption(data);
-              logbook_selectize.addItem(data[0].value);
-            }else{
-              logbook_selectize.clearOptions();
-            }
-          }
-        });
-      }
-    }
     //end functions
   }
 });
+
+function load_logbook_data() {
+  var user_email = $(".api").data("email");
+  var user_token = $(".api").data("token");
+  var transaction_date = $(".transaction-date").val();
+  var bank_type_selectize = $(".bank_type")[0].selectize;
+  var logbook_selectize = $(".log_book")[0].selectize;
+  var bank_type_value = bank_type_selectize.getValue();
+
+  if(bank_type_value == "") {
+    logbook_selectize.clearOptions();
+  }else{
+    var cash_type_id = bank_type_selectize.options[bank_type_value].cash_type
+    $.ajax({
+      type: "get",
+      data: {transaction_date: transaction_date, cash_type_id: cash_type_id},
+      dataType: "json",
+      url: "/api/log_books?user_token=" + user_token + "&user_email=" + user_email,
+      success: function(data) {
+        if(data.length > 0) {
+          logbook_selectize.clearOptions();
+          logbook_selectize.addOption(data);
+          logbook_selectize.addItem(data[0].value);
+        }else{
+          logbook_selectize.clearOptions();
+        }
+      }
+    });
+  }
+}
 
 function total_balance_journal() {
   var total_debit = 0;

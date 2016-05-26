@@ -1,0 +1,18 @@
+<div class="modal fade payment-delete-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= t "labels.warning" %></h4>
+      </div>
+      <div class="modal-body">
+        <p><%= t "receive_payments.messages.confirm_delete" %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t "actions.close" %></button>
+        <%= link_to t("receive_payments.actions.delete"), receive_payment_path(receive_payment),
+          method: :delete, class: "btn btn-danger btn-delete" %>
+      </div>
+    </div>
+  </div>
+</div>

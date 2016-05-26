@@ -8,13 +8,13 @@
     <div class="receive-payment-header">
       <span class="title"><%= t "receive_payments.title" %></span>
       <span class="btn-navigate pull-right">
-        <%= link_to t("receive_payments.actions.view_all"), invoices_path,
+        <%= link_to t("receive_payments.actions.view_all"), receive_payments_path,
           class: "btn btn-default" %>
       </span>
     </div>
     <hr>
     <div class="payment-form">
-      <%= render "payment_form" %>
+      <%= render "payment_form", receive_payment: @receive_payment %>
     </div>
   </div>
 </div>

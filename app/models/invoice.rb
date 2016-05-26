@@ -20,7 +20,7 @@ class Invoice < ActiveRecord::Base
   scope :unpaid_invoices, ->customer_id{where paid: false, customer_vender_id: customer_id}
 
   def update_paid
-    paid = amount_due <= 0 ? true : false
+    paid = amount_due(nil) <= 0 ? true : false
     update_column :paid, paid
   end
 
@@ -28,8 +28,9 @@ class Invoice < ActiveRecord::Base
     invoice_transactions.map{|transaction| transaction.amount}.sum
   end
 
-  def amount_due
-    origin_amount - receive_payment_transactions.map{|transaction| transaction.payment}.sum
+  def amount_due receive_payment
+    origin_amount - receive_payment_transactions.find_transaction_except(receive_payment)
+      .map{|transaction| transaction.payment}.sum
   end
 
   private
