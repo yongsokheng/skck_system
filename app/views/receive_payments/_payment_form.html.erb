@@ -1,8 +1,8 @@
-<%= render "shared/errors", object: @receive_payment %>
+<%= render "shared/errors", object: receive_payment %>
 <%= render "shared/error_modal" %>
 <i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
 
-<%= nested_form_for @receive_payment do |f| %>
+<%= nested_form_for receive_payment, remote: @remote do |f| %>
   <div class="row">
     <div class="col-md-3">
       <%= f.label :received_from %>
@@ -29,12 +29,12 @@
     <div class="col-md-3">
       <%= f.label :bank_type %>
       <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id),
-        {}, class: "bank-type form-control" %>
+        {}, class: "bank_type form-control" %>
     </div>
     <div class="col-md-3">
       <%= f.label :log_book %>
       <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id),
-        {}, class: "log-book form-control" %>
+        {}, class: "log_book form-control" %>
     </div>
   </div>
 
@@ -50,30 +50,24 @@
       </tr>
     </thead>
     <tbody class="invoice_transactions">
-      <% if @invoices.present? %>
-        <% @invoices.includes(:invoice_transactions, :receive_payment_transactions)
-          .each do |invoice| %>
-          <%= f.fields_for :receive_payment_transactions,
-            @receive_payment.receive_payment_transactions.build, wrapper: false do |ff| %>
-            <tr class="fields">
-              <td class="label-text pay"><%= link_to t("receive_payments.actions.pay"),
-                "javascript:void(0)", class: "btn-paid" %></td>
-              <td class="label-text"><%= invoice.transaction_date %></td>
-              <td class="label-text"><%= invoice.invoice_no %></td>
-              <td class="label-text orig-amt"><%= format_number invoice.origin_amount %></td>
-              <td class="label-text amt-due"><%= format_number invoice.amount_due %></td>
-              <td>
-                <%= ff.hidden_field :invoice_id, value: invoice.id %>
-                <%= ff.text_field :payment, value: format_number(0),
-                  class: "form-control payment", autocomplete: "off" %>
-              </td>
-            </tr>
+      <% if receive_payment.new_record? %>
+        <% if @invoices.present? %>
+          <% @invoices.includes(:invoice_transactions, :receive_payment_transactions)
+            .each do |invoice| %>
+            <%= f.fields_for :receive_payment_transactions,
+              receive_payment.receive_payment_transactions.build, wrapper: false do |ff| %>
+              <%= render "payment_transaction", ff: ff, invoice: invoice %>
+            <% end %>
           <% end %>
+        <% elsif @customer_id.present? %>
+          <tr><td><%= t "receive_payments.labels.no_unpaid_invoice" %></td></tr>
+        <% else %>
+          <tr><td><%= t "receive_payments.labels.no_customer_select" %></td></tr>
         <% end %>
-      <% elsif @customer_id.present? %>
-        <tr><td><%= t "receive_payments.labels.no_unpaid_invoice" %></td></tr>
       <% else %>
-        <tr><td><%= t "receive_payments.labels.no_customer_select" %></td></tr>
+        <%= f.fields_for :receive_payment_transactions, wrapper: false do |ff| %>
+          <%= render "payment_transaction", ff: ff, invoice: ff.object.invoice %>
+        <% end %>
       <% end %>
     </tbody>
     <tfoot>
@@ -87,10 +81,18 @@
     </tfoot>
   </table>
 
-  <p>
-    <%= f.submit t("receive_payments.actions.save_new"), value: Settings.commit_params.save_new,
-      class: "btn btn-primary btn-save pull-right" %>
-    <%= f.submit t("receive_payments.actions.save_close"), value: Settings.commit_params.save_close,
-      class: "btn btn-primary btn-save pull-right" %>
-  </p>
+  <% if receive_payment.new_record? %>
+    <p>
+      <%= f.submit t("receive_payments.actions.save_new"), value: Settings.commit_params.save_new,
+        class: "btn btn-primary btn-save pull-right" %>
+      <%= f.submit t("receive_payments.actions.save_close"), value: Settings.commit_params.save_close,
+        class: "btn btn-primary btn-save pull-right" %>
+    </p>
+  <% else %>
+    <p>
+      <%= f.submit t("receive_payments.actions.save"), class: "btn btn-primary btn-save pull-right" %>
+      <%= button_to t("receive_payments.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
+    </p>
+    <%= render "receive_payments/modal_confirm_delete", receive_payment: receive_payment %>
+  <% end %>
 <% end %>

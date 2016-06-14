@@ -1,0 +1,10 @@
+$(".payment-data").html("<%= j render 'payment_data' %>");
+
+load_selectize_simple(".customer");
+load_account_payment(".chart-account");
+load_selectize_simple(".bank_type");
+load_selectize_simple(".log_book");
+$(".tbl-payment").tableScroll();
+total_amount_payment();
+set_btn_status();
+load_btn_navigate();

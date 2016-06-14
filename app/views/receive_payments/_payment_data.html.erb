@@ -1,0 +1,4 @@
+<div class="payment-form">
+  <%= render partial: "payment_form", collection: @receive_payments, as: :receive_payment %>
+</div>
+<div hidden><%= will_paginate @receive_payments %></div>

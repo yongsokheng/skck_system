@@ -1,0 +1,13 @@
+<tr class="fields">
+  <td class="label-text pay"><%= link_to t("receive_payments.actions.pay"),
+    "javascript:void(0)", class: "btn-paid" %></td>
+  <td class="label-text"><%= invoice.transaction_date %></td>
+  <td class="label-text"><%= invoice.invoice_no %></td>
+  <td class="label-text orig-amt"><%= format_number invoice.origin_amount %></td>
+  <td class="label-text amt-due"><%= format_number invoice.amount_due ff.object.receive_payment %></td>
+  <td>
+    <%= ff.hidden_field :invoice_id, value: invoice.id %>
+    <%= ff.text_field :payment, value: ff.object.new_record? ? format_number(0) : ff.object.payment,
+      class: "form-control payment", autocomplete: "off" %>
+  </td>
+</tr>

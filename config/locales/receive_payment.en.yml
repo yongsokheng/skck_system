@@ -9,10 +9,13 @@ en:
         amt_due: "AMT Due"
         payment: "Payment"
     actions:
+      save: "Save"
       save_new: "Save new"
       save_close: "Save close"
       view_all: "View all"
       pay: "Pay"
+      delete: "Delete"
+      add_new: "Add New"
     flashes:
       save_success: "Save success"
       save_not_success: "Save not success"
@@ -31,3 +34,11 @@ en:
       transaction_valid: "Transactions require an item."
       wrong_period: "You can only add/edit transaction in your current working period."
       wrong_payment: "Payment must be less than or equal to its due amount."
+    messages:
+      confirm_delete: "Are you sure to delete this payment?"
+    flashs:
+      save_success: "Save success"
+      save_not_success: "Save not success"
+      update_success: "Update success"
+      update_not_success: "Update not success"
+      delete_success: "Delete success"
