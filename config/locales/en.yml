@@ -10,6 +10,7 @@ en:
     item_list: "Item List"
     create_invoice: "Create Invoice"
     receive_payment: "Receive Payment"
+    sale_receipt: "Sale Receipt"
     customer: "Customer"
     vender: "Vender"
     sign_in: "Sign in"

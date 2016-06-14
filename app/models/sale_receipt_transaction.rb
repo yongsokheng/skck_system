@@ -1,5 +1,5 @@
-class InvoiceTransaction < ActiveRecord::Base
-  belongs_to :invoice
+class SaleReceiptTransaction < ActiveRecord::Base
+  belongs_to :sale_receipt
   belongs_to :item_list
   belongs_to :sale_tax_code
   belongs_to :unit_of_measure
