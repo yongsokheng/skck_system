@@ -1,0 +1,71 @@
+<%= render "shared/errors", object: enter_bill %>
+<%= render "shared/error_modal" %>
+<i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
+
+<%= nested_form_for enter_bill, html: {class: "form-enter-bill"},
+  remote: @remote do |f| %>
+  <div class="row">
+    <div class="col-md-2">
+      <%= f.label :customer %>
+      <%= f.select :customer_vender_id, options_for_select(@venders, f.object.customer_vender_id),
+        {}, class: "customer form-control", disabled: @disabled %>
+    </div>
+    <div class="col-md-2">
+      <%= f.label :transaction_date %>
+      <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today,
+        class: "form-control datepicker transaction-date", required: true,
+        disabled: @disabled %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <%= f.label :address %>
+      <%= f.text_area :address, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :memo %>
+      <%= f.text_area :memo, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="transaction">
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active">
+        <a href="#expenses" role="tab" data-toggle="tab" data-tab="1">
+          <%= t "enter_bills.tabs.expenses" %>
+          <span class="total-expense"></span>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#items" role="tab" data-toggle="tab" data-tab="2">
+          <%= t "enter_bills.tabs.items" %>
+          <span class="total-item"></span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="expenses">
+        <%= render "expenses", f: f %>
+      </div>
+      <div class="tab-pane active item-tab" id="items">
+        <%= render "items", f: f %>
+      </div>
+    </div>
+  </div>
+
+  <% if enter_bill.new_record? %>
+    <p>
+      <%= f.submit t("enter_bill.actions.save_new"), value: Settings.commit_params.save_new,
+        class: "btn btn-primary btn-save pull-right" %>
+      <%= f.submit t("enter_bill.actions.save_close"), value: Settings.commit_params.save_close,
+        class: "btn btn-primary btn-save pull-right" %>
+    </p>
+  <% else %>
+    <p>
+      <%= f.submit t("enter_bill.actions.save"), class: "btn btn-primary btn-save pull-right" %>
+      <%= button_to t("enter_bill.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
+    </p>
+    <%= render "enter_bills/modal_confirm_delete", enter_bill: enter_bill %>
+  <% end %>
+<% end %>

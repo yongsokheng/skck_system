@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  <table id="tbl-invoice" class="table table-bordered tbl-invoice grid">
+  <table id="tbl-transaction" class="table table-bordered tbl-invoice grid">
     <thead>
       <tr>
         <th class="item-list-head"><%= t "sale_receipt.tables.item_list" %></th>
@@ -79,7 +79,7 @@
   <div class="clearfix"></div>
 
   <p hidden><%= f.link_to_add t("sale_receipt.actions.add"), :sale_receipt_transactions,
-    data: {target: "#tbl-invoice"} %></p>
+    data: {target: "#tbl-transaction"} %></p>
 
   <% if sale_receipt.new_record? %>
     <p>

@@ -16,7 +16,7 @@
     <hr>
     <%= form_for @chart_of_account do |f| %>
       <%= render "shared/errors", object: @chart_of_account %>
-
+      <p>
         <%= f.label :chart_account_type_id %>
         <%= f.select :chart_account_type_id,
           options_for_select(@account_types, f.object.chart_account_type_id),

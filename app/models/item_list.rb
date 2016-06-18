@@ -9,6 +9,7 @@ class ItemList < ActiveRecord::Base
 
   has_many :invoice_transactions
   has_many :sale_receipt_transactions
+  has_many :enter_bill_items
 
   validates :name, presence: true, length: {maximum: 255}
   validate :name_existed

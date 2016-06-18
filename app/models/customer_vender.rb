@@ -5,6 +5,7 @@ class CustomerVender < ActiveRecord::Base
   has_many :journal_entry_transactions
   has_many :receive_payments
   has_many :sale_receipts
+  has_many :enter_bills
 
   validates :name, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

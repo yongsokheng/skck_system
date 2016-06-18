@@ -1,0 +1,16 @@
+<table id="tbl-expense" class="table table-bordered tbl-expense grid">
+  <thead>
+    <tr>
+      <th class="chart-account-head"><%= t "enter_bills.tables.chart_of_account" %></th>
+      <th class="amount-head"><%= t "enter_bills.tables.amount" %></th>
+      <th class="description-head"><%= t "enter_bills.tables.description" %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render "enter_bill_expense_fields", f: f %>
+  </tbody>
+</table>
+
+<p hidden><%= f.link_to_add t("enter_bills.actions.add"), :enter_bill_expenses,
+  data: {target: "#tbl-expense"} %></p>

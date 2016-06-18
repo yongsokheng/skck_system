@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614145138) do
+ActiveRecord::Schema.define(version: 20160618071650) do
 
   create_table "bank_types", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -79,6 +79,46 @@ ActiveRecord::Schema.define(version: 20160614145138) do
   end
 
   add_index "customer_venders", ["company_id"], name: "index_customer_venders_on_company_id", using: :btree
+
+  create_table "enter_bill_expenses", force: :cascade do |t|
+    t.float    "amount",              limit: 24
+    t.string   "memo",                limit: 255
+    t.integer  "chart_of_account_id", limit: 4
+    t.integer  "enter_bill_id",       limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "enter_bill_expenses", ["chart_of_account_id"], name: "index_enter_bill_expenses_on_chart_of_account_id", using: :btree
+  add_index "enter_bill_expenses", ["enter_bill_id"], name: "index_enter_bill_expenses_on_enter_bill_id", using: :btree
+
+  create_table "enter_bill_items", force: :cascade do |t|
+    t.string   "description",        limit: 255
+    t.float    "quantity",           limit: 24
+    t.decimal  "cost",                           precision: 10
+    t.integer  "unit_of_measure_id", limit: 4
+    t.integer  "item_list_id",       limit: 4
+    t.integer  "enter_bill_id",      limit: 4
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "enter_bill_items", ["enter_bill_id"], name: "index_enter_bill_items_on_enter_bill_id", using: :btree
+  add_index "enter_bill_items", ["item_list_id"], name: "index_enter_bill_items_on_item_list_id", using: :btree
+  add_index "enter_bill_items", ["unit_of_measure_id"], name: "index_enter_bill_items_on_unit_of_measure_id", using: :btree
+
+  create_table "enter_bills", force: :cascade do |t|
+    t.date     "transaction_date"
+    t.string   "address",            limit: 255
+    t.string   "memo",               limit: 255
+    t.integer  "customer_vender_id", limit: 4
+    t.integer  "company_id",         limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "enter_bills", ["company_id"], name: "index_enter_bills_on_company_id", using: :btree
+  add_index "enter_bills", ["customer_vender_id"], name: "index_enter_bills_on_customer_vender_id", using: :btree
 
   create_table "invoice_transactions", force: :cascade do |t|
     t.string   "description",        limit: 255
@@ -242,13 +282,13 @@ ActiveRecord::Schema.define(version: 20160614145138) do
   create_table "sale_receipt_transactions", force: :cascade do |t|
     t.string   "description",        limit: 255
     t.float    "quantity",           limit: 24
-    t.decimal  "price_each",                     precision: 10
+    t.decimal  "price_each",                     precision: 15, scale: 2
     t.integer  "sale_receipt_id",    limit: 4
     t.integer  "item_list_id",       limit: 4
     t.integer  "sale_tax_code_id",   limit: 4
     t.integer  "unit_of_measure_id", limit: 4
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
   end
 
   add_index "sale_receipt_transactions", ["item_list_id"], name: "index_sale_receipt_transactions_on_item_list_id", using: :btree
@@ -262,7 +302,6 @@ ActiveRecord::Schema.define(version: 20160614145138) do
     t.string   "ship_to",             limit: 255
     t.integer  "invoice_no",          limit: 4
     t.string   "po_number",           limit: 255
-    t.boolean  "paid"
     t.integer  "customer_vender_id",  limit: 4
     t.integer  "company_id",          limit: 4
     t.integer  "chart_of_account_id", limit: 4
@@ -347,6 +386,13 @@ ActiveRecord::Schema.define(version: 20160614145138) do
   add_foreign_key "chart_of_accounts", "chart_account_types"
   add_foreign_key "chart_of_accounts", "companies"
   add_foreign_key "customer_venders", "companies"
+  add_foreign_key "enter_bill_expenses", "chart_of_accounts"
+  add_foreign_key "enter_bill_expenses", "enter_bills"
+  add_foreign_key "enter_bill_items", "enter_bills"
+  add_foreign_key "enter_bill_items", "item_lists"
+  add_foreign_key "enter_bill_items", "unit_of_measures"
+  add_foreign_key "enter_bills", "companies"
+  add_foreign_key "enter_bills", "customer_venders"
   add_foreign_key "invoice_transactions", "invoices"
   add_foreign_key "invoice_transactions", "item_lists"
   add_foreign_key "invoice_transactions", "sale_tax_codes"

@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <table id="tbl-invoice" class="table table-bordered tbl-invoice grid">
+  <table id="tbl-transaction" class="table table-bordered tbl-invoice grid">
     <thead>
       <tr>
         <th class="item-list-head"><%= t "create_invoice.tables.item_list" %></th>
@@ -72,7 +72,7 @@
   <div class="clearfix"></div>
 
   <p hidden><%= f.link_to_add t("create_invoice.actions.add"), :invoice_transactions,
-    data: {target: "#tbl-invoice"} %></p>
+    data: {target: "#tbl-transaction"} %></p>
 
   <% if invoice.new_record? %>
     <p>

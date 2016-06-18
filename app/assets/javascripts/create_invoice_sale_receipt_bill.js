@@ -1,13 +1,17 @@
 $(document).on("ready", function() {
-  if($("#create-invoice").length > 0 || $("#sale-receipt").length > 0) {
-    $("#tbl-invoice").tableScroll();
+  if($("#create-invoice").length > 0 || $("#sale-receipt").length > 0 ||
+      $("#enter-bill").length > 0) {
+    $("#tbl-transaction").tableScroll();
     load_selectize_simple(".customer");
     load_um(".fields .unit-of-measure");
     load_item_list(".fields .item-list");
     load_selectize_simple(".bank_type");
     load_selectize_simple(".log_book");
     load_account_receivable(".account-receivable");
-    load_invoice_amount();
+
+    if($("#create-invoice").length > 0 || $("#sale-receipt").length > 0) {
+      load_invoice_amount();
+    }
     load_btn_navigate();
     set_btn_status();
 
@@ -22,33 +26,59 @@ $(document).on("ready", function() {
       var unit_of_measure = parent.find(".unit-of-measure");
       var unit_of_measure_selectize = unit_of_measure[0].selectize;
       var price_each = parent.find(".price-each");
+      var cost = parent.find(".cost");
       var item_list_selectize = $(this)[0].selectize;
 
       if($(this).val() !== "") {
         var data_um_id = item_list_selectize.options[item_list_selectize.getValue()].um_id;
         var data_price = item_list_selectize.options[item_list_selectize.getValue()].price;
+        var data_cost = item_list_selectize.options[item_list_selectize.getValue()].cost;
 
         unit_of_measure_selectize.addItem(data_um_id);
-        price_each.val($.number(data_price, 2)).trigger("change");
+        if(price_each.length > 0) {
+          price_each.val($.number(data_price, 2)).trigger("change");
+        }else{
+          cost.val($.number(data_cost, 2)).trigger("change");
+        }
       }
     });
 
-    $(document).on("change", ".quantity, .price-each", function() {
+    $(document).on("change", ".quantity, .price-each, .cost", function() {
       var parent = $(this).parent().parent();
       var quantity = parent.find(".quantity");
       var price_each = parent.find(".price-each");
+      var cost = parent.find(".cost");
       var amount = parent.find(".amount");
-      var price_each_num = 0;
+      var value = 0;
 
-      if(price_each.val() != "") {
+      if(price_each.length > 0 && price_each.val() != "") {
         price_each.val($.number(price_each.val(), 2));
-        price_each_num = parseFloat(price_each.val().replace(/,/g, ""));
+        value = parseFloat(price_each.val().replace(/,/g, ""));
+      }
+
+      if(cost.length > 0 && cost.val() != "") {
+        cost.val($.number(cost.val(), 2));
+        value = parseFloat(cost.val().replace(/,/g, ""));
       }
 
       var quantity_num = quantity.val() == "" ? 1 : parseFloat(quantity.val());
-      var amount_num = quantity_num * price_each_num;
+      var amount_num = quantity_num * value;
       amount.val($.number(amount_num, 2));
-      total_balance_invoice();
+
+      if($("#create-invoice").length > 0 || $("#sale-receipt").length > 0) {
+        $(".total").html(total_balance_for($("#tbl-transaction .fields")));
+      }
+
+      if($("#enter-bill").length > 0) {
+        $(".total-item").html(total_balance_for($("#tbl-transaction .fields")));
+      }
+    });
+
+    $(document).on("change", "#tbl-expense .amount", function() {
+      if($(this).val() != "") {
+        $(this).val($.number($(this).val(), 2));
+      }
+      $(".total-expense").html(total_balance_for($("#tbl-expense .fields")));
     });
 
     $(document).on("change", ".fields:last .form-control", function() {
@@ -133,9 +163,9 @@ function load_invoice_amount() {
     var price_each = $(this).find(".price-each");
     var amount = $(this).find(".amount");
     if(quantity.val() !="" || price_each.val() != "") {
-      var price_each_num = price_each.val() == "" ? 0 : parseFloat(price_each.val().replace(/,/g, ""));
+      var value = price_each.val() == "" ? 0 : parseFloat(price_each.val().replace(/,/g, ""));
       var quantity_num = quantity.val() == "" ? 1 : parseFloat(quantity.val());
-      var amount_num = quantity_num * price_each_num;
+      var amount_num = quantity_num * value;
       amount.val($.number(amount_num, 2));
     }
 
@@ -154,17 +184,16 @@ function set_btn_status() {
   }
 }
 
-function total_balance_invoice() {
+function total_balance_for(type_dom) {
   var total = 0;
 
-  $(".fields").each(function() {
+  type_dom.each(function() {
     var amount =  $(this).find(".amount").val();
     if( amount != "") {
       total += parseFloat(amount.replace(/,/g, ""));
     }
   });
-
-  $(".total").html(""+ $.number(total, 2));
+  return "$"+$.number(total, 2);
 }
 
 function load_item_list(selector) {

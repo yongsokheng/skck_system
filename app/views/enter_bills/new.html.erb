@@ -1,0 +1,20 @@
+<div id="enter-bill" class="row">
+  <div class="col-md-9">
+    <ol class="breadcrumb">
+      <li><%= link_to "", root_path, class: "glyphicon glyphicon-home" %></li>
+      <li><%= link_to t("enter_bills.title"), enter_bills_path %></li>
+      <li class="active"><%= t "enter_bills.breadcrumbs.new" %></li>
+    </ol>
+    <div class="create-invoice-header">
+      <span class="title"><%= t "enter_bills.title" %></span>
+      <span class="btn-navigate pull-right">
+        <%= link_to t("enter_bills.actions.view_all"), enter_bills_path,
+          class: "btn btn-default" %>
+      </span>
+    </div>
+    <hr>
+    <div class="enter-bill">
+      <%= render "enter_bill_form", enter_bill: @enter_bill %>
+    </div>
+  </div>
+</div>

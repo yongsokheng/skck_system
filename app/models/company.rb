@@ -12,6 +12,7 @@ class Company < ActiveRecord::Base
   has_many :invoices
   has_many :receive_payments
   has_many :sale_receipts
+  has_many :enter_bills
 
   def chart_account_tree
     tree_chart = []

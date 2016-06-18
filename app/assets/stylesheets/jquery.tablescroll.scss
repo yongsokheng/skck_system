@@ -11,10 +11,12 @@
   }
 
   .tablescroll_wrapper {
+    overflow-x: hidden !important;
+    max-height: 200px !important;
+
     .tbl-journal {
       margin-top: 0px !important;
     }
-    max-height: 200px !important;
   }
 
   .tablescroll_foot {
@@ -24,10 +26,6 @@
       text-align: right;
       font-weight: bold;
     }
-  }
-
-  .tablescroll_wrapper {
-    overflow-x: hidden !important;
   }
 
   .table {

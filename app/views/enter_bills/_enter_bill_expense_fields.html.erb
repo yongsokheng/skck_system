@@ -1,0 +1,13 @@
+<%= f.fields_for :enter_bill_expenses, wrapper: false do |ff| %>
+  <tr class="fields">
+    <td>
+      <%= ff.select :chart_of_account_id, options_for_select(@chart_accounts, ff.object.chart_of_account_id), {include_blank: true}, class: "chart-account form-control" %>
+    </td>
+    <td><%= ff.text_field :amount,
+      value: format_number(ff.object.amount),
+      class: "form-control amount", autocomplete: "off" %></td>
+    <td><%= ff.text_field :memo, class: "form-control memo",
+      autocomplete: "off" %></td>
+    <td hidden><%= ff.link_to_remove "Remove" %></td>
+  </tr>
+<% end %>

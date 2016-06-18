@@ -8,6 +8,7 @@ class ChartOfAccount < ActiveRecord::Base
   has_many :item_lists
   has_many :receive_payments
   has_many :sale_receipts
+  has_many :enter_bill_expenses
 
   validates :account_no, presence: true, uniqueness: {case_sensitive: false}
   validates :name, presence: true, uniqueness: {case_sensitive: false}

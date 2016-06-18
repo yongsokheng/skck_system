@@ -29,7 +29,8 @@
 //= require journal_entry
 //= require chart_of_accounts
 //= require item_lists
-//= require create_invoice_sale_receipt
+//= require create_invoice_sale_receipt_bill
+//= require enter_bill
 //= require receive_payments
 
 var flash = function() {

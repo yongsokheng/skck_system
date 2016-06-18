@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :invoices
   resources :receive_payments
   resources :sale_receipts
+  resources :enter_bills
 
   namespace :api, defaults: {format: "json"} do
     devise_for :users, only: :session
