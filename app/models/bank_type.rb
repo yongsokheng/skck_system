@@ -4,6 +4,7 @@ class BankType < ActiveRecord::Base
 
   has_many :journal_entries
   has_many :receive_payments
+  has_many :sale_receipts
 
   validates :name, presence: true, length: {maximum: 255},
     uniqueness: {case_sensitive: false}

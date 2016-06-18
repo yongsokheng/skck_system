@@ -1,0 +1,4 @@
+<div class="sale-receipt-form">
+  <%= render partial: "sale_receipt_form", collection: @sale_receipts, as: :sale_receipt %>
+</div>
+<div hidden><%= will_paginate @sale_receipts %></div>

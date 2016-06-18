@@ -8,6 +8,7 @@ class ItemList < ActiveRecord::Base
   belongs_to :unit_of_measure
 
   has_many :invoice_transactions
+  has_many :sale_receipt_transactions
 
   validates :name, presence: true, length: {maximum: 255}
   validate :name_existed

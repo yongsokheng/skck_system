@@ -5,6 +5,7 @@ class LogBook < ActiveRecord::Base
 
   has_many :journal_entries
   has_many :receive_payments
+  has_many :sale_receipts
 
   before_validation :format_reference_no, if: :transaction_data_exist?
 

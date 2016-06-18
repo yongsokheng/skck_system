@@ -1,0 +1,98 @@
+<%= render "shared/errors", object: sale_receipt %>
+<%= render "shared/error_modal" %>
+<i class="icon-loading fa fa-circle-o-notch fa-spin fa-2x"></i>
+
+<%
+  unless sale_receipt.new_record?
+    count_transaction = sale_receipt.sale_receipt_transactions.size
+    if count_transaction < 10
+      (10 - count_transaction).times {sale_receipt.sale_receipt_transactions.build}
+    else
+      sale_receipt.sale_receipt_transactions.build
+    end
+  end
+%>
+<%= nested_form_for sale_receipt, html: {class: "form-sale-receipt"},
+  remote: @remote do |f| %>
+  <div class="row">
+    <div class="col-md-2">
+      <%= f.label :transaction_date %>
+      <%= f.text_field :transaction_date, value: f.object.transaction_date || Date.today,
+        class: "form-control datepicker transaction-date", required: true,
+        disabled: @disabled %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :customer %>
+      <%= f.select :customer_vender_id, options_for_select(@customers, f.object.customer_vender_id),
+        {}, class: "customer form-control", disabled: @disabled %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :chart_of_account_id %>
+      <%= f.select :chart_of_account_id, options_for_select(@chart_accounts,
+        f.object.chart_of_account_id), {}, class: "account-receivable form-control" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <%= f.label :bill_to %>
+      <%= f.text_area :bill_to, class: "form-control" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :ship_to %>
+      <%= f.text_area :ship_to, class: "form-control" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <%= f.label :bank_type %>
+      <%= f.select :bank_type_id, options_for_select(@bank_types, f.object.bank_type_id),
+        {}, class: "bank_type form-control" %>
+    </div>
+    <div class="col-md-3">
+      <%= f.label :log_book %>
+      <%= f.select :log_book_id, options_for_select(@log_books, f.object.log_book_id),
+        {}, class: "log_book form-control" %>
+    </div>
+  </div>
+
+  <table id="tbl-invoice" class="table table-bordered tbl-invoice grid">
+    <thead>
+      <tr>
+        <th class="item-list-head"><%= t "sale_receipt.tables.item_list" %></th>
+        <th class="description-head"><%= t "sale_receipt.tables.description" %></th>
+        <th class="quantity-head"><%= t "sale_receipt.tables.quantity" %></th>
+        <th class="unit-of-measure-head"><%= t "sale_receipt.tables.unit_of_measure" %></th>
+        <th class="price-each-head"><%= t "sale_receipt.tables.price_each" %></th>
+        <th class="amount-head"><%= t "sale_receipt.tables.amount" %></th>
+      </tr>
+    </thead>
+
+    <tbody class="sale-receipt-transaction">
+      <%= render "sale_receipt_transaction_fields", f: f %>
+    </tbody>
+  </table>
+
+  <div class="total-balance">
+    <span><%= t "sale_receipt.labels.total" %></span>
+    <span class="total"></span>
+  </div>
+  <div class="clearfix"></div>
+
+  <p hidden><%= f.link_to_add t("sale_receipt.actions.add"), :sale_receipt_transactions,
+    data: {target: "#tbl-invoice"} %></p>
+
+  <% if sale_receipt.new_record? %>
+    <p>
+      <%= f.submit t("sale_receipt.actions.save_new"), value: Settings.commit_params.save_new,
+        class: "btn btn-primary btn-save pull-right" %>
+      <%= f.submit t("sale_receipt.actions.save_close"), value: Settings.commit_params.save_close,
+        class: "btn btn-primary btn-save pull-right" %>
+    </p>
+  <% else %>
+    <p>
+      <%= f.submit t("sale_receipt.actions.save"), class: "btn btn-primary btn-save pull-right" %>
+      <%= button_to t("sale_receipt.actions.delete"), "javascript:void(0)", class: "btn btn-danger btn-delete pull-right" %>
+    </p>
+    <%= render "sale_receipts/modal_confirm_delete", sale_receipt: sale_receipt %>
+  <% end %>
+<% end %>

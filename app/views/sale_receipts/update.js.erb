@@ -1,0 +1,14 @@
+$(".flash").html("<%= j render 'shared/flash' %>");
+$(".sale-receipt-form").html("<%= j render 'sale_receipt_form', sale_receipt: @sale_receipt %>");
+
+$(".selectize-dropdown.item-list").remove()
+$(".selectize-dropdown.unit-of-measure").remove();
+
+$("#tbl-invoice").tableScroll();
+load_selectize_simple(".customer");
+load_um(".fields .unit-of-measure");
+load_item_list(".fields .item-list");
+load_selectize_simple(".bank_type");
+load_selectize_simple(".log_book");
+load_account_receivable(".account-receivable");
+load_invoice_amount();

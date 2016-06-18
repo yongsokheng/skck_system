@@ -1,6 +1,6 @@
 en:
-  create_invoice:
-    title: "Invoices"
+  sale_receipt:
+    title: "Sale Receipt"
     breadcrumbs:
       new: "New"
     actions:
@@ -10,7 +10,7 @@ en:
       save: "Save"
       delete: "Delete"
     messages:
-      confirm_delete: "Are you sure to delete this invoice?"
+      confirm_delete: "Are you sure to delete this Sale Receipt?"
     tables:
       item_list: "Item List"
       description: "Description"
@@ -26,10 +26,12 @@ en:
       delete_success: "Delete success"
     validate_errors:
       need_item_list: "Item list is missing"
-      trans_validate: "Invoice must have at least one valid transaction."
+      trans_validate: "Sale Receipt must have at least one valid transaction."
       customer_blank: "Customer cannot be blank."
-      account_blank: "Account cannot be blank"
+      account_receivable_blank: "Account Receivable cannot be blank"
       transaction_valid: "Transactions require an item."
       wrong_period: "You can only add/edit transaction in your current working period."
+      bank_type_blank: "Bank type cannot be blank."
+      log_book_blank: "LogBook cannot be blank."
     labels:
       total: "Total:"

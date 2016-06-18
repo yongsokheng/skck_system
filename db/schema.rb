@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160515135134) do
+ActiveRecord::Schema.define(version: 20160614145138) do
 
   create_table "bank_types", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -239,6 +239,45 @@ ActiveRecord::Schema.define(version: 20160515135134) do
   add_index "receive_payments", ["customer_vender_id"], name: "index_receive_payments_on_customer_vender_id", using: :btree
   add_index "receive_payments", ["log_book_id"], name: "index_receive_payments_on_log_book_id", using: :btree
 
+  create_table "sale_receipt_transactions", force: :cascade do |t|
+    t.string   "description",        limit: 255
+    t.float    "quantity",           limit: 24
+    t.decimal  "price_each",                     precision: 10
+    t.integer  "sale_receipt_id",    limit: 4
+    t.integer  "item_list_id",       limit: 4
+    t.integer  "sale_tax_code_id",   limit: 4
+    t.integer  "unit_of_measure_id", limit: 4
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+  end
+
+  add_index "sale_receipt_transactions", ["item_list_id"], name: "index_sale_receipt_transactions_on_item_list_id", using: :btree
+  add_index "sale_receipt_transactions", ["sale_receipt_id"], name: "index_sale_receipt_transactions_on_sale_receipt_id", using: :btree
+  add_index "sale_receipt_transactions", ["sale_tax_code_id"], name: "index_sale_receipt_transactions_on_sale_tax_code_id", using: :btree
+  add_index "sale_receipt_transactions", ["unit_of_measure_id"], name: "index_sale_receipt_transactions_on_unit_of_measure_id", using: :btree
+
+  create_table "sale_receipts", force: :cascade do |t|
+    t.date     "transaction_date"
+    t.string   "bill_to",             limit: 255
+    t.string   "ship_to",             limit: 255
+    t.integer  "invoice_no",          limit: 4
+    t.string   "po_number",           limit: 255
+    t.boolean  "paid"
+    t.integer  "customer_vender_id",  limit: 4
+    t.integer  "company_id",          limit: 4
+    t.integer  "chart_of_account_id", limit: 4
+    t.integer  "bank_type_id",        limit: 4
+    t.integer  "log_book_id",         limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "sale_receipts", ["bank_type_id"], name: "index_sale_receipts_on_bank_type_id", using: :btree
+  add_index "sale_receipts", ["chart_of_account_id"], name: "index_sale_receipts_on_chart_of_account_id", using: :btree
+  add_index "sale_receipts", ["company_id"], name: "index_sale_receipts_on_company_id", using: :btree
+  add_index "sale_receipts", ["customer_vender_id"], name: "index_sale_receipts_on_customer_vender_id", using: :btree
+  add_index "sale_receipts", ["log_book_id"], name: "index_sale_receipts_on_log_book_id", using: :btree
+
   create_table "sale_tax_codes", force: :cascade do |t|
     t.string   "tax_code",    limit: 255
     t.string   "description", limit: 255
@@ -338,6 +377,15 @@ ActiveRecord::Schema.define(version: 20160515135134) do
   add_foreign_key "receive_payments", "companies"
   add_foreign_key "receive_payments", "customer_venders"
   add_foreign_key "receive_payments", "log_books"
+  add_foreign_key "sale_receipt_transactions", "item_lists"
+  add_foreign_key "sale_receipt_transactions", "sale_receipts"
+  add_foreign_key "sale_receipt_transactions", "sale_tax_codes"
+  add_foreign_key "sale_receipt_transactions", "unit_of_measures"
+  add_foreign_key "sale_receipts", "bank_types"
+  add_foreign_key "sale_receipts", "chart_of_accounts"
+  add_foreign_key "sale_receipts", "companies"
+  add_foreign_key "sale_receipts", "customer_venders"
+  add_foreign_key "sale_receipts", "log_books"
   add_foreign_key "sale_tax_codes", "companies"
   add_foreign_key "unit_of_measures", "companies"
   add_foreign_key "unit_of_measures", "measures"

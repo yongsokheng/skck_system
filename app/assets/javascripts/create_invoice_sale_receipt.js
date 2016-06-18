@@ -1,9 +1,11 @@
 $(document).on("ready", function() {
-  if($("#create-invoice").length > 0) {
+  if($("#create-invoice").length > 0 || $("#sale-receipt").length > 0) {
     $("#tbl-invoice").tableScroll();
     load_selectize_simple(".customer");
     load_um(".fields .unit-of-measure");
     load_item_list(".fields .item-list");
+    load_selectize_simple(".bank_type");
+    load_selectize_simple(".log_book");
     load_account_receivable(".account-receivable");
     load_invoice_amount();
     load_btn_navigate();
@@ -21,11 +23,14 @@ $(document).on("ready", function() {
       var unit_of_measure_selectize = unit_of_measure[0].selectize;
       var price_each = parent.find(".price-each");
       var item_list_selectize = $(this)[0].selectize;
-      var data_um_id = item_list_selectize.options[item_list_selectize.getValue()].um_id;
-      var data_price = item_list_selectize.options[item_list_selectize.getValue()].price;
 
-      unit_of_measure_selectize.addItem(data_um_id);
-      price_each.val($.number(data_price, 2)).trigger("change");
+      if($(this).val() !== "") {
+        var data_um_id = item_list_selectize.options[item_list_selectize.getValue()].um_id;
+        var data_price = item_list_selectize.options[item_list_selectize.getValue()].price;
+
+        unit_of_measure_selectize.addItem(data_um_id);
+        price_each.val($.number(data_price, 2)).trigger("change");
+      }
     });
 
     $(document).on("change", ".quantity, .price-each", function() {
@@ -73,7 +78,11 @@ $(document).on("ready", function() {
       }else if(is_current_period() == false) {
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.wrong_period"));
       }else if($(".account-receivable").val() == "") {
-        set_msg_valid(event, I18n.t("create_invoice.validate_errors.account_receivable_blank"));
+        set_msg_valid(event, I18n.t("create_invoice.validate_errors.account_blank"));
+      }else if($(".bank_type").val() == "") {
+        set_msg_valid(event, I18n.t("sale_receipt.validate_errors.bank_type_blank"));
+      }else if($(".log_book").val() == "") {
+        set_msg_valid(event, I18n.t("sale_receipt.validate_errors.log_book_blank"));
       }else if(is_invoice_transaction_exist() == false) {
         set_msg_valid(event, I18n.t("create_invoice.validate_errors.trans_validate"));
       }else if(is_transaction_valid() == false){

@@ -7,6 +7,7 @@ class Invoice < ActiveRecord::Base
 
   validates :transaction_date, presence: true
   validates :customer_vender_id, presence: true
+  validates :chart_of_account_id, presence: true
   validate :must_have_transaction
   validate :must_in_working_period
 

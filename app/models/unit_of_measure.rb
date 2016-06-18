@@ -4,4 +4,5 @@ class UnitOfMeasure < ActiveRecord::Base
 
   has_many :invoice_transactions
   has_many :item_lists
+  has_many :sale_receipt_transactions
 end
