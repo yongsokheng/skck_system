@@ -4,13 +4,14 @@ class CreateItemLists < ActiveRecord::Migration
       t.string :name
       t.string :description
       t.string :manufacturer_part_number
-      t.float :cost
-      t.float :price
+      t.float :cost, default: 0
+      t.float :price, default: 0
       t.string :purchase_description
       t.string :sale_description
-      t.integer :parent_id
       t.boolean :active, default: 1
       t.references :chart_of_account, index: true, foreign_key: true
+      t.references :income_account, references: :chart_of_account
+      t.references :cogs_account, references: :chart_of_account
       t.references :company, index: true, foreign_key: true
       t.references :customer_vender, index: true, foreign_key: true
       t.references :item_list_type, index: true, foreign_key: true

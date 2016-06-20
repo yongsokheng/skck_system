@@ -68,7 +68,7 @@ $(document).on("ready", function(){
       }
     });
 
-    $(document).on("keypress", ".debit, .credit, .statement-ending-balance", function(event) {
+    $(document).on("keypress", ".debit, .credit, .statement-ending-balance, .price, .cost", function(event) {
       if ((event.which != 46 || $(this).val().indexOf(".") != -1) && (event.which < 48 || event.which > 57)) {
         event.preventDefault();
       }

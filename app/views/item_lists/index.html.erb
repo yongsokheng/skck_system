@@ -1,19 +1,19 @@
-<div class="row item-lists">
+<div class="row" id="item-list">
   <div class="col-md-12">
     <h2 class="text-center"><%= t "item_lists.item_list" %></h2>
-    <div class="btn-add-new pull-right ">
+    <p class="btn-add-new pull-right ">
       <%= link_to t("btn.add_new"), new_item_list_path, class: "btn btn-primary" %>
-    </div>
-    <table class="table table-bordered table-hover table-striped">
+    </p>
+    <table class="table table-bordered table-striped tbl-item-list">
       <thead>
-        <td><%= t "item_lists.name" %></td>
-        <td><%= t "item_lists.description" %></td>
-        <td><%= t "item_lists.type" %></td>
-        <td><%= t "item_lists.account" %></td>
-        <td><%= t "item_lists.total_qty_in" %></td>
-        <td><%= t "item_lists.total_qty_out" %></td>
-        <td><%= t "item_lists.total_balance" %></td>
-        <td colspan="2"></td>
+        <th><%= t "item_lists.name" %></th>
+        <th><%= t "item_lists.description" %></th>
+        <th><%= t "item_lists.type" %></th>
+        <th><%= t "item_lists.account" %></th>
+        <th><%= t "item_lists.total_qty_in" %></th>
+        <th><%= t "item_lists.total_qty_out" %></th>
+        <th><%= t "item_lists.total_balance" %></th>
+        <th colspan="2"><%= t "item_lists.action" %></th>
       </thead>
       <tbody >
         <%= render @item_lists %>
